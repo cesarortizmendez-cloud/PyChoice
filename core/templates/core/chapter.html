@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}{{ ch.num|stringformat:'02d' }} · {{ ch.title }}{% endblock %}
+
+{% block content %}
+<div class="eyebrow">{{ ch.apunte }}</div>
+<h1 class="page">[{{ ch.num|stringformat:'02d' }}] <span class="hl">{{ ch.title }}</span></h1>
+<div class="subtitle">{{ ch.subtitle }}</div>
+
+<details class="fold">
+  <summary class="section-h"><span class="bar"></span><h2>Teoría</h2><span class="fold-ch" aria-hidden="true">▸</span></summary>
+  <div class="fold-body prose">{{ ch.theory|safe }}</div>
+</details>
+
+<details class="fold">
+  <summary class="section-h"><span class="bar"></span><h2>Conceptos clave</h2><span class="fold-ch" aria-hidden="true">▸</span></summary>
+  <div class="fold-body">
+    <div class="concepts">
+      {% for t, d in ch.concepts %}
+      <div class="concept"><div class="t">{{ t }}</div><div class="d">{{ d|safe }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</details>
+
+<div class="section-h"><span class="bar"></span><h2>Práctica en Python · ejecuta y experimenta</h2></div>
+<p class="note">Cada bloque corre <b>Python real</b> en tu navegador. Edita el código y presiona
+<b>Ctrl + Enter</b> o «ejecutar». Ya tienes disponibles <code>numpy</code>, <code>pandas</code>,
+<code>matplotlib</code> y los datos de ejemplo <code>{{ ch.dataset }}</code> para seguir explorando.</p>
+
+{% for ex in ch.examples %}
+<div class="example">
+  <div class="head"><span class="n">{{ forloop.counter|stringformat:'02d' }}</span><span class="ttl">{{ ex.title }}</span></div>
+  <div class="explain">{{ ex.explain|safe }}</div>
+  {% include 'core/_console.html' with code=ex.code fname=ch.code|add:'.py' split=True io=forloop.last %}
+</div>
+{% endfor %}
+
+<details class="fold">
+  <summary class="section-h"><span class="bar"></span><h2>Ejercicios propuestos</h2><span class="fold-ch" aria-hidden="true">▸</span></summary>
+  <div class="fold-body">
+    <p class="note">Pon en práctica lo aprendido en esta lección. Puedes resolver cada ejercicio en
+    cualquiera de las consolas de arriba o en la <a href="{% url 'console' %}">consola libre</a>.</p>
+    <div class="exercises">
+      <ol>{% for e in ch.exercises %}<li>{{ e|safe }}</li>{% endfor %}</ol>
+    </div>
+  </div>
+</details>
+
+<div class="pager">
+  {% if ch.num > 1 %}
+    <a href="/leccion/{{ ch.num|add:'-1'|stringformat:'02d' }}/">← lección anterior</a>
+  {% else %}<span class="dis">← inicio</span>{% endif %}
+  {% if ch.num < chapters|length %}
+    <a href="/leccion/{{ ch.num|add:'1'|stringformat:'02d' }}/">lección siguiente →</a>
+  {% else %}
+    <a href="{% url 'console' %}">consola libre →</a>
+  {% endif %}
+</div>
+{% endblock %}

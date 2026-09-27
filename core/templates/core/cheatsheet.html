@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Referencia Python{% endblock %}
+
+{% block content %}
+<div class="eyebrow">// herramientas / referencia</div>
+<h1 class="page">[?] <span class="hl">Referencia rápida de Python</span></h1>
+<div class="subtitle">Las funciones y estructuras que más usarás como analista de datos.</div>
+
+{% for g in grupos %}
+<div class="section-h"><span class="bar"></span><h2>{{ g.titulo }}</h2></div>
+<div class="tablewrap">
+<table class="dtable">
+  <thead><tr><th>Elemento</th><th style="text-align:left">Qué hace</th><th style="text-align:left">Ejemplo</th></tr></thead>
+  <tbody>
+    {% for nombre, desc, ej in g.filas %}
+    <tr><td>{{ nombre }}</td><td style="text-align:left; color:var(--muted); font-family:var(--sans)">{{ desc }}</td><td style="text-align:left; color:var(--cyan)">{{ ej }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}{{ ls.num|stringformat:'02d' }} · {{ ls.title }}{% endblock %}
+{% block mainclass %}lesson{% endblock %}
+
+{% block content %}
+<div class="eyebrow">leccion {{ ls.num|stringformat:'02d' }}</div>
+<h1 class="page">{{ ls.title }}</h1>
+<div class="subtitle">{{ ls.subtitle }}</div>
+
+<div class="intro prose">{{ ls.intro|safe }}</div>
+
+<div class="cardbar" data-lesson="{{ ls.code }}">
+  <button class="cardbtn" id="cardPrev" type="button" aria-label="Tarjeta anterior">&larr;</button>
+  <div class="cardbar-mid">
+    <div class="cardbar-pos" id="cardPos"></div>
+    <div class="cardbar-title" id="cardTitle"></div>
+  </div>
+  <button class="cardbtn" id="cardNext" type="button" aria-label="Tarjeta siguiente">&rarr;</button>
+</div>
+
+<div class="stepnav" aria-label="temas de la leccion">
+  {% for box in ls.steps %}
+  <button class="step-dot" type="button" data-box="{{ box.id }}" data-index="{{ forloop.counter0 }}" title="{{ box.title }}">{{ forloop.counter }}</button>
+  {% endfor %}
+</div>
+
+<div class="cards-wrap">
+{% for box in ls.steps %}
+<section class="step" id="box-{{ box.id }}" data-index="{{ forloop.counter0 }}" data-title="{{ box.title }}" {% if not forloop.first %}hidden{% endif %}>
+  <div class="step-head">
+    <span class="step-badge">{{ forloop.counter|stringformat:'02d' }}</span>
+    <h2>{{ box.title }}</h2>
+    {% if box.combines %}<span class="combo-tag" title="Une conceptos anteriores">une: {{ box.combines }}</span>{% endif %}
+    <span class="step-count" data-box="{{ box.id }}">0/{{ box.tasks|length }}</span>
+  </div>
+
+  <div class="step-intro prose">{{ box.instructions|safe }}</div>
+
+  <div class="tasks">
+    {% for task in box.tasks %}
+    <div class="task" id="t-{{ task.id }}">
+      <div class="task-body">
+        <div class="task-prompt">
+          <div class="task-n">Tarea {{ task.n }}<span class="task-check" aria-hidden="true">&#10003;</span></div>
+          <div class="prose">{{ task.prompt|safe }}</div>
+        </div>
+        <div class="task-work">
+          {% include 'core/_console.html' with step=task lesson=ls.code box=box.id dom_id=task.id %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card-foot">
+    <button class="btn ghost cardfoot-prev" type="button">&larr; anterior</button>
+    <button class="btn run cardfoot-next" type="button">siguiente &rarr;</button>
+  </div>
+</section>
+{% endfor %}
+</div>
+
+{% if ls.closing %}
+<div class="closing prose" id="closing" hidden>{{ ls.closing|safe }}</div>
+{% endif %}
+
+<div class="pager">
+  {% if ls.num > 1 %}
+    <a href="/leccion/{{ ls.num|add:'-1'|stringformat:'02d' }}/">&larr; leccion anterior</a>
+  {% else %}<span class="dis">&larr; inicio</span>{% endif %}
+  {% if ls.num < 2 %}
+    <a href="/leccion/{{ ls.num|add:'1'|stringformat:'02d' }}/">leccion siguiente &rarr;</a>
+  {% else %}
+    <a href="{% url 'console' %}">practicar en la consola libre &rarr;</a>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var wrap = document.querySelector('.cards-wrap');
+  if (!wrap) return;
+  var cards = Array.prototype.slice.call(wrap.querySelectorAll('.step'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.stepnav .step-dot'));
+  var titleEl = document.getElementById('cardTitle');
+  var posEl = document.getElementById('cardPos');
+  var prevBtn = document.getElementById('cardPrev');
+  var nextBtn = document.getElementById('cardNext');
+  var closing = document.getElementById('closing');
+  var bar = document.querySelector('.cardbar');
+  var lesson = bar ? bar.dataset.lesson : 'l';
+  var KEY = 'pychoice.card.' + lesson;
+  var total = cards.length;
+  var i = 0;
+  try { var s = parseInt(localStorage.getItem(KEY), 10); if (!isNaN(s) && s >= 0 && s < total) i = s; } catch (e) {}
+
+  function show(idx) {
+    i = Math.max(0, Math.min(total - 1, idx));
+    cards.forEach(function (c, k) { c.hidden = (k !== i); });
+    dots.forEach(function (d, k) { d.classList.toggle('active', k === i); });
+    if (titleEl) titleEl.textContent = cards[i].dataset.title || '';
+    if (posEl) posEl.textContent = 'Tarjeta ' + (i + 1) + ' / ' + total;
+    if (prevBtn) prevBtn.disabled = (i === 0);
+    if (nextBtn) nextBtn.disabled = (i === total - 1);
+    if (closing) closing.hidden = (i !== total - 1);
+    try { localStorage.setItem(KEY, String(i)); } catch (e) {}
+    // llevar el foco visual al inicio de la tarjeta
+    if (bar) bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { show(i - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { show(i + 1); });
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () { show(parseInt(d.dataset.index, 10) || 0); });
+  });
+  document.querySelectorAll('.cardfoot-prev').forEach(function (b) { b.addEventListener('click', function () { show(i - 1); }); });
+  document.querySelectorAll('.cardfoot-next').forEach(function (b) { b.addEventListener('click', function () { show(i + 1); }); });
+
+  show(i);
+})();
+</script>
+{% endblock %}

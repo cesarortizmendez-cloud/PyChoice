@@ -1,0 +1,36 @@
+{% comment %}
+Consola Python reutilizable (motor Pyodide). Estructura identica a EstadisticaR:
+barra (lamparas + nombre + acciones) · rejilla editor|salida · grafico a lo ancho.
+Parametros:
+  code   -> codigo inicial del editor
+  fname  -> nombre mostrado en la barra (ej: leccion_01.py)
+  split  -> editor y salida lado a lado
+  io     -> muestra botones de cargar/exportar Excel
+{% endcomment %}
+<div class="rconsole">
+  <div class="bar">
+    <span class="lamps"><i></i><i></i><i></i></span>
+    <span class="fname">{{ fname|default:'script.py' }}</span>
+    <span class="actions">
+      <button class="btn warn" data-act="reset" title="reiniciar">↻</button>
+      <button class="btn" data-act="clear">limpiar</button>
+      {% if io %}
+      <button class="btn" data-act="loadxlsx">cargar excel</button>
+      <button class="btn" data-act="savexlsx">exportar excel</button>
+      <input type="file" accept=".xlsx,.xls,.csv">
+      <span class="filechip"></span>
+      {% endif %}
+      <button class="btn run" data-act="run">▶ ejecutar</button>
+    </span>
+  </div>
+  <div class="rgrid {% if split %}split{% endif %}">
+    <div class="editor">
+      <textarea spellcheck="false" autocapitalize="off" autocomplete="off">{{ code }}</textarea>
+    </div>
+    <div class="output-wrap">
+      <div class="out-head">salida // py&gt;</div>
+      <pre class="output"></pre>
+    </div>
+  </div>
+  <div class="plotbox"><div class="empty">Sin gráfico. Usa matplotlib: plt.plot(), plt.hist(), plt.bar()…</div></div>
+</div>

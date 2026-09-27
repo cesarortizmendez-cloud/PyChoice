@@ -1,0 +1,97 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PyChoice{% endblock %} · Terminal de Python</title>
+  <meta name="description" content="Aprende Python en el navegador. Python real (Pyodide), carga y exporta Excel, sin instalar nada.">
+  <meta name="author" content="Dr. César Ortiz Méndez">
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#00ff9c">
+  <meta name="application-name" content="PyChoice">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PyChoice">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/icons/favicon-32.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{% static 'core/css/app.css' %}">
+  <!-- SheetJS: lectura/escritura de Excel en el navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="statusbar">
+  <button class="btn menu-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">☰</button>
+  <span class="brand">Py<b>Choice</b></span>
+  <span class="sep">·</span>
+  <span class="term-label" style="color:var(--muted)">terminal_python</span>
+  <span class="engine">
+    <span id="engine-dot" class="dot"></span>
+    <span id="engine-status">iniciando…</span>
+  </span>
+</div>
+
+<div id="install-card" class="install-card" hidden aria-live="polite">
+  <div class="install-card__icon" aria-hidden="true">Py</div>
+  <div class="install-card__body">
+    <div class="install-card__title">Instala PyChoice en tu equipo</div>
+    <div class="install-card__text" id="pwa-install-text">
+      Usa esta plataforma como una app en Android, Windows o iPhone.
+    </div>
+    <div class="install-card__actions">
+      <button id="pwa-install-btn" class="btn run" type="button">Instalar en mi equipo</button>
+      <button id="pwa-install-close" class="btn" type="button" aria-label="Ocultar instalación">Después</button>
+    </div>
+    <div id="pwa-ios-help" class="install-card__help" hidden>
+      En iPhone/iPad: abre esta página en Safari, toca Compartir y selecciona “Agregar a pantalla de inicio”.
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="tree-title">// lecciones</div>
+    <nav class="tree">
+      <a href="{% url 'home' %}" class="{% if active == 'home' %}on{% endif %}"><span class="num">~</span> inicio</a>
+      {% for c in chapters %}
+      <a href="/leccion/{{ c.num|stringformat:'02d' }}/" class="{% if active == c.slug %}on{% endif %}">
+        <span class="num">{{ c.num|stringformat:'02d' }}</span> {{ c.title|lower }}
+      </a>
+      {% endfor %}
+      <div class="grp tree-title">// herramientas</div>
+      <a href="{% url 'console' %}" class="{% if active == 'console' %}on{% endif %}"><span class="num">&gt;_</span> consola libre</a>
+      <a href="{% url 'cheatsheet' %}" class="{% if active == 'cheatsheet' %}on{% endif %}"><span class="num">?</span> referencia python</a>
+    </nav>
+  </aside>
+  <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+  <main class="main {% block mainclass %}{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="foot-row">
+    <span>PyChoice · aprende Python en el navegador · Python real con <a href="https://pyodide.org/" target="_blank" rel="noopener">Pyodide</a> (WebAssembly) · sin servidor, sin base de datos, libre acceso</span>
+    <span class="credit">
+      Creado por el <b>Dr. César Ortiz Méndez</b> ·
+      <a href="https://cv-cesarortiz.vercel.app" target="_blank" rel="noopener">cv-cesarortiz.vercel.app</a>
+    </span>
+  </div>
+</footer>
+
+<script type="module" src="{% static 'core/js/pyengine.js' %}"></script>
+<script src="{% static 'core/js/pwa-install.js' %}"></script>
+<script>
+  function toggleSidebar(){ document.body.classList.toggle('nav-open'); }
+  document.querySelectorAll('.sidebar .tree a').forEach(function(a){
+    a.addEventListener('click', function(){ document.body.classList.remove('nav-open'); });
+  });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

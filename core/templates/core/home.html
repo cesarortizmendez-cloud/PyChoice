@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">software abierto · aprende python con datos</div>
+  <h1>Aprende Python<br>ejecutando <span class="g">código de verdad</span>.</h1>
+  <p class="lead">Lecciones con teoría clara y una consola de Python real en el navegador, con carga y
+  exportación de Excel. Sin instalar nada, sin cuentas, sin servidores. Una ruta desde la base hacia
+  el análisis de datos y la toma de decisiones.</p>
+
+  <div class="boot" id="boot"></div>
+
+  <p class="byline">
+    Software abierto de aprendizaje creado por el
+    <a href="https://cv-cesarortiz.vercel.app" target="_blank" rel="noopener"><b>Dr. César Ortiz Méndez</b></a>.
+    Libre para estudiar, usar y compartir.
+  </p>
+</section>
+
+<div class="section-h"><span class="bar"></span><h2>Lecciones</h2></div>
+<div class="cards">
+  {% for c in chapters %}
+  <a class="card" href="/leccion/{{ c.num|stringformat:'02d' }}/">
+    <div class="k">leccion_{{ c.num|stringformat:'02d' }}.py</div>
+    <div class="ttl">{{ c.title }}</div>
+    <div class="sub">{{ c.subtitle }}</div>
+  </a>
+  {% endfor %}
+</div>
+
+<div class="section-h"><span class="bar"></span><h2>Herramientas</h2></div>
+<div class="cards">
+  <a class="card" href="{% url 'console' %}">
+    <div class="k">consola.py</div>
+    <div class="ttl">Consola libre</div>
+    <div class="sub">Un REPL de Python en blanco para practicar lo que quieras.</div>
+  </a>
+  <a class="card ext" href="{% url 'cheatsheet' %}">
+    <div class="k">referencia.py</div>
+    <div class="ttl">Referencia rápida</div>
+    <div class="sub">Las funciones y estructuras que más usarás como analista de datos.</div>
+  </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const lines = [
+  {t:"$ ", c:"booting pychoice ...", cls:"c"},
+  {t:"[ok] ", c:"motor Pyodide cargado · Python 3.12 (wasm32)", cls:""},
+  {t:"[ok] ", c:"numpy · pandas · matplotlib listos", cls:""},
+  {t:"[ok] ", c:"SheetJS listo · import/export .xlsx", cls:""},
+  {t:"py> ", c:"print('Bienvenida/o a PyChoice')", cls:"c"},
+  {t:"", c:"Bienvenida/o a PyChoice", cls:"m"},
+  {t:"py> ", c:"# elige una leccion en la barra lateral para comenzar_", cls:"c"},
+];
+const boot = document.getElementById('boot');
+let li = 0, ci = 0, buf = "";
+function type(){
+  if (li >= lines.length){ boot.innerHTML += '<span class="cursor"></span>'; return; }
+  const ln = lines[li];
+  if (ci === 0){ buf += '<span class="l"><span style="color:var(--phosphor)">'+ln.t+'</span><span class="'+ln.cls+'">'; }
+  if (ci < ln.c.length){
+    buf += ln.c[ci]; ci++;
+    boot.innerHTML = buf + '</span></span>';
+    setTimeout(type, 14 + Math.random()*22);
+  } else {
+    buf += '</span></span>'; li++; ci=0;
+    setTimeout(type, 230);
+  }
+}
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ type(); }
+else { boot.innerHTML = lines.map(l=>'<span class="l"><span style="color:var(--phosphor)">'+l.t+'</span><span class="'+l.cls+'">'+l.c+'</span></span>').join(''); }
+</script>
+{% endblock %}

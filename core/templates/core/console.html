@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Consola Python libre{% endblock %}
+
+{% block content %}
+<div class="eyebrow">// herramientas / repl</div>
+<h1 class="page">[&gt;_] <span class="hl">Consola Python libre</span></h1>
+<div class="subtitle">Un entorno de Python completo en tu navegador. Sin instalar nada, sin servidor.</div>
+
+<p class="note">Esto es <b>Python real</b> (motor Pyodide sobre WebAssembly). Escribe tu código y
+presiona <b>Ctrl + Enter</b> o «ejecutar». Puedes <b>cargar un Excel/CSV</b> —quedará disponible como
+el DataFrame <code>datos</code>— y <b>exportar</b> cualquier DataFrame a Excel. Ya tienes
+<code>numpy</code>, <code>pandas</code> y <code>matplotlib</code> cargados, además de los datos de
+ejemplo <code>notas</code> y <code>datos</code>.</p>
+
+{% include 'core/_console.html' with code=seed fname='consola.py' io=True split=True %}
+
+<div class="exercises">
+  <h3>▸ Para empezar</h3>
+  <ol>
+    <li>Ejecuta <code>datos.describe()</code> para ver un resumen estadístico del DataFrame de ejemplo.</li>
+    <li>Grafica con <code>import matplotlib.pyplot as plt; plt.hist(notas); plt.show()</code>.</li>
+    <li>Carga tu propio Excel con «cargar excel» y explóralo con <code>datos.head()</code>.</li>
+    <li>Crea un resumen y expórtalo con «exportar excel».</li>
+  </ol>
+</div>
+{% endblock %}
