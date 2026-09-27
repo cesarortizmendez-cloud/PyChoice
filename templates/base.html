@@ -54,14 +54,22 @@
 
 <div class="shell">
   <aside class="sidebar">
-    <div class="tree-title">// lecciones</div>
+    <div class="tree-title">// navegación</div>
     <nav class="tree">
       <a href="{% url 'home' %}" class="{% if active == 'home' %}on{% endif %}"><span class="num">~</span> inicio</a>
+
+      <div class="grp tree-title">// rutas</div>
+      {% for r in routes %}
+      <a href="{% url 'route' r.slug %}" class="{% if active == r.slug %}on{% endif %}"><span class="num">◆</span> {{ r.short }}</a>
+      {% endfor %}
+
+      <div class="grp tree-title">// lecciones</div>
       {% for c in chapters %}
       <a href="/leccion/{{ c.num|stringformat:'02d' }}/" class="{% if active == c.slug %}on{% endif %}">
         <span class="num">{{ c.num|stringformat:'02d' }}</span> {{ c.title|lower }}
       </a>
       {% endfor %}
+
       <div class="grp tree-title">// herramientas</div>
       <a href="{% url 'console' %}" class="{% if active == 'console' %}on{% endif %}"><span class="num">&gt;_</span> consola libre</a>
       <a href="{% url 'cheatsheet' %}" class="{% if active == 'cheatsheet' %}on{% endif %}"><span class="num">?</span> referencia python</a>

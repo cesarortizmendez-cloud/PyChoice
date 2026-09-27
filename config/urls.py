@@ -10,6 +10,7 @@ urlpatterns = [
     path("manifest.json", core_views.manifest, name="manifest"),
     path("service-worker.js", core_views.service_worker, name="service_worker"),
 
-    # Una sola ruta dinamica para todas las lecciones (capitulos)
+    # Rutas de aprendizaje (tracks) y lecciones
+    path("ruta/<slug:slug>/", core_views.route, name="route"),
     path("leccion/<int:num>/", core_views.lesson, name="lesson"),
 ]

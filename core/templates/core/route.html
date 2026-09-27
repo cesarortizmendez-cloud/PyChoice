@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}{{ route.title }}{% endblock %}
+
+{% block content %}
+<div class="eyebrow">ruta de aprendizaje</div>
+<h1 class="page">{{ route.title }}</h1>
+<div class="subtitle">{{ route.subtitle }}</div>
+
+<div class="prose">{{ route.intro|safe }}</div>
+
+<p class="note"><b>Contenido publicado:</b> {{ done }} de {{ total }} lecciones disponibles.
+Los módulos restantes se irán liberando en orden.</p>
+
+{% for m in modules %}
+<section class="module {{ m.status }}">
+  <div class="module-head">
+    <span class="module-code">Módulo {{ m.code }}</span>
+    <h2>{{ m.title }}</h2>
+    {% if m.status == 'listo' %}
+      <span class="module-badge ok">disponible</span>
+    {% else %}
+      <span class="module-badge soon">próximamente</span>
+    {% endif %}
+  </div>
+  <div class="module-desc">{{ m.desc }}</div>
+  <div class="module-lessons">
+    {% for it in m.items %}
+      {% if it.num %}
+      <a class="lesson-chip" href="/leccion/{{ it.num|stringformat:'02d' }}/">
+        <span class="ln">{{ it.num|stringformat:'02d' }}</span>
+        <span class="lt">{{ it.title }}</span>
+      </a>
+      {% else %}
+      <div class="lesson-chip soon" aria-disabled="true">
+        <span class="ln">··</span>
+        <span class="lt">{{ it.title }}</span>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

@@ -3,12 +3,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import never_cache
-from .curriculum import nav_list, BY_NUM
+from .curriculum import nav_list, BY_NUM, get_route, route_list, route_modules
 
 
 def home(request):
     return render(request, "core/home.html", {
         "chapters": nav_list(),
+        "routes": route_list(),
         "active": "home",
     })
 
@@ -21,7 +22,25 @@ def lesson(request, num):
     return render(request, "core/chapter.html", {
         "ch": ch,
         "chapters": nav_list(),
+        "routes": route_list(),
         "active": ch["slug"],
+    })
+
+
+def route(request, slug):
+    """Pagina de una ruta de aprendizaje (track): sus modulos y lecciones."""
+    r = get_route(slug)
+    if r is None:
+        raise Http404("Ruta no encontrada")
+    modules, done, total = route_modules(r)
+    return render(request, "core/route.html", {
+        "route": r,
+        "modules": modules,
+        "done": done,
+        "total": total,
+        "chapters": nav_list(),
+        "routes": route_list(),
+        "active": r["slug"],
     })
 
 
@@ -41,6 +60,7 @@ def console(request):
     """Consola Python libre, sin contenido de leccion."""
     return render(request, "core/console.html", {
         "chapters": nav_list(),
+        "routes": route_list(),
         "active": "console",
         "seed": CONSOLE_SEED,
     })
@@ -101,6 +121,7 @@ CHEATSHEET = [
 def cheatsheet(request):
     return render(request, "core/cheatsheet.html", {
         "chapters": nav_list(),
+        "routes": route_list(),
         "active": "cheatsheet",
         "grupos": CHEATSHEET,
     })

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 Indice central del curriculo de PyChoice.
-Formato identico a EstadisticaR: cada leccion es un capitulo con
-  num, slug, code, title, subtitle, apunte
-  concepts  -> lista de (termino, definicion)
-  theory    -> HTML didactico
-  examples  -> lista de {title, explain, code}  (Python ejecutable en Pyodide)
-  dataset   -> texto breve (datos de ejemplo disponibles)
-  exercises -> lista de retos para el alumno
+
+- CHAPTERS: todas las lecciones (capitulos), formato EstadisticaR.
+- MODULES:  agrupan lecciones en modulos tematicos.
+- ROUTES:   rutas de aprendizaje (tracks). Cada ruta agrupa modulos.
+            Hoy existe "Ruta para ser Cientifico de datos"; mas adelante
+            se sumaran otras (p. ej. Desarrollador de aplicaciones).
 """
 from .curriculum_a import CHAPTERS_A
 from .curriculum_b import CHAPTERS_B
+from .curriculum_c import CHAPTERS_C
 
-CHAPTERS = CHAPTERS_A + CHAPTERS_B
+CHAPTERS = CHAPTERS_A + CHAPTERS_B + CHAPTERS_C
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -23,9 +23,99 @@ def get_chapter(num):
 
 
 def nav_list():
-    """Lista ligera para el menu lateral / home."""
+    """Lista ligera de lecciones para el menu lateral / home."""
     return [
         {"num": c["num"], "slug": c["slug"], "code": c["code"],
          "title": c["title"], "subtitle": c["subtitle"]}
         for c in CHAPTERS
     ]
+
+
+# ====================================================================
+#  MODULOS: agrupan lecciones. status = "listo" | "proximamente"
+#  Un modulo "listo" referencia lecciones existentes (lessons=[nums]).
+#  Un modulo "proximamente" lista los titulos planificados (planned=[...]).
+# ====================================================================
+MODULES = [
+    {"code": "A", "title": "Fundamentos de Python", "status": "listo",
+     "desc": "Instalar Python, sintaxis básica, variables, tipos, librerías y condicionales.",
+     "lessons": [1, 2, 3, 4]},
+    {"code": "B", "title": "Datos y control", "status": "listo",
+     "desc": "Cargar Excel, bucles for/while y tu primera estadística con pandas.",
+     "lessons": [5, 6, 7, 8]},
+    {"code": "C", "title": "Python intermedio", "status": "listo",
+     "desc": "Estructuras de datos, funciones, comprensiones, errores y archivos.",
+     "lessons": [9, 10, 11, 12]},
+    {"code": "D", "title": "Manipulación de datos", "status": "proximamente",
+     "desc": "NumPy a fondo y pandas avanzado: selección, limpieza, combinar y reformar tablas.",
+     "planned": ["NumPy a fondo", "Selección con loc/iloc", "Limpieza (NaN, duplicados, tipos)",
+                 "Combinar y reformar (merge, pivot)", "Fechas y series de tiempo"]},
+    {"code": "E", "title": "Análisis exploratorio (EDA)", "status": "proximamente",
+     "desc": "Hacer preguntas a los datos: estadística aplicada, atípicos y relaciones.",
+     "planned": ["EDA: preguntar a los datos", "Estadística descriptiva aplicada",
+                 "Correlación y relaciones"]},
+    {"code": "F", "title": "Visualización de datos", "status": "proximamente",
+     "desc": "Comunicar con gráficos: matplotlib a fondo, seaborn y storytelling.",
+     "planned": ["Matplotlib a fondo", "Seaborn (gráficos estadísticos)", "Storytelling con datos"]},
+    {"code": "G", "title": "Estadística y probabilidad", "status": "proximamente",
+     "desc": "El sustento para afirmar cosas con datos: probabilidad, distribuciones e inferencia.",
+     "planned": ["Probabilidad básica", "Distribuciones", "Inferencia (intervalos y pruebas)"]},
+    {"code": "H", "title": "Introducción al Machine Learning", "status": "proximamente",
+     "desc": "Predecir con scikit-learn: regresión, clasificación, clustering y evaluación.",
+     "planned": ["Qué es ML + scikit-learn", "Regresión", "Clasificación", "Clustering (k-means)",
+                 "Evaluación de modelos"]},
+    {"code": "I", "title": "Proyecto y cierre", "status": "proximamente",
+     "desc": "Integrar todo en un proyecto de ciencia de datos y comunicar resultados.",
+     "planned": ["Proyecto integrador de data science", "Comunicar resultados y siguientes pasos"]},
+]
+
+
+# ====================================================================
+#  RUTAS DE APRENDIZAJE (tracks)
+# ====================================================================
+ROUTES = [
+    {
+        "slug": "cientifico-datos",
+        "title": "Ruta para ser Científico de datos",
+        "short": "científico de datos",
+        "subtitle": "De cero a analizar, visualizar y modelar datos con Python",
+        "intro": """
+<p>Esta ruta te lleva paso a paso desde los <b>fundamentos de Python</b> hasta el <b>análisis y la
+ciencia de datos</b>. Avanza módulo por módulo: cada uno reúne varias lecciones con teoría, ejemplos
+ejecutables y ejercicios. Los módulos marcados <b>listo</b> ya están disponibles; el resto se irá
+publicando en orden.</p>
+""",
+        "modules": MODULES,
+    },
+]
+
+BY_ROUTE = {r["slug"]: r for r in ROUTES}
+
+
+def get_route(slug):
+    return BY_ROUTE.get(slug)
+
+
+def route_list():
+    """Lista ligera de rutas para el menu lateral / home."""
+    return [{"slug": r["slug"], "title": r["title"], "short": r["short"],
+             "subtitle": r["subtitle"]} for r in ROUTES]
+
+
+def route_modules(route):
+    """Resuelve los modulos de una ruta con los datos de sus lecciones."""
+    out = []
+    total = done = 0
+    for m in route["modules"]:
+        item = dict(m)
+        if m.get("lessons"):
+            item["items"] = [{"num": n, "title": BY_NUM[n]["title"],
+                              "subtitle": BY_NUM[n]["subtitle"]} for n in m["lessons"]]
+            total += len(m["lessons"])
+            done += len(m["lessons"])
+        else:
+            item["items"] = [{"num": None, "title": t, "subtitle": ""}
+                             for t in m.get("planned", [])]
+            total += len(m.get("planned", []))
+        out.append(item)
+    return out, done, total

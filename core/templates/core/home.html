@@ -18,6 +18,18 @@
   </p>
 </section>
 
+<div class="section-h"><span class="bar"></span><h2>Rutas de aprendizaje</h2></div>
+<div class="cards">
+  {% for r in routes %}
+  <a class="card route-card" href="{% url 'route' r.slug %}">
+    <div class="k">ruta.py</div>
+    <div class="ttl">{{ r.title }}</div>
+    <div class="sub">{{ r.subtitle }}</div>
+    <div class="route-cta">ver la ruta →</div>
+  </a>
+  {% endfor %}
+</div>
+
 <div class="section-h"><span class="bar"></span><h2>Lecciones</h2></div>
 <div class="cards">
   {% for c in chapters %}
