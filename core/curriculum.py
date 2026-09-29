@@ -11,8 +11,10 @@ Indice central del curriculo de PyChoice.
 from .curriculum_a import CHAPTERS_A
 from .curriculum_b import CHAPTERS_B
 from .curriculum_c import CHAPTERS_C
+from .curriculum_d import CHAPTERS_D
+from .curriculum_e import CHAPTERS_E
 
-CHAPTERS = CHAPTERS_A + CHAPTERS_B + CHAPTERS_C
+CHAPTERS = CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D + CHAPTERS_E
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -46,14 +48,12 @@ MODULES = [
     {"code": "C", "title": "Python intermedio", "status": "listo",
      "desc": "Estructuras de datos, funciones, comprensiones, errores y archivos.",
      "lessons": [9, 10, 11, 12]},
-    {"code": "D", "title": "Manipulación de datos", "status": "proximamente",
+    {"code": "D", "title": "Manipulación de datos", "status": "listo",
      "desc": "NumPy a fondo y pandas avanzado: selección, limpieza, combinar y reformar tablas.",
-     "planned": ["NumPy a fondo", "Selección con loc/iloc", "Limpieza (NaN, duplicados, tipos)",
-                 "Combinar y reformar (merge, pivot)", "Fechas y series de tiempo"]},
-    {"code": "E", "title": "Análisis exploratorio (EDA)", "status": "proximamente",
+     "lessons": [13, 14, 15, 16, 17]},
+    {"code": "E", "title": "Análisis exploratorio (EDA)", "status": "listo",
      "desc": "Hacer preguntas a los datos: estadística aplicada, atípicos y relaciones.",
-     "planned": ["EDA: preguntar a los datos", "Estadística descriptiva aplicada",
-                 "Correlación y relaciones"]},
+     "lessons": [18, 19, 20]},
     {"code": "F", "title": "Visualización de datos", "status": "proximamente",
      "desc": "Comunicar con gráficos: matplotlib a fondo, seaborn y storytelling.",
      "planned": ["Matplotlib a fondo", "Seaborn (gráficos estadísticos)", "Storytelling con datos"]},
