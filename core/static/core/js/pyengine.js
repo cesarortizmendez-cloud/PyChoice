@@ -94,9 +94,16 @@ async function boot() {
   return bootPromise;
 }
 
-/* Ejecuta codigo y devuelve {out, error, images} */
+/* Ejecuta codigo y devuelve {out, error, images}.
+   Antes de ejecutar, autocarga los paquetes que el codigo importe
+   (seaborn, scipy, scikit-learn, etc.) la primera vez que se usan. */
 async function runPython(code) {
   const py = await boot();
+  try {
+    setStatus('Python · preparando paquetes…', 'ready');
+    await py.loadPackagesFromImports(code);
+  } catch (e) { /* si falta un paquete, Python mostrara el ImportError */ }
+  setStatus('Python 3.12 · WASM · LISTO', 'ready');
   py.globals.set('__user_code', code);
   const jsonStr = await py.runPythonAsync('__run(__user_code)');
   try { return JSON.parse(jsonStr); }

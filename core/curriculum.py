@@ -13,8 +13,11 @@ from .curriculum_b import CHAPTERS_B
 from .curriculum_c import CHAPTERS_C
 from .curriculum_d import CHAPTERS_D
 from .curriculum_e import CHAPTERS_E
+from .curriculum_f import CHAPTERS_F
+from .curriculum_g import CHAPTERS_G
 
-CHAPTERS = CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D + CHAPTERS_E
+CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
+            + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -54,12 +57,12 @@ MODULES = [
     {"code": "E", "title": "Análisis exploratorio (EDA)", "status": "listo",
      "desc": "Hacer preguntas a los datos: estadística aplicada, atípicos y relaciones.",
      "lessons": [18, 19, 20]},
-    {"code": "F", "title": "Visualización de datos", "status": "proximamente",
+    {"code": "F", "title": "Visualización de datos", "status": "listo",
      "desc": "Comunicar con gráficos: matplotlib a fondo, seaborn y storytelling.",
-     "planned": ["Matplotlib a fondo", "Seaborn (gráficos estadísticos)", "Storytelling con datos"]},
-    {"code": "G", "title": "Estadística y probabilidad", "status": "proximamente",
+     "lessons": [21, 22, 23]},
+    {"code": "G", "title": "Estadística y probabilidad", "status": "listo",
      "desc": "El sustento para afirmar cosas con datos: probabilidad, distribuciones e inferencia.",
-     "planned": ["Probabilidad básica", "Distribuciones", "Inferencia (intervalos y pruebas)"]},
+     "lessons": [24, 25, 26]},
     {"code": "H", "title": "Introducción al Machine Learning", "status": "proximamente",
      "desc": "Predecir con scikit-learn: regresión, clasificación, clustering y evaluación.",
      "planned": ["Qué es ML + scikit-learn", "Regresión", "Clasificación", "Clustering (k-means)",
