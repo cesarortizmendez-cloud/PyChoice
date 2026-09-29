@@ -15,9 +15,12 @@ from .curriculum_d import CHAPTERS_D
 from .curriculum_e import CHAPTERS_E
 from .curriculum_f import CHAPTERS_F
 from .curriculum_g import CHAPTERS_G
+from .curriculum_h import CHAPTERS_H
+from .curriculum_h2 import CHAPTERS_H2
+from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
-            + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G)
+            + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -63,10 +66,10 @@ MODULES = [
     {"code": "G", "title": "Estadística y probabilidad", "status": "listo",
      "desc": "El sustento para afirmar cosas con datos: probabilidad, distribuciones e inferencia.",
      "lessons": [24, 25, 26]},
-    {"code": "H", "title": "Introducción al Machine Learning", "status": "proximamente",
-     "desc": "Predecir con scikit-learn: regresión, clasificación, clustering y evaluación.",
-     "planned": ["Qué es ML + scikit-learn", "Regresión", "Clasificación", "Clustering (k-means)",
-                 "Evaluación de modelos"]},
+    {"code": "H", "title": "Machine Learning (nivel pro)", "status": "listo",
+     "desc": "Flujo completo con scikit-learn: preparación, regresión, clasificación, "
+             "evaluación, ensembles, validación cruzada, no supervisado y proyecto end-to-end.",
+     "lessons": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36]},
     {"code": "I", "title": "Proyecto y cierre", "status": "proximamente",
      "desc": "Integrar todo en un proyecto de ciencia de datos y comunicar resultados.",
      "planned": ["Proyecto integrador de data science", "Comunicar resultados y siguientes pasos"]},

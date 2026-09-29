@@ -3,7 +3,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import never_cache
-from .curriculum import nav_list, BY_NUM, get_route, route_list, route_modules
+from .curriculum import (nav_list, BY_NUM, get_route, route_list, route_modules,
+                         datasets_for, dataset_list)
 
 
 def home(request):
@@ -23,6 +24,7 @@ def lesson(request, num):
         "ch": ch,
         "chapters": nav_list(),
         "routes": route_list(),
+        "datasets": datasets_for(num),
         "active": ch["slug"],
     })
 
@@ -53,6 +55,10 @@ print("promedio de notas:", round(sum(notas) / len(notas), 2))
 # Un vistazo al DataFrame de ejemplo:
 print(datos)
 print(datos["ventas"].describe())
+
+# ¿Que datasets tienes para practicar?
+catalogo()          # lista todos los datasets disponibles
+# df = cargar("propinas")   # cargalo en `datos` y practica
 """
 
 
@@ -124,6 +130,30 @@ def cheatsheet(request):
         "routes": route_list(),
         "active": "cheatsheet",
         "grupos": CHEATSHEET,
+    })
+
+
+DATASETS_SEED = """# 1) Ver todos los datasets disponibles
+catalogo()
+
+# 2) Usar uno directamente por su nombre
+print(propinas.head())
+print("filas x columnas:", propinas.shape)
+
+# 3) O cargarlo en 'datos' para reutilizar el codigo de las lecciones
+df = cargar("viviendas")
+print(df.describe())
+"""
+
+
+def datasets(request):
+    """Pagina de referencia con el catalogo completo de datasets de practica."""
+    return render(request, "core/datasets.html", {
+        "chapters": nav_list(),
+        "routes": route_list(),
+        "active": "datasets",
+        "datasets": dataset_list(),
+        "seed": DATASETS_SEED,
     })
 
 

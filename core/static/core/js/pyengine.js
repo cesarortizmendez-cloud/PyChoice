@@ -31,14 +31,153 @@ import pandas as pd
 # Espacio de nombres compartido por todas las consolas (como el entorno global de R)
 NS = {"__name__": "__main__", "np": np, "pd": pd, "plt": plt}
 
+# ------------------------------------------------------------------
+# Catalogo de datasets de practica. Cada funcion devuelve un DataFrame
+# reproducible (semilla fija) para que el alumno "aprenda haciendo".
+# ------------------------------------------------------------------
+def _rng(seed=7):
+    return np.random.default_rng(seed)
+
+def _ds_negocio():
+    return pd.DataFrame({
+        "mes":    ["ene", "feb", "mar", "abr", "may", "jun"],
+        "region": ["norte", "sur", "norte", "centro", "sur", "centro"],
+        "ventas": [120, 95, 130, 110, 88, 145],
+        "unidades": [12, 9, 13, 11, 8, 15],
+        "costo":   [70, 60, 78, 66, 55, 82],
+    })
+
+def _ds_propinas(n=120):
+    r = _rng(11)
+    cuenta = np.round(r.gamma(6.0, 3.4, n) + 5, 2)
+    momento = r.choice(["almuerzo", "cena"], n, p=[0.35, 0.65])
+    pct = np.where(momento == "cena", 0.17, 0.15) + r.normal(0, 0.03, n)
+    pct = np.clip(pct, 0.05, 0.30)
+    return pd.DataFrame({
+        "cuenta": cuenta,
+        "propina": np.round(cuenta * pct, 2),
+        "sexo": r.choice(["Mujer", "Hombre"], n),
+        "fumador": r.choice(["si", "no"], n, p=[0.38, 0.62]),
+        "dia": r.choice(["jue", "vie", "sab", "dom"], n),
+        "momento": momento,
+        "personas": r.integers(1, 6, n),
+    })
+
+def _ds_estudiantes(n=100):
+    r = _rng(23)
+    horas = np.round(np.clip(r.normal(6, 2.5, n), 0.5, 14), 1)
+    asist = np.round(np.clip(r.normal(0.80, 0.14, n), 0.3, 1.0), 2)
+    base = 0.8 + 0.32 * horas + 1.9 * asist + r.normal(0, 0.9, n)
+    nota = np.round(np.clip(base, 1.0, 7.0), 1)
+    return pd.DataFrame({
+        "edad": r.integers(17, 27, n),
+        "genero": r.choice(["F", "M"], n),
+        "horas_estudio": horas,
+        "asistencia": asist,
+        "nota_final": nota,
+        "aprobado": nota >= 4.0,
+    })
+
+def _ds_viviendas(n=150):
+    r = _rng(41)
+    superficie = np.round(np.clip(r.normal(90, 35, n), 25, 260), 0)
+    habitaciones = np.clip((superficie // 30).astype(int) + r.integers(0, 2, n), 1, 6)
+    antiguedad = r.integers(0, 60, n)
+    barrio = r.choice(["centro", "norte", "sur", "oriente"], n)
+    factor = pd.Series(barrio).map({"centro": 1.35, "oriente": 1.2, "norte": 1.0, "sur": 0.85}).values
+    precio = (superficie * 28 + habitaciones * 250 - antiguedad * 45) * factor
+    precio = np.round(np.clip(precio + r.normal(0, 400, n), 800, None), 0)
+    return pd.DataFrame({
+        "superficie": superficie,
+        "habitaciones": habitaciones,
+        "antiguedad": antiguedad,
+        "barrio": barrio,
+        "precio": precio,
+    })
+
+def _ds_clientes(n=200):
+    r = _rng(59)
+    edad = r.integers(18, 75, n)
+    ingresos = np.round(np.clip(r.normal(750, 260, n), 250, 2200), 0)
+    antig = r.integers(1, 72, n)
+    gasto = np.round(np.clip(ingresos * 0.12 + r.normal(0, 25, n), 5, None), 1)
+    logit = -1.0 - 0.025 * (antig - 24) + 0.003 * (700 - ingresos)
+    p_fuga = 1 / (1 + np.exp(-logit))
+    churn = (r.random(n) < np.clip(p_fuga, 0.02, 0.95)).astype(int)
+    return pd.DataFrame({
+        "edad": edad,
+        "genero": r.choice(["F", "M"], n),
+        "ciudad": r.choice(["Santiago", "Valpo", "Concepcion", "Temuco"], n),
+        "ingresos": ingresos,
+        "antiguedad_meses": antig,
+        "gasto_mensual": gasto,
+        "churn": churn,
+    })
+
+def _ds_empleados(n=120):
+    r = _rng(73)
+    depto = r.choice(["Ventas", "TI", "RRHH", "Finanzas", "Operaciones"], n)
+    antig = r.integers(0, 25, n)
+    base = pd.Series(depto).map({"TI": 1500, "Finanzas": 1400, "Ventas": 1100,
+                                 "Operaciones": 1000, "RRHH": 1050}).values
+    salario = np.round(base + antig * 32 + r.normal(0, 120, n), 0)
+    return pd.DataFrame({
+        "departamento": depto,
+        "edad": r.integers(22, 63, n),
+        "genero": r.choice(["F", "M"], n),
+        "antiguedad": antig,
+        "salario": salario,
+        "satisfaccion": np.round(np.clip(r.normal(3.6, 0.9, n), 1, 5), 1),
+    })
+
+def _ds_clima(dias=90):
+    r = _rng(89)
+    fechas = pd.date_range("2024-06-01", periods=dias, freq="D")
+    t = np.arange(dias)
+    temp = np.round(12 + 6 * np.sin(2 * np.pi * t / 30) + r.normal(0, 1.5, dias), 1)
+    lluvia = np.round(np.clip(r.gamma(1.2, 2.0, dias) * (r.random(dias) < 0.4), 0, None), 1)
+    return pd.DataFrame({
+        "fecha": fechas,
+        "ciudad": "Santiago",
+        "temp_c": temp,
+        "humedad": np.clip((70 - temp + r.normal(0, 5, dias)).round(0), 20, 100),
+        "lluvia_mm": lluvia,
+    })
+
+# nombre -> (funcion, descripcion corta)
+_CATALOGO = {
+    "negocio":     (_ds_negocio,    "Ventas por mes y region (tabla base pequena)."),
+    "propinas":    (_ds_propinas,   "Cuentas y propinas de un restaurante (120 filas)."),
+    "estudiantes": (_ds_estudiantes,"Horas de estudio, asistencia y nota final (100)."),
+    "viviendas":   (_ds_viviendas,  "Superficie, barrio y precio de viviendas (150)."),
+    "clientes":    (_ds_clientes,   "Clientes, gasto y fuga/churn (200 filas)."),
+    "empleados":   (_ds_empleados,  "RRHH: departamento, salario, satisfaccion (120)."),
+    "clima":       (_ds_clima,      "Serie diaria de temperatura y lluvia (90 dias)."),
+}
+
+def catalogo():
+    "Imprime los datasets disponibles para practicar."
+    print("Datasets disponibles (usa: cargar('nombre')):")
+    for k, (_, d) in _CATALOGO.items():
+        print(f"  - {k:<12} {d}")
+    print("\\nTambien tienes: notas (lista) y datos (DataFrame base).")
+
+def cargar(nombre):
+    "Devuelve una copia fresca del dataset y lo deja tambien en 'datos'."
+    if nombre not in _CATALOGO:
+        raise KeyError(f"'{nombre}' no existe. Usa catalogo() para ver las opciones.")
+    df = _CATALOGO[nombre][0]().copy()
+    NS["datos"] = df
+    return df
+
 def _seed():
     NS["notas"] = [4.2, 5.8, 6.1, 3.9, 5.0, 6.7, 4.5, 5.3]
-    NS["datos"] = pd.DataFrame({
-        "mes":    ["ene", "feb", "mar", "abr", "may"],
-        "region": ["norte", "sur", "norte", "centro", "sur"],
-        "ventas": [120, 95, 130, 110, 88],
-        "unidades": [12, 9, 13, 11, 8],
-    })
+    NS["datos"] = _ds_negocio()
+    # datasets de practica siempre disponibles por su nombre
+    for _n, (_f, _d) in _CATALOGO.items():
+        NS[_n] = _f()
+    NS["catalogo"] = catalogo
+    NS["cargar"] = cargar
 
 _seed()
 

@@ -344,3 +344,31 @@ details.fold[open] > summary .fold-ch{ transform:rotate(90deg); color:var(--phos
 .lesson-chip.soon .ln{ background:var(--dim); color:#0a0f16; }
 .lesson-chip.soon:hover{ transform:none; border-color:var(--line); background:var(--bg-panel); }
 .lesson-chip.soon:hover .lt{ color:#dbe6f0; }
+
+/* ---------- Datasets para practicar ---------- */
+.ds-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin:10px 0 6px; }
+.ds-card{ background:var(--bg-panel); border:1px solid var(--line); border-radius:8px;
+  border-top:2px solid var(--cyan); padding:13px 15px; }
+.ds-head{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.ds-name{ font-family:var(--mono); font-weight:800; font-size:14px; color:var(--phosphor);
+  background:#0c1622; padding:2px 9px; border-radius:5px; }
+.ds-badge{ margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--cyan); border:1px solid var(--line); background:#0a131e;
+  padding:3px 9px; border-radius:99px; }
+.ds-desc{ color:var(--muted); font-family:var(--sans); font-size:12.5px; line-height:1.5; margin-bottom:10px; }
+.ds-cols{ width:100%; border-collapse:collapse; font-size:12px; }
+.ds-cols td{ padding:4px 6px; border-top:1px solid var(--line); vertical-align:top; }
+.ds-cols td.c code{ font-family:var(--mono); color:var(--phosphor); background:#0c1622; padding:1px 6px; border-radius:4px; }
+.ds-cols td.t{ color:var(--cyan); font-family:var(--mono); font-size:11px; white-space:nowrap; }
+.ds-cols td.d{ color:var(--muted); font-family:var(--sans); }
+.ds-load{ margin-top:10px; font-family:var(--sans); font-size:11.5px; color:var(--muted); }
+.ds-load code{ font-family:var(--mono); color:var(--cyan); background:#0c1622; padding:1px 6px; border-radius:4px; }
+.ds-retos{ margin-top:16px; padding:14px 16px; border:1px dashed var(--line); border-radius:8px; background:#0b1320; }
+.ds-retos h3{ margin:0 0 8px; font-size:13px; color:var(--magenta); letter-spacing:.06em; text-transform:uppercase; }
+.ds-retos ol{ margin:0; padding-left:20px; }
+.ds-retos li{ color:#cdd9e5; font-family:var(--sans); font-size:13.5px; line-height:1.6; margin:6px 0; }
+.ds-retos li code{ font-family:var(--mono); background:#0c1622; color:var(--phosphor); padding:1px 6px; border-radius:4px; font-size:12.5px; }
+
+/* pagina de referencia de datasets */
+.ds-page-card{ margin:18px 0; }
+.ds-page-card .ds-head h2{ margin:0; font-size:16px; color:#e3ecf5; }

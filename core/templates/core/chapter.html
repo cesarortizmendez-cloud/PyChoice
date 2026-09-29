@@ -35,6 +35,45 @@
 </div>
 {% endfor %}
 
+{% if datasets and datasets.fichas %}
+<details class="fold">
+  <summary class="section-h"><span class="bar"></span><h2>Datasets para practicar</h2><span class="fold-ch" aria-hidden="true">▸</span></summary>
+  <div class="fold-body">
+    <p class="note">Aprende haciendo: estos conjuntos de datos <b>ya vienen cargados</b> en cada consola.
+    Úsalos por su nombre (p. ej. <code>{{ datasets.fichas.0.var }}.head()</code>) o cárgalos en <code>datos</code>
+    con <code>cargar("{{ datasets.fichas.0.key }}")</code>. Escribe <code>catalogo()</code> para verlos todos, o abre la
+    <a href="{% url 'datasets' %}">página de datasets</a>.</p>
+
+    <div class="ds-grid">
+      {% for f in datasets.fichas %}
+      <div class="ds-card">
+        <div class="ds-head">
+          <code class="ds-name">{{ f.var }}</code>
+          <span class="ds-badge">{{ f.tipo }} · {{ f.filas }}</span>
+        </div>
+        <div class="ds-desc">{{ f.desc }}</div>
+        <table class="ds-cols">
+          <tbody>
+          {% for c, t, d in f.cols %}
+            <tr><td class="c"><code>{{ c }}</code></td><td class="t">{{ t }}</td><td class="d">{{ d }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class="ds-load">cargar: <code>{{ f.key }} = cargar("{{ f.key }}")</code></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if datasets.retos %}
+    <div class="ds-retos">
+      <h3>Retos con estos datos</h3>
+      <ol>{% for r in datasets.retos %}<li>{{ r|safe }}</li>{% endfor %}</ol>
+    </div>
+    {% endif %}
+  </div>
+</details>
+{% endif %}
+
 <details class="fold">
   <summary class="section-h"><span class="bar"></span><h2>Ejercicios propuestos</h2><span class="fold-ch" aria-hidden="true">▸</span></summary>
   <div class="fold-body">

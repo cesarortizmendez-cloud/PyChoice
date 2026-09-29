@@ -7,6 +7,7 @@ urlpatterns = [
     path("", core_views.home, name="home"),
     path("consola/", core_views.console, name="console"),
     path("referencia/", core_views.cheatsheet, name="cheatsheet"),
+    path("datasets/", core_views.datasets, name="datasets"),
     path("manifest.json", core_views.manifest, name="manifest"),
     path("service-worker.js", core_views.service_worker, name="service_worker"),
 
