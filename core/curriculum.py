@@ -112,6 +112,46 @@ MODULES_IA = [
 
 
 # ====================================================================
+#  MODULOS de la ruta "Ingeniero de Investigacion de Operaciones" (P-V)
+#  Modelar y resolver problemas de optimizacion y gestion con Python:
+#  LP/entera con HiGHS (scipy), redes (networkx), colas, Markov, Monte
+#  Carlo, decision multicriterio, calidad. Inspirada en IOLab Pro.
+#  Se iran publicando uno a uno (hoy: proximamente).
+# ====================================================================
+MODULES_IO = [
+    {"code": "P", "title": "Fundamentos de modelamiento y programación lineal", "status": "proximamente",
+     "desc": "Modelar un problema, resolver LP con HiGHS, el método simplex paso a paso y el análisis de sensibilidad.",
+     "planned": ["¿Qué es la investigación de operaciones? Del enunciado al modelo",
+                 "Programación lineal con Python (HiGHS)", "El método simplex paso a paso",
+                 "Análisis de sensibilidad y dualidad"]},
+    {"code": "Q", "title": "Programación entera y modelos de redes", "status": "proximamente",
+     "desc": "MILP con scipy, transporte, asignación (húngaro) y redes: ruta más corta, flujo máximo, árbol mínimo.",
+     "planned": ["Programación entera y binaria (MILP)", "Problema de transporte",
+                 "Problema de asignación", "Modelos de redes"]},
+    {"code": "R", "title": "Optimización dinámica, metas y logística", "status": "proximamente",
+     "desc": "Programación dinámica, goal programming, localización de instalaciones y ruteo de vehículos (VRP).",
+     "planned": ["Programación dinámica", "Goal programming (metas múltiples)",
+                 "Localización de instalaciones", "Ruteo de vehículos (VRP)"]},
+    {"code": "S", "title": "Gestión de proyectos, inventarios y producción", "status": "proximamente",
+     "desc": "PERT/CPM, inventarios (EOQ, ABC, ABC-XYZ), pronósticos, MRP, secuenciación y efecto bullwhip.",
+     "planned": ["PERT / CPM", "Gestión de inventarios (EOQ, ABC)",
+                 "Pronósticos de demanda", "Producción: MRP y secuenciación"]},
+    {"code": "T", "title": "Modelos estocásticos", "status": "proximamente",
+     "desc": "Teoría de colas, cadenas de Markov, simulación Monte Carlo y de eventos discretos.",
+     "planned": ["Teoría de colas (M/M/1, M/M/c)", "Cadenas de Markov",
+                 "Simulación Monte Carlo", "Simulación de eventos discretos (intro)"]},
+    {"code": "U", "title": "Decisión multicriterio y calidad", "status": "proximamente",
+     "desc": "Árboles de decisión, AHP (Saaty), TOPSIS y control estadístico de procesos + muestreo.",
+     "planned": ["Análisis de decisiones (árboles, EVPI)", "AHP (método de Saaty)",
+                 "TOPSIS", "Calidad: SPC y muestreo de aceptación"]},
+    {"code": "V", "title": "Proyecto y solvers profesionales", "status": "proximamente",
+     "desc": "Del navegador a la industria con PuLP/Pyomo y GLPK/Gurobi; proyecto integrador y cierre.",
+     "planned": ["Del navegador a la industria: PuLP, Pyomo y GLPK/Gurobi",
+                 "Proyecto integrador de IO", "Cierre y siguientes pasos"]},
+]
+
+
+# ====================================================================
 #  RUTAS DE APRENDIZAJE (tracks)
 # ====================================================================
 ROUTES = [
@@ -142,6 +182,21 @@ learning con frameworks se presenta como el siguiente paso. Recomendado tras dom
 Python y numpy/pandas de la ruta de ciencia de datos.</p>
 """,
         "modules": MODULES_IA,
+    },
+    {
+        "slug": "investigacion-operaciones",
+        "title": "Ruta para ser Ingeniero de Investigación de Operaciones",
+        "short": "investigación de operaciones",
+        "subtitle": "Modelar y resolver problemas de optimización y gestión con Python",
+        "intro": """
+<p>Esta ruta enseña a <b>modelar y resolver problemas de investigación de operaciones con Python</b>:
+programación lineal y entera (con el solver <b>HiGHS</b> de scipy), transporte, asignación, redes,
+programación dinámica, colas, cadenas de Markov, simulación, decisión multicriterio (AHP, TOPSIS) y
+calidad. Traduce un enunciado a un modelo, lo resuelve con solvers reales en el navegador e interpreta
+la solución para <b>decidir</b>. Inspirada en los modelos de IOLab Pro. El módulo final muestra cómo
+llevar los modelos a solvers profesionales (PuLP/Pyomo con GLPK o Gurobi) fuera del navegador.</p>
+""",
+        "modules": MODULES_IO,
     },
 ]
 
