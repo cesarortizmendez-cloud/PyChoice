@@ -17,10 +17,13 @@ from .curriculum_f import CHAPTERS_F
 from .curriculum_g import CHAPTERS_G
 from .curriculum_h import CHAPTERS_H
 from .curriculum_h2 import CHAPTERS_H2
+from .curriculum_j import CHAPTERS_J
+from .curriculum_k import CHAPTERS_K
 from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
-            + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2)
+            + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
+            + CHAPTERS_J + CHAPTERS_K)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -83,14 +86,12 @@ MODULES = [
 #  Se iran publicando uno a uno (hoy: proximamente).
 # ====================================================================
 MODULES_IA = [
-    {"code": "J", "title": "Fundamentos de IA y pensamiento algorítmico", "status": "proximamente",
+    {"code": "J", "title": "Fundamentos de IA y pensamiento algorítmico", "status": "listo",
      "desc": "El panorama de la IA con Python, problemas de búsqueda y optimización, y cómo evaluar algoritmos.",
-     "planned": ["Panorama de la IA con Python", "Problemas de búsqueda y optimización",
-                 "Azar reproducible y evaluación"]},
-    {"code": "K", "title": "Metaheurísticas I: búsqueda local", "status": "proximamente",
+     "lessons": [39, 40, 41]},
+    {"code": "K", "title": "Metaheurísticas I: búsqueda local", "status": "listo",
      "desc": "Optimizar con SciPy y buscar soluciones con hill climbing, recocido simulado y búsqueda tabú.",
-     "planned": ["Optimización con SciPy", "Hill climbing (ascenso de colina)",
-                 "Recocido simulado (Simulated Annealing)", "Búsqueda tabú (Tabu Search)"]},
+     "lessons": [42, 43, 44, 45]},
     {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "proximamente",
      "desc": "Algoritmos poblacionales: genéticos, enjambre de partículas (PSO) y colonia de hormigas (ACO).",
      "planned": ["Algoritmos genéticos I", "Algoritmos genéticos II (TSP)",
