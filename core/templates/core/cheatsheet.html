@@ -3,20 +3,34 @@
 
 {% block content %}
 <div class="eyebrow">// herramientas / referencia</div>
-<h1 class="page">[?] <span class="hl">Referencia rápida de Python</span></h1>
-<div class="subtitle">Las funciones y estructuras que más usarás como analista de datos.</div>
+<h1 class="page">[?] <span class="hl">Referencia completa de PyChoice</span></h1>
+<div class="subtitle">Todo lo que contiene la plataforma: el entorno, los datos precargados y todo el Python
+que se enseña, de los fundamentos al machine learning.</div>
+
+<p class="note">Referencia de consulta rápida: {{ grupos|length }} secciones. Usa el índice para saltar a lo que
+buscas. Cada elemento trae un ejemplo que puedes copiar a cualquier consola y ejecutar con <b>Ctrl + Enter</b>.</p>
+
+<nav id="top" class="ref-index" aria-label="Índice de la referencia">
+  {% for s in indice %}<a href="#{{ s.id }}">{{ s.titulo }}</a>{% endfor %}
+</nav>
 
 {% for g in grupos %}
-<div class="section-h"><span class="bar"></span><h2>{{ g.titulo }}</h2></div>
-<div class="tablewrap">
-<table class="dtable">
-  <thead><tr><th>Elemento</th><th style="text-align:left">Qué hace</th><th style="text-align:left">Ejemplo</th></tr></thead>
-  <tbody>
-    {% for nombre, desc, ej in g.filas %}
-    <tr><td>{{ nombre }}</td><td style="text-align:left; color:var(--muted); font-family:var(--sans)">{{ desc }}</td><td style="text-align:left; color:var(--cyan)">{{ ej }}</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
-</div>
+<section id="{{ g.id }}" class="ref-section">
+  <div class="section-h"><span class="bar"></span><h2>{{ g.titulo }}</h2>
+    {% if g.ref %}<span class="ref-badge">{{ g.ref }}</span>{% endif %}
+  </div>
+  {% if g.nota %}<p class="ref-nota">{{ g.nota }}</p>{% endif %}
+  <div class="tablewrap">
+  <table class="dtable">
+    <thead><tr><th>Elemento</th><th style="text-align:left">Qué hace</th><th style="text-align:left">Ejemplo</th></tr></thead>
+    <tbody>
+      {% for nombre, desc, ej in g.filas %}
+      <tr><td>{{ nombre }}</td><td style="text-align:left; color:var(--muted); font-family:var(--sans)">{{ desc }}</td><td style="text-align:left; color:var(--cyan)">{{ ej }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <a class="ref-top" href="#top">↑ volver al índice</a>
+</section>
 {% endfor %}
 {% endblock %}

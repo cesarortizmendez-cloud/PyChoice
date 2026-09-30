@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import never_cache
 from .curriculum import (nav_list, BY_NUM, get_route, route_list, route_modules,
                          datasets_for, dataset_list)
+from .reference import reference_groups, reference_index
 
 
 def home(request):
@@ -72,64 +73,13 @@ def console(request):
     })
 
 
-CHEATSHEET = [
-    {"titulo": "Fundamentos de Python", "filas": [
-        ("print()", "Muestra valores por pantalla", 'print("Hola", 2026)'),
-        ("=", "Asigna un valor a una variable", 'x = 42'),
-        ("type()", "Tipo de un objeto", 'type(3.14)'),
-        ("len()", "Longitud de una secuencia", 'len([1, 2, 3])'),
-        ("input()", "Lee texto (no interactivo aqui)", 'nombre = "Ana"'),
-        ("f-string", "Interpola valores en texto", 'f"total: {x}"'),
-    ]},
-    {"titulo": "Estructuras de datos", "filas": [
-        ("list", "Coleccion ordenada y mutable", 'xs = [4, 8, 15, 16]'),
-        ("dict", "Pares clave-valor", 'd = {"a": 1, "b": 2}'),
-        ("tuple", "Coleccion ordenada inmutable", 'p = (10, 20)'),
-        ("set", "Conjunto sin duplicados", 's = {1, 2, 2, 3}'),
-        ("slicing", "Sub-secuencia", 'xs[1:3]'),
-        ("comprension", "Construye listas al vuelo", '[n*2 for n in xs]'),
-    ]},
-    {"titulo": "Control de flujo", "filas": [
-        ("if / elif / else", "Decisiones", 'if x > 0: print("pos")'),
-        ("for", "Repite sobre una secuencia", 'for n in xs: print(n)'),
-        ("while", "Repite mientras se cumpla", 'while x > 0: x -= 1'),
-        ("def", "Define una funcion", 'def doble(n): return n*2'),
-        ("return", "Devuelve un resultado", 'return total'),
-        ("in", "Pertenencia", '"a" in d'),
-    ]},
-    {"titulo": "Numeros y estadistica base", "filas": [
-        ("sum()", "Suma de una secuencia", 'sum(xs)'),
-        ("min() / max()", "Minimo y maximo", 'max(xs)'),
-        ("round()", "Redondea", 'round(3.14159, 2)'),
-        ("statistics.mean()", "Promedio", 'st.mean(xs)'),
-        ("statistics.median()", "Mediana", 'st.median(xs)'),
-        ("statistics.pstdev()", "Desviacion estandar", 'st.pstdev(xs)'),
-    ]},
-    {"titulo": "pandas (analisis de datos)", "filas": [
-        ("pd.DataFrame()", "Crea una tabla", 'pd.DataFrame({"a": [1,2]})'),
-        ("df.head()", "Primeras filas", 'df.head(3)'),
-        ("df.describe()", "Resumen estadistico", 'df.describe()'),
-        ("df['col']", "Selecciona una columna", 'df["edad"]'),
-        ("df[df.x > 5]", "Filtra filas", 'df[df["edad"] > 30]'),
-        ("df.groupby()", "Agrupa y resume", 'df.groupby("area").mean()'),
-    ]},
-    {"titulo": "Visualizacion (matplotlib)", "filas": [
-        ("plt.plot()", "Linea / dispersion", 'plt.plot(x, y)'),
-        ("plt.hist()", "Histograma", 'plt.hist(datos)'),
-        ("plt.bar()", "Barras", 'plt.bar(cat, val)'),
-        ("plt.scatter()", "Nube de puntos", 'plt.scatter(x, y)'),
-        ("plt.title()", "Titulo del grafico", 'plt.title("Ventas")'),
-        ("plt.show()", "Renderiza el grafico", 'plt.show()'),
-    ]},
-]
-
-
 def cheatsheet(request):
     return render(request, "core/cheatsheet.html", {
         "chapters": nav_list(),
         "routes": route_list(),
         "active": "cheatsheet",
-        "grupos": CHEATSHEET,
+        "grupos": reference_groups(),
+        "indice": reference_index(),
     })
 
 

@@ -22,14 +22,15 @@ function setStatus(txt, state) {
 const HARNESS = `
 import sys, io, os, base64, json, traceback
 os.environ["MPLBACKEND"] = "AGG"
-import matplotlib
-matplotlib.use("AGG")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+# matplotlib se carga de forma diferida (en el primer grafico) para que el
+# arranque sea mas rapido. Hasta entonces, plt no existe.
+plt = None
+
 # Espacio de nombres compartido por todas las consolas (como el entorno global de R)
-NS = {"__name__": "__main__", "np": np, "pd": pd, "plt": plt}
+NS = {"__name__": "__main__", "np": np, "pd": pd}
 
 # ------------------------------------------------------------------
 # Catalogo de datasets de practica. Cada funcion devuelve un DataFrame
@@ -223,8 +224,10 @@ async function boot() {
   setStatus('Python · descargando WASM…', '');
   bootPromise = (async () => {
     const py = await loadPyodide({ indexURL: INDEX_URL });
-    setStatus('Python · cargando numpy, pandas, matplotlib…', '');
-    await py.loadPackage(['numpy', 'pandas', 'matplotlib']);
+    setStatus('Python · cargando numpy y pandas…', '');
+    // Solo numpy + pandas al arrancar. matplotlib (mas pesado) se carga
+    // la primera vez que se necesita un grafico -> arranque mas rapido.
+    await py.loadPackage(['numpy', 'pandas']);
     await py.runPythonAsync(HARNESS);
     pyodide = py;
     setStatus('Python 3.12 · WASM · LISTO', 'ready');
@@ -233,20 +236,50 @@ async function boot() {
   return bootPromise;
 }
 
+/* matplotlib se carga solo cuando hace falta (primer grafico). */
+let mplReady = false;
+const PLOT_HINT = /\b(plt|matplotlib|seaborn|sns|pyplot)\b|\.plot\b|\.hist\s*\(|\.boxplot\s*\(|\.plot\./;
+
+async function ensureMatplotlib(py) {
+  if (mplReady) return;
+  setStatus('Python · cargando matplotlib…', 'ready');
+  await py.loadPackage('matplotlib');
+  await py.runPythonAsync(
+    'import matplotlib; matplotlib.use("AGG"); import matplotlib.pyplot as plt; NS["plt"] = plt'
+  );
+  mplReady = true;
+}
+
 /* Ejecuta codigo y devuelve {out, error, images}.
    Antes de ejecutar, autocarga los paquetes que el codigo importe
    (seaborn, scipy, scikit-learn, etc.) la primera vez que se usan. */
 async function runPython(code) {
   const py = await boot();
+  // Si el codigo dibuja algo, asegura matplotlib antes de ejecutar.
+  if (!mplReady && PLOT_HINT.test(code)) {
+    try { await ensureMatplotlib(py); } catch (e) { /* mostrara ImportError */ }
+  }
   try {
     setStatus('Python · preparando paquetes…', 'ready');
     await py.loadPackagesFromImports(code);
   } catch (e) { /* si falta un paquete, Python mostrara el ImportError */ }
   setStatus('Python 3.12 · WASM · LISTO', 'ready');
   py.globals.set('__user_code', code);
-  const jsonStr = await py.runPythonAsync('__run(__user_code)');
-  try { return JSON.parse(jsonStr); }
+  let jsonStr = await py.runPythonAsync('__run(__user_code)');
+  let result;
+  try { result = JSON.parse(jsonStr); }
   catch (e) { return { out: '', error: String(e), images: [] }; }
+
+  // Red de seguridad: si fallo por falta de matplotlib, lo carga y reintenta 1 vez.
+  if (result.error && !mplReady && /matplotlib|No module named 'matplotlib'|pyplot/.test(result.error)) {
+    try {
+      await ensureMatplotlib(py);
+      jsonStr = await py.runPythonAsync('__run(__user_code)');
+      result = JSON.parse(jsonStr);
+    } catch (e) { /* conserva el error original */ }
+    setStatus('Python 3.12 · WASM · LISTO', 'ready');
+  }
+  return result;
 }
 
 /* --- Pintar salida --- */

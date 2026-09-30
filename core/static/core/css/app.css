@@ -372,3 +372,27 @@ details.fold[open] > summary .fold-ch{ transform:rotate(90deg); color:var(--phos
 /* pagina de referencia de datasets */
 .ds-page-card{ margin:18px 0; }
 .ds-page-card .ds-head h2{ margin:0; font-size:16px; color:#e3ecf5; }
+
+/* ---------- Referencia completa (índice + secciones) ---------- */
+.ref-index{ display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 24px; padding:14px;
+  border:1px solid var(--line); border-radius:8px; background:var(--bg-elev);
+  scroll-margin-top:70px; }
+.ref-index a{ font-family:var(--mono); font-size:12px; color:var(--cyan);
+  border:1px solid var(--line); background:var(--bg-panel); padding:5px 10px; border-radius:99px;
+  transition:.15s; }
+.ref-index a:hover{ border-color:var(--phosphor); color:var(--phosphor); background:#101a28; }
+.ref-section{ scroll-margin-top:70px; margin-bottom:10px; }
+.ref-badge{ margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--magenta); border:1px solid var(--line); background:#0a131e;
+  padding:3px 10px; border-radius:99px; white-space:nowrap; }
+.ref-nota{ color:var(--muted); font-family:var(--sans); font-size:13px; line-height:1.55;
+  margin:-2px 0 12px; padding-left:15px; border-left:2px solid var(--line); }
+.ref-top{ display:inline-block; margin:10px 0 26px; font-family:var(--mono); font-size:11.5px;
+  color:var(--muted); }
+.ref-top:hover{ color:var(--phosphor); }
+@media (max-width:560px){
+  .ref-index{ gap:6px; padding:11px; }
+  .ref-index a{ font-size:11px; padding:4px 9px; }
+  .ref-badge{ margin-left:0; }
+  .section-h{ flex-wrap:wrap; gap:8px; }
+}
