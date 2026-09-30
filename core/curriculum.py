@@ -77,6 +77,40 @@ MODULES = [
 
 
 # ====================================================================
+#  MODULOS de la ruta "Ingeniero de IA con Python" (codigos J-O)
+#  Metaheuristicas + redes neuronales desde la base + IA aplicada,
+#  todo ejecutable en el navegador (numpy / scipy / scikit-learn).
+#  Se iran publicando uno a uno (hoy: proximamente).
+# ====================================================================
+MODULES_IA = [
+    {"code": "J", "title": "Fundamentos de IA y pensamiento algorítmico", "status": "proximamente",
+     "desc": "El panorama de la IA con Python, problemas de búsqueda y optimización, y cómo evaluar algoritmos.",
+     "planned": ["Panorama de la IA con Python", "Problemas de búsqueda y optimización",
+                 "Azar reproducible y evaluación"]},
+    {"code": "K", "title": "Metaheurísticas I: búsqueda local", "status": "proximamente",
+     "desc": "Optimizar con SciPy y buscar soluciones con hill climbing, recocido simulado y búsqueda tabú.",
+     "planned": ["Optimización con SciPy", "Hill climbing (ascenso de colina)",
+                 "Recocido simulado (Simulated Annealing)", "Búsqueda tabú (Tabu Search)"]},
+    {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "proximamente",
+     "desc": "Algoritmos poblacionales: genéticos, enjambre de partículas (PSO) y colonia de hormigas (ACO).",
+     "planned": ["Algoritmos genéticos I", "Algoritmos genéticos II (TSP)",
+                 "Optimización por enjambre de partículas (PSO)", "Colonia de hormigas (ACO)"]},
+    {"code": "M", "title": "Redes neuronales desde la base", "status": "proximamente",
+     "desc": "Del perceptrón al backpropagation con numpy, y redes con scikit-learn (MLP).",
+     "planned": ["La neurona y el perceptrón", "Perceptrón multicapa y forward pass",
+                 "Backpropagation y descenso de gradiente", "Redes con scikit-learn (MLP)",
+                 "Buenas prácticas y panorama del deep learning"]},
+    {"code": "N", "title": "IA moderna aplicada", "status": "proximamente",
+     "desc": "Aprendizaje por refuerzo, NLP clásico, recomendadores y metaheurísticas para ML + IA responsable.",
+     "planned": ["Aprendizaje por refuerzo básico (Q-learning)", "NLP clásico (TF-IDF)",
+                 "Sistemas de recomendación", "Metaheurísticas + ML e IA responsable"]},
+    {"code": "O", "title": "Proyecto de Ingeniería de IA", "status": "proximamente",
+     "desc": "Integrar todo en un proyecto de IA de punta a punta y planificar los siguientes pasos.",
+     "planned": ["Proyecto integrador de IA", "Cierre y siguientes pasos"]},
+]
+
+
+# ====================================================================
 #  RUTAS DE APRENDIZAJE (tracks)
 # ====================================================================
 ROUTES = [
@@ -92,6 +126,21 @@ ejecutables y ejercicios. Los módulos marcados <b>listo</b> ya están disponibl
 publicando en orden.</p>
 """,
         "modules": MODULES,
+    },
+    {
+        "slug": "ingeniero-ia",
+        "title": "Ruta para ser Ingeniero de IA con Python",
+        "short": "ingeniero de IA",
+        "subtitle": "Metaheurísticas, redes neuronales e IA moderna, programadas desde su base",
+        "intro": """
+<p>Esta ruta enseña a <b>construir sistemas de inteligencia artificial con Python</b>: optimización y
+metaheurísticas (algoritmos genéticos, colonia de hormigas, recocido simulado, PSO), redes neuronales
+programadas desde su mecánica interna y aplicaciones modernas (aprendizaje por refuerzo, NLP,
+recomendadores). Todo se ejecuta en el navegador con <b>numpy, scipy y scikit-learn</b>; el deep
+learning con frameworks se presenta como el siguiente paso. Recomendado tras dominar los fundamentos de
+Python y numpy/pandas de la ruta de ciencia de datos.</p>
+""",
+        "modules": MODULES_IA,
     },
 ]
 

@@ -171,6 +171,35 @@ def cargar(nombre):
     NS["datos"] = df
     return df
 
+# ------------------------------------------------------------------
+# Generadores de PROBLEMAS para la ruta "Ingeniero de IA" (metaheuristicas).
+# Son ligeros y reproducibles; se calculan solo al llamarlos (no en el
+# arranque), asi no afectan la velocidad de carga. Tamanos pequenos a
+# proposito para que los algoritmos corran rapido en el navegador.
+# ------------------------------------------------------------------
+def ciudades(n=12, seed=7):
+    "DataFrame de n ciudades con coordenadas x, y (para el problema del viajante, TSP)."
+    r = _rng(seed)
+    return pd.DataFrame({
+        "ciudad": [f"C{i}" for i in range(n)],
+        "x": r.integers(0, 100, n),
+        "y": r.integers(0, 100, n),
+    })
+
+def distancias(coords):
+    "Matriz (numpy) de distancias euclidianas desde un DataFrame con columnas x, y."
+    xy = coords[["x", "y"]].to_numpy(dtype=float)
+    return np.sqrt(((xy[:, None, :] - xy[None, :, :]) ** 2).sum(axis=2))
+
+def mochila(n=15, seed=7):
+    "DataFrame de n objetos con peso y valor (problema de la mochila / knapsack)."
+    r = _rng(seed)
+    return pd.DataFrame({
+        "objeto": [f"obj{i}" for i in range(n)],
+        "peso": r.integers(1, 20, n),
+        "valor": r.integers(5, 50, n),
+    })
+
 def _seed():
     NS["notas"] = [4.2, 5.8, 6.1, 3.9, 5.0, 6.7, 4.5, 5.3]
     NS["datos"] = _ds_negocio()
@@ -179,6 +208,10 @@ def _seed():
         NS[_n] = _f()
     NS["catalogo"] = catalogo
     NS["cargar"] = cargar
+    # generadores de problemas de IA (metaheuristicas)
+    NS["ciudades"] = ciudades
+    NS["distancias"] = distancias
+    NS["mochila"] = mochila
 
 _seed()
 
@@ -409,11 +442,97 @@ function bindConsole(el) {
   }
 }
 
+/* ============================================================
+   Navegacion sin recargar (SPA ligera).
+   Mantiene el motor Pyodide VIVO al pasar de una leccion a otra:
+   asi el motor arranca UNA sola vez y la primera ejecucion de cada
+   leccion ya no espera el reinicio del interprete.
+   ============================================================ */
+function bindConsolesIn(root) {
+  root.querySelectorAll('.rconsole').forEach(bindConsole);
+}
+
+/* Re-ejecuta los <script> que vengan dentro del contenido intercambiado
+   (innerHTML no ejecuta scripts por si solo). */
+function runScriptsIn(root) {
+  root.querySelectorAll('script').forEach((old) => {
+    const s = document.createElement('script');
+    for (const attr of old.attributes) s.setAttribute(attr.name, attr.value);
+    s.textContent = old.textContent;
+    old.replaceWith(s);
+  });
+}
+
+function updateSidebarActive(pathname) {
+  document.querySelectorAll('.sidebar .tree a').forEach((a) => {
+    let ap;
+    try { ap = new URL(a.href).pathname; } catch (e) { ap = a.getAttribute('href'); }
+    a.classList.toggle('on', ap === pathname);
+  });
+}
+
+function isInternalNav(a) {
+  if (!a) return false;
+  if (a.target === '_blank' || a.hasAttribute('download')) return false;
+  const href = a.getAttribute('href');
+  if (!href || href.charAt(0) === '#') return false;         // ancla en la misma pagina
+  if (/^(https?:|mailto:|tel:)/i.test(href)) {               // externos
+    return a.origin === location.origin;                     // salvo mismo origen absoluto
+  }
+  return true;                                               // rutas relativas internas
+}
+
+let navToken = 0;
+async function navigateTo(url, push) {
+  const my = ++navToken;
+  const target = new URL(url, location.origin);
+  try {
+    const resp = await fetch(target.href, { headers: { 'X-Requested-With': 'fetch' } });
+    if (!resp.ok) { location.href = target.href; return; }
+    const html = await resp.text();
+    if (my !== navToken) return;                             // otra navegacion la reemplazo
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const newMain = doc.querySelector('main.main');
+    const curMain = document.querySelector('main.main');
+    if (!newMain || !curMain) { location.href = target.href; return; }
+
+    curMain.className = newMain.className;
+    curMain.innerHTML = newMain.innerHTML;
+    document.title = doc.title || document.title;
+    updateSidebarActive(target.pathname);
+    bindConsolesIn(curMain);
+    runScriptsIn(curMain);
+    window.scrollTo(0, 0);
+    if (push) history.pushState({ spa: true }, '', target.href);
+
+    // El motor casi siempre ya esta listo (arranco una sola vez). Reinicia los
+    // datos de ejemplo para que cada leccion empiece limpia y reproducible.
+    boot()
+      .then((py) => py.runPythonAsync('_seed()'))
+      .then(() => { if (my === navToken) setStatus('Python 3.12 · WASM · LISTO', 'ready'); })
+      .catch(() => {});
+  } catch (e) {
+    location.href = target.href;                             // ante cualquier fallo, navegacion normal
+  }
+}
+
+document.addEventListener('click', (ev) => {
+  if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+  const a = ev.target.closest('a');
+  if (!isInternalNav(a)) return;
+  ev.preventDefault();
+  document.body.classList.remove('nav-open');
+  navigateTo(a.getAttribute('href'), true);
+});
+
+window.addEventListener('popstate', () => navigateTo(location.pathname + location.search, false));
+
 /* --- Init global --- */
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.rconsole').forEach(bindConsole);
+  bindConsolesIn(document);
   boot().catch(() => setStatus('Python · error de carga', 'err'));
 });
 
 window.__runPython = runPython;
 window.__bootPy = boot;
+window.__navigateTo = navigateTo;

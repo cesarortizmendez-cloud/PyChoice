@@ -53,36 +53,43 @@
     <div class="ttl">Referencia rápida</div>
     <div class="sub">Las funciones y estructuras que más usarás como analista de datos.</div>
   </a>
+  <a class="card" href="{% url 'datasets' %}">
+    <div class="k">datasets.py</div>
+    <div class="ttl">Datasets de práctica</div>
+    <div class="sub">Conjuntos de datos listos para «aprender haciendo» en cada consola.</div>
+  </a>
 </div>
-{% endblock %}
 
-{% block scripts %}
 <script>
-const lines = [
-  {t:"$ ", c:"booting pychoice ...", cls:"c"},
-  {t:"[ok] ", c:"motor Pyodide cargado · Python 3.12 (wasm32)", cls:""},
-  {t:"[ok] ", c:"numpy · pandas · matplotlib listos", cls:""},
-  {t:"[ok] ", c:"SheetJS listo · import/export .xlsx", cls:""},
-  {t:"py> ", c:"print('Bienvenida/o a PyChoice')", cls:"c"},
-  {t:"", c:"Bienvenida/o a PyChoice", cls:"m"},
-  {t:"py> ", c:"# elige una leccion en la barra lateral para comenzar_", cls:"c"},
-];
-const boot = document.getElementById('boot');
-let li = 0, ci = 0, buf = "";
-function type(){
-  if (li >= lines.length){ boot.innerHTML += '<span class="cursor"></span>'; return; }
-  const ln = lines[li];
-  if (ci === 0){ buf += '<span class="l"><span style="color:var(--phosphor)">'+ln.t+'</span><span class="'+ln.cls+'">'; }
-  if (ci < ln.c.length){
-    buf += ln.c[ci]; ci++;
-    boot.innerHTML = buf + '</span></span>';
-    setTimeout(type, 14 + Math.random()*22);
-  } else {
-    buf += '</span></span>'; li++; ci=0;
-    setTimeout(type, 230);
+/* Animacion de bienvenida. IIFE + guarda: seguro al re-ejecutarse en navegacion SPA. */
+(function(){
+  const boot = document.getElementById('boot');
+  if (!boot) return;
+  const lines = [
+    {t:"$ ", c:"booting pychoice ...", cls:"c"},
+    {t:"[ok] ", c:"motor Pyodide cargado · Python 3.12 (wasm32)", cls:""},
+    {t:"[ok] ", c:"numpy · pandas listos (matplotlib al primer grafico)", cls:""},
+    {t:"[ok] ", c:"SheetJS listo · import/export .xlsx", cls:""},
+    {t:"py> ", c:"print('Bienvenida/o a PyChoice')", cls:"c"},
+    {t:"", c:"Bienvenida/o a PyChoice", cls:"m"},
+    {t:"py> ", c:"# elige una leccion en la barra lateral para comenzar_", cls:"c"},
+  ];
+  let li = 0, ci = 0, buf = "";
+  function type(){
+    if (li >= lines.length){ boot.innerHTML += '<span class="cursor"></span>'; return; }
+    const ln = lines[li];
+    if (ci === 0){ buf += '<span class="l"><span style="color:var(--phosphor)">'+ln.t+'</span><span class="'+ln.cls+'">'; }
+    if (ci < ln.c.length){
+      buf += ln.c[ci]; ci++;
+      boot.innerHTML = buf + '</span></span>';
+      setTimeout(type, 14 + Math.random()*22);
+    } else {
+      buf += '</span></span>'; li++; ci=0;
+      setTimeout(type, 230);
+    }
   }
-}
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ type(); }
-else { boot.innerHTML = lines.map(l=>'<span class="l"><span style="color:var(--phosphor)">'+l.t+'</span><span class="'+l.cls+'">'+l.c+'</span></span>').join(''); }
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ type(); }
+  else { boot.innerHTML = lines.map(l=>'<span class="l"><span style="color:var(--phosphor)">'+l.t+'</span><span class="'+l.cls+'">'+l.c+'</span></span>').join(''); }
+})();
 </script>
 {% endblock %}
