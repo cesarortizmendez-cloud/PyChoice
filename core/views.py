@@ -190,7 +190,9 @@ def manifest(request):
 def service_worker(request):
     """Service worker en la raiz del sitio para habilitar instalacion PWA."""
     content = r'''
-const CACHE_NAME = 'pychoice-pwa-v1';
+const CACHE_NAME = 'pychoice-pwa-v2';
+const CDN_CACHE = 'pychoice-cdn-v1';   // Pyodide, wheels y SheetJS (URLs versionadas)
+const CDN_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com'];
 const APP_SHELL = [
   '/',
   '/manifest.json',
@@ -220,7 +222,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.map((key) => key === CACHE_NAME ? null : caches.delete(key))))
+      .then((keys) => Promise.all(keys.map((key) => (key === CACHE_NAME || key === CDN_CACHE) ? null : caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
@@ -229,6 +231,24 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
+
+  // Cache-first para los grandes recursos de CDN (Pyodide + wheels + SheetJS).
+  // Sus URLs llevan la version fija, asi que el contenido nunca cambia:
+  // se descarga una sola vez y luego abre al instante (y sin conexion).
+  if (CDN_HOSTS.indexOf(url.hostname) !== -1) {
+    event.respondWith(
+      caches.open(CDN_CACHE).then((cache) =>
+        cache.match(request).then((hit) => hit || fetch(request).then((response) => {
+          if (response && (response.ok || response.type === 'opaque')) {
+            cache.put(request, response.clone());
+          }
+          return response;
+        }))
+      )
+    );
+    return;
+  }
+
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.startsWith('/static/')) {
