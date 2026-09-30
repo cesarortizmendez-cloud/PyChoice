@@ -19,11 +19,12 @@ from .curriculum_h import CHAPTERS_H
 from .curriculum_h2 import CHAPTERS_H2
 from .curriculum_j import CHAPTERS_J
 from .curriculum_k import CHAPTERS_K
+from .curriculum_l import CHAPTERS_L
 from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
             + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
-            + CHAPTERS_J + CHAPTERS_K)
+            + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -92,10 +93,9 @@ MODULES_IA = [
     {"code": "K", "title": "Metaheurísticas I: búsqueda local", "status": "listo",
      "desc": "Optimizar con SciPy y buscar soluciones con hill climbing, recocido simulado y búsqueda tabú.",
      "lessons": [42, 43, 44, 45]},
-    {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "proximamente",
+    {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "listo",
      "desc": "Algoritmos poblacionales: genéticos, enjambre de partículas (PSO) y colonia de hormigas (ACO).",
-     "planned": ["Algoritmos genéticos I", "Algoritmos genéticos II (TSP)",
-                 "Optimización por enjambre de partículas (PSO)", "Colonia de hormigas (ACO)"]},
+     "lessons": [46, 47, 48, 49]},
     {"code": "M", "title": "Redes neuronales desde la base", "status": "proximamente",
      "desc": "Del perceptrón al backpropagation con numpy, y redes con scikit-learn (MLP).",
      "planned": ["La neurona y el perceptrón", "Perceptrón multicapa y forward pass",
