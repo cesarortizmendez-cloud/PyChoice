@@ -8,6 +8,7 @@ Indice central del curriculo de PyChoice.
             Hoy existe "Ruta para ser Cientifico de datos"; mas adelante
             se sumaran otras (p. ej. Desarrollador de aplicaciones).
 """
+import re as _re
 from .curriculum_a import CHAPTERS_A
 from .curriculum_b import CHAPTERS_B
 from .curriculum_c import CHAPTERS_C
@@ -230,3 +231,56 @@ def route_modules(route):
             total += len(m.get("planned", []))
         out.append(item)
     return out, done, total
+
+
+# ====================================================================
+#  INDICE DE BUSQUEDA
+#  Para el buscador de la barra superior: en que lecciones se ensena
+#  cada tema. Se construye una vez al importar.
+# ====================================================================
+_TAG = _re.compile(r"<[^>]+>")
+
+
+def _strip_html(html):
+    return _TAG.sub(" ", html or "")
+
+
+def _lesson_route_map():
+    """num de leccion -> {route (short), route_slug, module}."""
+    m = {}
+    for r in ROUTES:
+        for mod in r["modules"]:
+            for num in (mod.get("lessons") or []):
+                m[num] = {"route": r["short"], "route_slug": r["slug"],
+                          "module": mod["code"]}
+    return m
+
+
+def _build_search_index():
+    rmap = _lesson_route_map()
+    out = []
+    for c in CHAPTERS:
+        terms = [t for t, _ in c["concepts"]] + [ex["title"] for ex in c["examples"]]
+        blob = " ".join([
+            c["title"], c["subtitle"], c.get("apunte", ""),
+            " ".join(t + " " + _strip_html(d) for t, d in c["concepts"]),
+            _strip_html(c.get("theory", "")),
+            " ".join(ex["title"] for ex in c["examples"]),
+            " ".join(_strip_html(e) for e in c["exercises"]),
+        ]).lower()
+        info = rmap.get(c["num"], {})
+        out.append({
+            "num": c["num"], "slug": c["slug"],
+            "title": c["title"], "subtitle": c["subtitle"],
+            "route": info.get("route", ""), "module": info.get("module", ""),
+            "terms": terms, "text": blob,
+        })
+    return out
+
+
+SEARCH_INDEX = _build_search_index()
+
+
+def search_index():
+    """Lista de lecciones indexadas para el buscador de la barra superior."""
+    return SEARCH_INDEX

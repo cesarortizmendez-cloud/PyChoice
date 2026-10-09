@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import never_cache
 from .curriculum import (nav_list, BY_NUM, get_route, route_list, route_modules,
-                         datasets_for, dataset_list)
+                         datasets_for, dataset_list, search_index)
 from .reference import reference_groups, reference_index
 
 
@@ -105,6 +105,14 @@ def datasets(request):
         "datasets": dataset_list(),
         "seed": DATASETS_SEED,
     })
+
+
+def search_json(request):
+    """Indice de busqueda del curriculo para el buscador de la barra superior."""
+    resp = JsonResponse({"lessons": search_index()},
+                        json_dumps_params={"ensure_ascii": False})
+    resp["Cache-Control"] = "public, max-age=300"
+    return resp
 
 
 def manifest(request):

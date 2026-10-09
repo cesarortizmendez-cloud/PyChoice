@@ -396,3 +396,50 @@ details.fold[open] > summary .fold-ch{ transform:rotate(90deg); color:var(--phos
   .ref-badge{ margin-left:0; }
   .section-h{ flex-wrap:wrap; gap:8px; }
 }
+
+/* ---------- Buscador de temas (barra superior) ---------- */
+.search-wrap{ position:relative; flex:1 1 260px; max-width:420px; min-width:0; }
+#search-box{
+  width:100%; height:26px; box-sizing:border-box;
+  background:#0a131e; color:var(--text);
+  border:1px solid var(--line); border-radius:99px;
+  padding:0 12px; font-family:var(--mono); font-size:12px;
+  outline:none; transition:border-color .15s, box-shadow .15s;
+}
+#search-box::placeholder{ color:#51657a; }
+#search-box:focus{ border-color:var(--phosphor); box-shadow:0 0 0 2px rgba(0,255,156,.12); }
+.search-results{
+  position:absolute; top:34px; left:0; z-index:200;
+  width:min(460px, 92vw); max-height:min(70vh, 460px); overflow-y:auto;
+  background:var(--bg-panel); border:1px solid var(--line); border-radius:10px;
+  box-shadow:0 18px 50px rgba(0,0,0,.55);
+}
+.sr-head, .sr-empty{
+  padding:9px 13px; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--line);
+}
+.sr-empty{ border-bottom:none; }
+.sr-item{
+  display:flex; gap:11px; align-items:flex-start; padding:10px 13px;
+  border-bottom:1px solid var(--line); color:var(--text); transition:background .12s;
+}
+.sr-item:last-child{ border-bottom:none; }
+.sr-item:hover{ background:#101a28; }
+.sr-n{
+  font-family:var(--mono); font-weight:700; font-size:12px; color:#08131f;
+  background:var(--phosphor); border-radius:5px; padding:3px 7px; min-width:28px;
+  text-align:center; flex:0 0 auto;
+}
+.sr-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.sr-title{ color:#dbe6f0; font-size:13px; font-weight:600; }
+.sr-item:hover .sr-title{ color:var(--phosphor); }
+.sr-sub{ color:var(--cyan); font-family:var(--sans); font-size:11.5px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sr-meta{ color:var(--muted); font-family:var(--mono); font-size:10px;
+  letter-spacing:.04em; text-transform:uppercase; }
+@media (max-width:560px){
+  .search-wrap{ flex:1 1 auto; max-width:none; }
+  #search-box{ font-size:11.5px; }
+  #search-box::placeholder{ font-size:11px; }
+  .search-results{ left:auto; right:0; width:92vw; }
+}

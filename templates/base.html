@@ -33,6 +33,12 @@
   <span class="brand">Py<b>Choice</b></span>
   <span class="sep">·</span>
   <span class="term-label" style="color:var(--muted)">terminal_python</span>
+  <div class="search-wrap">
+    <input id="search-box" type="search" autocomplete="off" spellcheck="false"
+           placeholder="buscar tema… (p. ej. groupby, recocido, TOPSIS)"
+           aria-label="Buscar en qué lecciones se enseña un tema">
+    <div id="search-results" class="search-results" hidden></div>
+  </div>
   <span class="engine">
     <span id="engine-dot" class="dot"></span>
     <span id="engine-status">iniciando…</span>
@@ -104,6 +110,94 @@
   document.querySelectorAll('.sidebar .tree a').forEach(function(a){
     a.addEventListener('click', function(){ document.body.classList.remove('nav-open'); });
   });
+
+  /* ---------- Buscador de temas (barra superior) ---------- */
+  (function(){
+    var box = document.getElementById('search-box');
+    var panel = document.getElementById('search-results');
+    if (!box || !panel) return;
+    var INDEX = null, loading = false;
+
+    function norm(s){
+      return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+    function esc(s){
+      return (s || '').replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+    function load(){
+      if (INDEX || loading) return;
+      loading = true;
+      fetch('/buscar.json').then(function(r){ return r.json(); })
+        .then(function(d){
+          INDEX = (d.lessons || []).map(function(l){
+            return {
+              num: l.num, slug: l.slug, title: l.title, subtitle: l.subtitle,
+              route: l.route, module: l.module,
+              terms: l.terms || [], ntitle: norm(l.title),
+              nterms: (l.terms || []).map(norm), ntext: norm(l.text)
+            };
+          });
+          if (box.value.trim()) run(box.value);
+        })
+        .catch(function(){ loading = false; });
+    }
+    function run(q){
+      if (!INDEX){ load(); return; }
+      var words = norm(q).split(/\s+/).filter(Boolean);
+      if (!words.length){ panel.hidden = true; panel.innerHTML = ''; return; }
+      var res = [];
+      for (var i = 0; i < INDEX.length; i++){
+        var L = INDEX[i], ok = true, score = 0, hit = '';
+        for (var w = 0; w < words.length; w++){
+          var word = words[w];
+          if (L.ntext.indexOf(word) === -1){ ok = false; break; }
+          if (L.ntitle.indexOf(word) !== -1) score += 6;
+          var tm = -1;
+          for (var t = 0; t < L.nterms.length; t++){
+            if (L.nterms[t].indexOf(word) !== -1){ tm = t; break; }
+          }
+          if (tm !== -1){ score += 4; if (!hit) hit = L.terms[tm]; }
+          else score += 1;
+        }
+        if (ok) res.push({ L: L, score: score, hit: hit });
+      }
+      res.sort(function(a, b){ return b.score - a.score || a.L.num - b.L.num; });
+      res = res.slice(0, 12);
+      if (!res.length){
+        panel.innerHTML = '<div class="sr-empty">Sin resultados para «' + esc(q) + '»</div>';
+        panel.hidden = false; return;
+      }
+      var html = '<div class="sr-head">' + res.length + ' lección(es) donde se enseña esto</div>';
+      res.forEach(function(r){
+        var L = r.L;
+        var meta = (L.route ? 'ruta: ' + esc(L.route) : '') + (L.module ? ' · módulo ' + esc(L.module) : '');
+        var sub = r.hit ? ('coincide: ' + esc(r.hit)) : esc(L.subtitle);
+        var nn = ('0' + L.num).slice(-2);
+        html += '<a class="sr-item" href="/leccion/' + L.num + '/">' +
+                  '<span class="sr-n">' + nn + '</span>' +
+                  '<span class="sr-body"><span class="sr-title">' + esc(L.title) + '</span>' +
+                  '<span class="sr-sub">' + sub + '</span>' +
+                  '<span class="sr-meta">' + meta + '</span></span></a>';
+      });
+      panel.innerHTML = html;
+      panel.hidden = false;
+    }
+
+    box.addEventListener('focus', load);
+    box.addEventListener('input', function(){ run(box.value); });
+    box.addEventListener('keydown', function(ev){
+      if (ev.key === 'Escape'){ box.value = ''; panel.hidden = true; box.blur(); }
+    });
+    // cerrar el panel al navegar o al hacer clic fuera
+    panel.addEventListener('click', function(ev){
+      if (ev.target.closest('.sr-item')){ panel.hidden = true; box.value = ''; }
+    });
+    document.addEventListener('click', function(ev){
+      if (!ev.target.closest('.search-wrap')) panel.hidden = true;
+    });
+  })();
 </script>
 {% block scripts %}{% endblock %}
 </body>

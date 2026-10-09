@@ -8,6 +8,7 @@ urlpatterns = [
     path("consola/", core_views.console, name="console"),
     path("referencia/", core_views.cheatsheet, name="cheatsheet"),
     path("datasets/", core_views.datasets, name="datasets"),
+    path("buscar.json", core_views.search_json, name="search_json"),
     path("manifest.json", core_views.manifest, name="manifest"),
     path("service-worker.js", core_views.service_worker, name="service_worker"),
 
