@@ -23,11 +23,14 @@ from .curriculum_k import CHAPTERS_K
 from .curriculum_l import CHAPTERS_L
 from .curriculum_m import CHAPTERS_M
 from .curriculum_n import CHAPTERS_N
+from .curriculum_o import CHAPTERS_O
+from .curriculum_p import CHAPTERS_P
 from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
             + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
-            + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L + CHAPTERS_M + CHAPTERS_N)
+            + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L + CHAPTERS_M + CHAPTERS_N
+            + CHAPTERS_O + CHAPTERS_P)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -105,9 +108,9 @@ MODULES_IA = [
     {"code": "N", "title": "IA moderna aplicada", "status": "listo",
      "desc": "Aprendizaje por refuerzo, NLP clásico, recomendadores y metaheurísticas para ML + IA responsable.",
      "lessons": [55, 56, 57, 58]},
-    {"code": "O", "title": "Proyecto de Ingeniería de IA", "status": "proximamente",
+    {"code": "O", "title": "Proyecto de Ingeniería de IA", "status": "listo",
      "desc": "Integrar todo en un proyecto de IA de punta a punta y planificar los siguientes pasos.",
-     "planned": ["Proyecto integrador de IA", "Cierre y siguientes pasos"]},
+     "lessons": [59, 60]},
 ]
 
 
@@ -119,11 +122,9 @@ MODULES_IA = [
 #  Se iran publicando uno a uno (hoy: proximamente).
 # ====================================================================
 MODULES_IO = [
-    {"code": "P", "title": "Fundamentos de modelamiento y programación lineal", "status": "proximamente",
+    {"code": "P", "title": "Fundamentos de modelamiento y programación lineal", "status": "listo",
      "desc": "Modelar un problema, resolver LP con HiGHS, el método simplex paso a paso y el análisis de sensibilidad.",
-     "planned": ["¿Qué es la investigación de operaciones? Del enunciado al modelo",
-                 "Programación lineal con Python (HiGHS)", "El método simplex paso a paso",
-                 "Análisis de sensibilidad y dualidad"]},
+     "lessons": [61, 62, 63, 64]},
     {"code": "Q", "title": "Programación entera y modelos de redes", "status": "proximamente",
      "desc": "MILP con scipy, transporte, asignación (húngaro) y redes: ruta más corta, flujo máximo, árbol mínimo.",
      "planned": ["Programación entera y binaria (MILP)", "Problema de transporte",
