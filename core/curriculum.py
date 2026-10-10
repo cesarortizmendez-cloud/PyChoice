@@ -21,11 +21,13 @@ from .curriculum_h2 import CHAPTERS_H2
 from .curriculum_j import CHAPTERS_J
 from .curriculum_k import CHAPTERS_K
 from .curriculum_l import CHAPTERS_L
+from .curriculum_m import CHAPTERS_M
+from .curriculum_n import CHAPTERS_N
 from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
             + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
-            + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L)
+            + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L + CHAPTERS_M + CHAPTERS_N)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
 BY_SLUG = {c["slug"]: c for c in CHAPTERS}
 
@@ -97,15 +99,12 @@ MODULES_IA = [
     {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "listo",
      "desc": "Algoritmos poblacionales: genéticos, enjambre de partículas (PSO) y colonia de hormigas (ACO).",
      "lessons": [46, 47, 48, 49]},
-    {"code": "M", "title": "Redes neuronales desde la base", "status": "proximamente",
+    {"code": "M", "title": "Redes neuronales desde la base", "status": "listo",
      "desc": "Del perceptrón al backpropagation con numpy, y redes con scikit-learn (MLP).",
-     "planned": ["La neurona y el perceptrón", "Perceptrón multicapa y forward pass",
-                 "Backpropagation y descenso de gradiente", "Redes con scikit-learn (MLP)",
-                 "Buenas prácticas y panorama del deep learning"]},
-    {"code": "N", "title": "IA moderna aplicada", "status": "proximamente",
+     "lessons": [50, 51, 52, 53, 54]},
+    {"code": "N", "title": "IA moderna aplicada", "status": "listo",
      "desc": "Aprendizaje por refuerzo, NLP clásico, recomendadores y metaheurísticas para ML + IA responsable.",
-     "planned": ["Aprendizaje por refuerzo básico (Q-learning)", "NLP clásico (TF-IDF)",
-                 "Sistemas de recomendación", "Metaheurísticas + ML e IA responsable"]},
+     "lessons": [55, 56, 57, 58]},
     {"code": "O", "title": "Proyecto de Ingeniería de IA", "status": "proximamente",
      "desc": "Integrar todo en un proyecto de IA de punta a punta y planificar los siguientes pasos.",
      "planned": ["Proyecto integrador de IA", "Cierre y siguientes pasos"]},
