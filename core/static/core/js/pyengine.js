@@ -353,6 +353,45 @@ function renderPlots(box, images) {
 /* ============================================================
    Enlaza cada bloque .rconsole
    ============================================================ */
+/* ============================================================
+   Resaltado de sintaxis (colores) para el editor de cada consola.
+   Dibuja una capa coloreada DETRAS del textarea (cuyo texto se vuelve
+   transparente), sincronizada al escribir y al hacer scroll.
+   ============================================================ */
+const PY_KW = new Set(['False','None','True','and','as','assert','async','await','break',
+  'class','continue','def','del','elif','else','except','finally','for','from','global','if',
+  'import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while',
+  'with','yield','match','case']);
+const PY_BI = new Set(['print','len','range','int','float','str','bool','list','dict','set',
+  'tuple','sum','min','max','abs','round','sorted','reversed','enumerate','zip','map','filter',
+  'type','isinstance','open','input','format','repr','any','all','np','pd','plt','math','sns']);
+const PY_DATA = new Set(['notas','datos','propinas','estudiantes','viviendas','clientes',
+  'empleados','clima','negocio','catalogo','cargar','ciudades','distancias','mochila']);
+const HL_RE = /(#[^\n]*)|([rbfuRBFU]{0,3}(?:"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'))|(\b\d[\d_]*\.?\d*(?:[eE][+-]?\d+)?\b)|(@[A-Za-z_]\w*)|([A-Za-z_]\w*)|([+\-*/%=<>!&|^~]+)/g;
+
+function hlEsc(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function pyHighlight(src) {
+  let out = '', last = 0, m; HL_RE.lastIndex = 0;
+  while ((m = HL_RE.exec(src))) {
+    out += hlEsc(src.slice(last, m.index)); last = HL_RE.lastIndex;
+    if (m[1]) out += '<span class="hc">' + hlEsc(m[1]) + '</span>';
+    else if (m[2]) out += '<span class="hs">' + hlEsc(m[2]) + '</span>';
+    else if (m[3]) out += '<span class="hn">' + m[3] + '</span>';
+    else if (m[4]) out += '<span class="hd">' + hlEsc(m[4]) + '</span>';
+    else if (m[5]) {
+      const w = m[5];
+      if (PY_KW.has(w)) out += '<span class="hk">' + w + '</span>';
+      else if (PY_BI.has(w) || PY_DATA.has(w)) out += '<span class="hb">' + w + '</span>';
+      else out += w;
+    } else if (m[6]) out += '<span class="ho">' + hlEsc(m[6]) + '</span>';
+  }
+  out += hlEsc(src.slice(last));
+  return out;
+}
+
 function bindConsole(el) {
   const ta   = el.querySelector('textarea');
   const out  = el.querySelector('.output');
@@ -364,6 +403,25 @@ function bindConsole(el) {
   const xlsxOut  = el.querySelector('[data-act=savexlsx]');
   const chip     = el.querySelector('.filechip');
   const original = ta ? ta.value : '';
+
+  /* --- Capa de resaltado de sintaxis (colores) --- */
+  const editor = el.querySelector('.editor');
+  let syncHL = () => {};
+  if (ta && editor && !editor.querySelector('.hl')) {
+    const pre = document.createElement('pre');
+    pre.className = 'hl'; pre.setAttribute('aria-hidden', 'true');
+    const codeEl = document.createElement('code');
+    pre.appendChild(codeEl);
+    editor.insertBefore(pre, ta);
+    editor.classList.add('has-hl');
+    syncHL = () => {
+      codeEl.innerHTML = pyHighlight(ta.value) + '\n';
+      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
+    };
+    ta.addEventListener('input', syncHL);
+    ta.addEventListener('scroll', () => { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; });
+    syncHL();
+  }
 
   async function execute() {
     if (!ta) return;
@@ -383,7 +441,7 @@ function bindConsole(el) {
     if (out) out.innerHTML = '';
     if (plot) plot.innerHTML = '<div class="empty">Sin gráfico.</div>';
   });
-  if (resetBtn) resetBtn.addEventListener('click', () => { ta.value = original; });
+  if (resetBtn) resetBtn.addEventListener('click', () => { ta.value = original; syncHL(); });
 
   // Ctrl/Cmd + Enter para ejecutar; Tab inserta 4 espacios
   if (ta) ta.addEventListener('keydown', (ev) => {
@@ -393,6 +451,7 @@ function bindConsole(el) {
       const s = ta.selectionStart, e = ta.selectionEnd;
       ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(e);
       ta.selectionStart = ta.selectionEnd = s + 4;
+      syncHL();
     }
   });
 

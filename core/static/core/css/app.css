@@ -146,6 +146,23 @@ h1.page .hl{ color:var(--phosphor); }
   background:#070d15; color:#d7e6d8; font-family:var(--mono); font-size:13.5px; line-height:1.55;
   padding:14px 14px 14px 14px; tab-size:2; }
 .editor textarea::placeholder{ color:var(--dim); }
+
+/* ---- Resaltado de sintaxis (colores) en el editor ---- */
+.editor.has-hl textarea{ background:transparent; color:transparent;
+  -webkit-text-fill-color:transparent; caret-color:var(--phosphor); position:relative; z-index:1; }
+.editor.has-hl textarea::selection{ background:rgba(43,217,255,.28); -webkit-text-fill-color:transparent; }
+.editor .hl{ position:absolute; inset:0; z-index:0; margin:0; border:0; overflow:hidden;
+  pointer-events:none; background:#070d15; color:#d7e6d8;
+  font-family:var(--mono); font-size:13.5px; line-height:1.55; tab-size:2;
+  padding:14px; white-space:pre-wrap; word-break:break-word; }
+.editor .hl code{ font:inherit; white-space:inherit; background:none; padding:0; }
+.editor .hl .hc{ color:#5f7389; font-style:italic; }     /* comentario */
+.editor .hl .hs{ color:#f3c47a; }                         /* texto (string) */
+.editor .hl .hn{ color:#ff9d6b; }                         /* número */
+.editor .hl .hk{ color:var(--magenta); font-weight:600; } /* palabra clave */
+.editor .hl .hb{ color:var(--cyan); }                     /* función / dato */
+.editor .hl .hd{ color:var(--phosphor); }                 /* decorador */
+.editor .hl .ho{ color:#9db2c6; }                         /* operador */
 .output-wrap{ border-top:1px solid var(--line); }
 .rgrid.split .output-wrap{ border-top:none; border-left:1px solid var(--line); }
 .out-head{ padding:6px 12px; color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; background:#0a1320; border-bottom:1px solid var(--line); }
@@ -257,6 +274,7 @@ footer.foot .credit a:hover{ color:var(--phosphor); }
   .hero .lead{ font-size:15px; }
   .cards{ grid-template-columns:1fr; }
   .editor textarea{ min-height:120px; font-size:13px; }
+  .editor .hl{ font-size:13px; }
   .rconsole .bar .fname{ width:100%; margin:0 0 4px; }
   .rconsole .bar .actions{ margin-left:0; width:100%; }
   .btn{ padding:7px 9px; }                                       /* objetivos táctiles */
