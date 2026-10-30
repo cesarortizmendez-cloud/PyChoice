@@ -200,6 +200,27 @@ def mochila(n=15, seed=7):
         "valor": r.integers(5, 50, n),
     })
 
+# input() en el navegador: abre un cuadro de dialogo (prompt) para capturar
+# lo que el alumno escribe, lo refleja en la salida como una consola real
+# y lo devuelve como texto (igual que el input() de Python de escritorio).
+import js as _js
+
+def _input(prompt=""):
+    msg = "" if prompt is None else str(prompt)
+    if msg:
+        sys.stdout.write(msg)
+    try:
+        val = _js.window.prompt(msg if msg else "Entrada:")
+    except Exception:
+        val = None
+    if val is None:
+        val = ""
+    val = str(val)
+    sys.stdout.write(val + "\n")
+    return val
+
+NS["input"] = _input
+
 def _seed():
     NS["notas"] = [4.2, 5.8, 6.1, 3.9, 5.0, 6.7, 4.5, 5.3]
     NS["datos"] = _ds_negocio()
@@ -208,6 +229,7 @@ def _seed():
         NS[_n] = _f()
     NS["catalogo"] = catalogo
     NS["cargar"] = cargar
+    NS["input"] = _input
     # generadores de problemas de IA (metaheuristicas)
     NS["ciudades"] = ciudades
     NS["distancias"] = distancias

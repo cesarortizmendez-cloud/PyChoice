@@ -6,6 +6,7 @@ from django.views.decorators.cache import never_cache
 from .curriculum import (nav_list, BY_NUM, get_route, route_list, route_modules,
                          datasets_for, dataset_list, search_index)
 from .reference import reference_groups, reference_index
+from .projects import project_list, get_project, project_groups, tier_label
 
 
 def home(request):
@@ -44,6 +45,34 @@ def route(request, slug):
         "chapters": nav_list(),
         "routes": route_list(),
         "active": r["slug"],
+    })
+
+
+def projects_index(request):
+    """Indice de proyectos (listado por niveles)."""
+    groups, done, total = project_groups()
+    return render(request, "core/projects.html", {
+        "chapters": nav_list(),
+        "routes": route_list(),
+        "active": "projects",
+        "groups": groups,
+        "done": done,
+        "total": total,
+    })
+
+
+def project_detail(request, slug):
+    """Pagina de un proyecto."""
+    p = get_project(slug)
+    if p is None or p.get("status") != "listo":
+        raise Http404("Proyecto no encontrado")
+    pv = dict(p)
+    pv["tier_label"] = tier_label(p["tier"])
+    return render(request, "core/project.html", {
+        "chapters": nav_list(),
+        "routes": route_list(),
+        "active": p["slug"],
+        "project": pv,
     })
 
 

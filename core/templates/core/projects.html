@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Proyectos{% endblock %}
+
+{% block content %}
+<div class="eyebrow">proyectos</div>
+<h1 class="page">Proyectos — <span class="hl">del script a la aplicación</span></h1>
+<div class="subtitle">Construye programas completos aplicando lo que aprendiste en las lecciones.</div>
+
+<div class="prose">
+  <p>Las lecciones te enseñan las piezas; los <b>proyectos</b> te enseñan a juntarlas en algo que
+  funciona de principio a fin. Avanzamos por niveles: primero <b>apps de consola</b> que corren aquí
+  mismo en el navegador, luego <b>apps de escritorio</b> con ventana usando Tkinter, y finalmente
+  <b>apps web full-stack</b>. Empieza por la calculadora y sigue el camino.</p>
+</div>
+
+<p class="note"><b>Proyectos disponibles:</b> {{ done }} de {{ total }}.
+Los proyectos marcados «próximamente» se irán publicando en orden.</p>
+
+{% for g in groups %}
+<section class="module {% if g.has_ready %}listo{% else %}proximamente{% endif %}">
+  <div class="module-head">
+    <span class="module-code">{{ g.code }}</span>
+    <h2>{{ g.title }}</h2>
+  </div>
+  <div class="module-desc">{{ g.desc }}</div>
+  <div class="proj-grid">
+    {% for p in g.projects %}
+      {% if p.status == 'listo' %}
+      <a class="proj-card" href="{% url 'project' p.slug %}">
+        <div class="proj-top">
+          <span class="proj-icon">{{ p.icon }}</span>
+          <span class="proj-level">{{ p.level }}</span>
+        </div>
+        <div class="proj-title">{{ p.title }}</div>
+        <div class="proj-tagline">{{ p.tagline }}</div>
+        <div class="proj-tags">{% for t in p.tags %}<span>{{ t }}</span>{% endfor %}</div>
+      </a>
+      {% else %}
+      <div class="proj-card soon" aria-disabled="true">
+        <div class="proj-top">
+          <span class="proj-icon">{{ p.icon }}</span>
+          <span class="proj-badge-soon">próximamente</span>
+        </div>
+        <div class="proj-title">{{ p.title }}</div>
+        <div class="proj-tagline">{{ p.tagline }}</div>
+        <div class="proj-tags">{% for t in p.tags %}<span>{{ t }}</span>{% endfor %}</div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

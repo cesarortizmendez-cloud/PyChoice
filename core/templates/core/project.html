@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<div class="eyebrow">proyecto · {{ project.tier_label }} · nivel {{ project.level }}</div>
+<h1 class="page">{{ project.title }}</h1>
+<div class="subtitle">{{ project.subtitle }}</div>
+
+<section class="proj-build">
+  <div class="proj-build-text">
+    <div class="section-h"><span class="bar"></span><h2>Qué vas a construir</h2></div>
+    <div class="prose">{{ project.intro|safe }}</div>
+    <ul class="proj-goals">
+      {% for g in project.goals %}<li>{{ g|safe }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% if project.gui_svg %}
+  <div class="gui-mock">
+    {{ project.gui_svg|safe }}
+    <div class="gui-cap">Así se verá tu app</div>
+  </div>
+  {% endif %}
+</section>
+
+<div class="section-h"><span class="bar"></span><h2>Conceptos que practicas</h2></div>
+<div class="proj-tags big">{% for t in project.tags %}<span>{{ t }}</span>{% endfor %}</div>
+
+{% if project.desktop %}
+<div class="note proj-desktop">
+  <b>App de escritorio.</b> Este proyecto usa <b>Tkinter</b> para crear una ventana, y Tkinter
+  <b>no funciona dentro del navegador</b>. Por eso aquí lo construyes y lo lees paso a paso, pero se
+  ejecuta en tu computador. Más abajo están las instrucciones para correrlo.
+</div>
+{% endif %}
+
+<div class="section-h"><span class="bar"></span><h2>Construcción paso a paso</h2></div>
+{% if project.runnable %}
+<p class="note">Cada bloque corre <b>Python real</b> en tu navegador. Edítalo y presiona
+<b>Ctrl + Enter</b> o «ejecutar». Cuando el código use <code>input()</code>, aparecerá un cuadro para
+escribir el valor, igual que en una consola.</p>
+{% else %}
+<p class="note">Lee y copia cada bloque con el botón <b>copiar</b>. Ve armando tu archivo
+<code>{{ project.fname }}</code>; al final tienes el <b>código completo</b> listo para ejecutar.</p>
+{% endif %}
+
+{% for s in project.steps %}
+<div class="example">
+  <div class="head">
+    <span class="n">{{ forloop.counter|stringformat:'02d' }}</span>
+    <span class="ttl">{{ s.title }}</span>
+  </div>
+  <div class="explain">{{ s.explain|safe }}</div>
+  {% if s.run %}
+    {% include 'core/_console.html' with code=s.code fname=project.fname split=True %}
+  {% else %}
+    {% include 'core/_codecard.html' with code=s.code fname=project.fname %}
+  {% endif %}
+</div>
+{% endfor %}
+
+<div class="section-h"><span class="bar"></span><h2>Código completo</h2></div>
+{% if project.runnable %}
+  {% include 'core/_console.html' with code=project.full_code fname=project.fname split=True %}
+{% else %}
+  {% include 'core/_codecard.html' with code=project.full_code fname=project.fname %}
+{% endif %}
+
+{% if project.local_run %}
+<div class="note proj-run">{{ project.local_run|safe }}</div>
+{% endif %}
+
+{% if project.retos %}
+<div class="exercises">
+  <h3>Lleva el proyecto más lejos</h3>
+  <ol>{% for r in project.retos %}<li>{{ r|safe }}</li>{% endfor %}</ol>
+</div>
+{% endif %}
+
+<div class="pager">
+  <a href="{% url 'projects' %}">← todos los proyectos</a>
+  <a href="{% url 'console' %}">consola libre →</a>
+</div>
+
+<script>
+(function(){
+  if (window.__projCopyBound) return;
+  window.__projCopyBound = true;
+  document.addEventListener('click', function(ev){
+    var b = ev.target.closest('[data-act=copy]');
+    if (!b) return;
+    var card = b.closest('.codecard');
+    if (!card) return;
+    var code = card.querySelector('code');
+    if (!code) return;
+    var txt = code.innerText;
+    var done = function(){ var t = b.textContent; b.textContent = '✓ copiado'; setTimeout(function(){ b.textContent = t; }, 1400); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done).catch(function(){ b.textContent = 'error'; });
+    } else {
+      try {
+        var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+      } catch(e){ b.textContent = 'error'; }
+    }
+  });
+})();
+</script>
+{% endblock %}

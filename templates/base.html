@@ -80,6 +80,12 @@
       </a>
       {% endfor %}
 
+      <div class="grp tree-title">// proyectos</div>
+      <a href="{% url 'projects' %}" class="{% if active == 'projects' %}on{% endif %}"><span class="num">◇</span> todos los proyectos</a>
+      {% for p in projects %}
+      <a href="{% url 'project' p.slug %}" class="{% if active == p.slug %}on{% endif %}"><span class="num">▸</span> {{ p.short }}</a>
+      {% endfor %}
+
       <div class="grp tree-title">// herramientas</div>
       <a href="{% url 'console' %}" class="{% if active == 'console' %}on{% endif %}"><span class="num">&gt;_</span> consola libre</a>
       <a href="{% url 'cheatsheet' %}" class="{% if active == 'cheatsheet' %}on{% endif %}"><span class="num">?</span> referencia python</a>

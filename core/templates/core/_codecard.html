@@ -1,0 +1,14 @@
+{% comment %}
+Bloque de código de solo lectura (no ejecutable), con botón de copiar.
+Se usa en proyectos de escritorio (Tkinter), que corren en el computador
+del alumno y no dentro del navegador.
+Parámetros: code -> código; fname -> nombre del archivo mostrado en la barra.
+{% endcomment %}
+<div class="codecard">
+  <div class="bar">
+    <span class="lamps"><i></i><i></i><i></i></span>
+    <span class="fname">{{ fname|default:'app.py' }}</span>
+    <span class="actions"><button class="btn" type="button" data-act="copy">copiar</button></span>
+  </div>
+  <pre class="codeview"><code>{{ code }}</code></pre>
+</div>

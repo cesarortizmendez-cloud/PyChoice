@@ -461,3 +461,60 @@ details.fold[open] > summary .fold-ch{ transform:rotate(90deg); color:var(--phos
   #search-box::placeholder{ font-size:11px; }
   .search-results{ left:auto; right:0; width:92vw; }
 }
+
+/* ============================================================
+   Proyectos (// proyectos) · tarjetas, construcción y código
+   ============================================================ */
+.proj-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:12px; margin-top:4px; }
+.proj-card{ display:flex; flex-direction:column; gap:7px; padding:14px; border:1px solid var(--line);
+  border-radius:8px; background:var(--bg-panel); border-left:3px solid var(--phosphor);
+  transition:transform .12s, border-color .12s, background .12s; }
+.proj-card:hover{ transform:translateY(-2px); border-color:var(--phosphor); background:#101a28; }
+.proj-top{ display:flex; align-items:center; gap:10px; }
+.proj-icon{ font-family:var(--mono); font-weight:800; font-size:15px; color:#06111b;
+  background:var(--phosphor); border-radius:6px; width:30px; height:30px; display:grid; place-items:center; flex:0 0 auto; }
+.proj-level{ font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--cyan); border:1px solid #163444; background:#09202a; border-radius:20px; padding:2px 9px; margin-left:auto; }
+.proj-title{ color:#e3ecf5; font-weight:700; font-size:14.5px; }
+.proj-card:hover .proj-title{ color:var(--phosphor); }
+.proj-tagline{ color:var(--muted); font-family:var(--sans); font-size:12.5px; line-height:1.5; }
+.proj-tags{ display:flex; flex-wrap:wrap; gap:5px; margin-top:2px; }
+.proj-tags span{ font-family:var(--mono); font-size:10.5px; color:var(--muted);
+  border:1px solid var(--line); background:#0b1320; border-radius:4px; padding:2px 7px; }
+.proj-tags.big{ margin:4px 0 10px; }
+.proj-tags.big span{ font-size:12px; color:var(--cyan); border-color:#15303e; background:#09202a; }
+.proj-card.soon{ border-left-color:var(--dim); opacity:.72; }
+.proj-card.soon:hover{ transform:none; border-color:var(--line); background:var(--bg-panel); }
+.proj-card.soon .proj-icon{ background:var(--dim); color:#0a0f16; }
+.proj-card.soon .proj-title{ color:#dbe6f0; }
+.proj-badge-soon{ font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--amber); border:1px solid #3a2f12; background:#1b1608; border-radius:20px; padding:2px 9px; margin-left:auto; }
+
+.proj-build{ display:flex; gap:22px; align-items:flex-start; margin:6px 0 8px; }
+.proj-build-text{ flex:1 1 auto; min-width:0; }
+.proj-goals{ font-family:var(--sans); color:#bac8d6; font-size:14px; margin:8px 0 0; padding-left:20px; }
+.proj-goals li{ margin:5px 0; }
+.proj-goals code{ font-family:var(--mono); color:var(--phosphor); background:#0c1622; padding:0 5px; border-radius:3px; }
+.gui-mock{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:7px;
+  padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--bg-elev); }
+.gui-mock svg{ display:block; max-width:100%; height:auto; }
+.gui-mock .gui-cap{ color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:.05em; }
+.proj-desktop{ border-left:3px solid var(--amber); }
+.proj-run{ border-left:3px solid var(--cyan); }
+
+/* Bloque de código de solo lectura (proyectos de escritorio) */
+.codecard{ border:1px solid var(--line); border-radius:6px; background:var(--bg-elev); overflow:hidden; margin:4px 0 2px; }
+.codecard .bar{ display:flex; align-items:center; gap:8px; padding:8px 12px; background:#0a1320; border-bottom:1px solid var(--line); }
+.codecard .bar .lamps{ display:flex; gap:6px; }
+.codecard .bar .lamps i{ width:10px; height:10px; border-radius:50%; display:block; }
+.codecard .bar .lamps i:nth-child(1){ background:#ff5f56; } .codecard .bar .lamps i:nth-child(2){ background:#ffbd2e; } .codecard .bar .lamps i:nth-child(3){ background:#27c93f; }
+.codecard .bar .fname{ color:var(--muted); font-size:12px; margin-left:6px; }
+.codecard .bar .actions{ margin-left:auto; }
+.codecard .codeview{ margin:0; padding:14px; overflow-x:auto; background:#070d15;
+  font-family:var(--mono); font-size:13px; line-height:1.55; color:#d7e6d8; }
+.codecard .codeview code{ font-family:var(--mono); white-space:pre; }
+
+@media (max-width:720px){
+  .proj-build{ flex-direction:column-reverse; }
+  .gui-mock{ align-self:center; }
+}

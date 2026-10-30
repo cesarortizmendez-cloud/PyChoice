@@ -15,4 +15,8 @@ urlpatterns = [
     # Rutas de aprendizaje (tracks) y lecciones
     path("ruta/<slug:slug>/", core_views.route, name="route"),
     path("leccion/<int:num>/", core_views.lesson, name="lesson"),
+
+    # Proyectos
+    path("proyectos/", core_views.projects_index, name="projects"),
+    path("proyecto/<slug:slug>/", core_views.project_detail, name="project"),
 ]

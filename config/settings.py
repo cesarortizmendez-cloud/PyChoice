@@ -47,6 +47,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "core.context_processors.projects_nav",
             ],
         },
     },
