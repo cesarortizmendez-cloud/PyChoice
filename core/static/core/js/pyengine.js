@@ -300,6 +300,11 @@ async function boot() {
     // la primera vez que se necesita un grafico -> arranque mas rapido.
     await py.loadPackage(['numpy', 'pandas']);
     await py.runPythonAsync(HARNESS);
+    // Red de seguridad: si algo usa el input() builtin, que lea de window.prompt
+    // en vez de colgarse esperando un stdin que nunca llega.
+    try {
+      py.setStdin({ stdin: () => { var s = (typeof window !== 'undefined' && window.prompt) ? window.prompt('Entrada:') : ''; return s === null ? '' : s; } });
+    } catch (e) { /* no-op */ }
     pyodide = py;
     setStatus('Python 3.12 · WASM · LISTO', 'ready');
     return py;
