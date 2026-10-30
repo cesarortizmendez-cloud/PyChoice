@@ -207,13 +207,10 @@ import js as _js
 
 def _input(prompt=""):
     msg = "" if prompt is None else str(prompt)
-    if msg:
-        try:
-            sys.stdout.write(msg)
-        except Exception:
-            pass
     val = None
     # prompt() del navegador es sincrono: devuelve el texto o None (cancelar), nunca bloquea.
+    # NO se escribe nada en la salida: la pregunta aparece en el cuadro de dialogo
+    # y la salida muestra solo lo que imprime el codigo del alumno (print).
     try:
         val = _js.prompt(msg)
     except Exception:
@@ -223,12 +220,7 @@ def _input(prompt=""):
             val = None
     if val is None:
         val = ""
-    val = str(val)
-    try:
-        sys.stdout.write(val + "\\n")
-    except Exception:
-        pass
-    return val
+    return str(val)
 
 NS["input"] = _input
 try:
