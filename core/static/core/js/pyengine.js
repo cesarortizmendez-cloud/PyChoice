@@ -225,7 +225,7 @@ def _input(prompt=""):
         val = ""
     val = str(val)
     try:
-        sys.stdout.write(val + "\n")
+        sys.stdout.write(val + "\\n")
     except Exception:
         pass
     return val
