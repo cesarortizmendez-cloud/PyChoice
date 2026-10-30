@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo L - Metaheuristicas bioinspiradas / poblacionales (lecciones 46-49):
+Modulo L - Metaheuristicas bioinspiradas / poblacionales (lecciones 47-50):
 algoritmos geneticos, PSO y colonia de hormigas (ACO).
 
 Todo corre en el navegador (numpy). Poblaciones e iteraciones pequenas a
@@ -13,9 +13,9 @@ CHAPTERS_L = [
 
     # ============================================================ CAP 46
     {
-        "num": 46,
+        "num": 47,
         "slug": "algoritmos-geneticos-1",
-        "code": "leccion_46",
+        "code": "leccion_47",
         "title": "Algoritmos genéticos I",
         "subtitle": "Evolucionar una población de soluciones: selección, cruce y mutación",
         "apunte": "Módulo L · Lección 1 - Algoritmos genéticos I",
@@ -42,7 +42,7 @@ espacio a la vez.</p>
 cambia algún gen al azar con baja probabilidad. La nueva población reemplaza a la anterior y el ciclo
 vuelve a empezar.</p>
 
-<p><b>La representación: el cromosoma.</b> Como en la lección 40, todo empieza por cómo codificar una
+<p><b>La representación: el cromosoma.</b> Como en la lección 41, todo empieza por cómo codificar una
 solución. Para la <b>mochila</b>, un individuo es una lista de <b>0 y 1</b> (los genes): un 1 en la
 posición <i>i</i> significa «llevo el objeto <i>i</i>». Esta codificación binaria es la más clásica y
 la que usaremos aquí.</p>
@@ -117,9 +117,9 @@ generaciones pequeñas para que corran rápido; en los retos podrás subirlas.</
 
     # ============================================================ CAP 47
     {
-        "num": 47,
+        "num": 48,
         "slug": "algoritmos-geneticos-2",
-        "code": "leccion_47",
+        "code": "leccion_48",
         "title": "Algoritmos genéticos II: el viajante (TSP)",
         "subtitle": "Cuando la solución es un orden: permutaciones, cruce OX y mutación",
         "apunte": "Módulo L · Lección 2 - GA para el TSP",
@@ -211,9 +211,9 @@ cercanas a la óptima en pocas generaciones, sin revisar ni una ínfima parte de
 
     # ============================================================ CAP 48
     {
-        "num": 48,
+        "num": 49,
         "slug": "pso-enjambre",
-        "code": "leccion_48",
+        "code": "leccion_49",
         "title": "Optimización por enjambre de partículas (PSO)",
         "subtitle": "Un enjambre que se guía por su memoria y por el mejor del grupo",
         "apunte": "Módulo L · Lección 3 - PSO",
@@ -308,9 +308,9 @@ una vez. Eso lo hace rápido incluso en el navegador.</p>
 
     # ============================================================ CAP 49
     {
-        "num": 49,
+        "num": 50,
         "slug": "colonia-hormigas",
-        "code": "leccion_49",
+        "code": "leccion_50",
         "title": "Colonia de hormigas (ACO)",
         "subtitle": "Rastros de feromona que construyen, entre muchas, una buena ruta",
         "apunte": "Módulo L · Lección 4 - Colonia de hormigas",
@@ -396,7 +396,7 @@ del TSP emergiendo de reglas locales simples.</p>
             "Aplica evaporación (ρ = 0.5) a una matriz de feromona y observa el efecto.",
             "Deposita feromona de dos rutas y verifica que la más corta aporta más.",
             "Corre el ACO completo en <code>ciudades(10)</code> y reporta el mejor largo.",
-            "Compara el ACO con el recocido simulado (lección 44) en el mismo problema.",
+            "Compara el ACO con el recocido simulado (lección 45) en el mismo problema.",
             "Prueba distintos β (1, 3, 5): ¿cómo cambia el resultado?",
             "Prueba distintos ρ (0.1, 0.3, 0.6): ¿cómo afecta la exploración?",
             "Grafica la curva de convergencia del mejor largo por ciclo.",

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo O - Proyecto y cierre (lecciones 59-60).
+Modulo O - Proyecto y cierre (lecciones 60-61).
 
 Integra toda la ruta en un proyecto de punta a punta y cierra con los
 siguientes pasos profesionales. Todo corre en el navegador (numpy, sklearn).
@@ -12,9 +12,9 @@ CHAPTERS_O = [
 
     # ============================================================ CAP 59
     {
-        "num": 59,
+        "num": 60,
         "slug": "proyecto-integrador-ia",
-        "code": "leccion_59",
+        "code": "leccion_60",
         "title": "Proyecto integrador de Ingeniería de IA",
         "subtitle": "Del problema a la solución: un flujo completo que junta toda la ruta",
         "apunte": "Módulo O · Lección 1 - Proyecto integrador",
@@ -111,9 +111,9 @@ mejor solución según un objetivo</b>. En los ejercicios podrás repetir el flu
 
     # ============================================================ CAP 60
     {
-        "num": 60,
+        "num": 61,
         "slug": "cierre-siguientes-pasos",
-        "code": "leccion_60",
+        "code": "leccion_61",
         "title": "Cierre y siguientes pasos",
         "subtitle": "Guardar modelos, armar tu portafolio y escalar más allá del navegador",
         "apunte": "Módulo O · Lección 2 - Cierre de la ruta",
@@ -197,7 +197,7 @@ ahora.</b></p>
             "Entrena un modelo, guárdalo con <code>joblib</code> y vuelve a cargarlo.",
             "Verifica que el modelo cargado predice igual que el original.",
             "Escribe una ficha (model card) para un modelo que hayas entrenado en la ruta.",
-            "Completa el checklist de IA responsable para tu proyecto de la lección 59.",
+            "Completa el checklist de IA responsable para tu proyecto de la lección 60.",
             "Haz un resumen en comentarios de los 3 conceptos que más te marcaron de la ruta.",
             "Elige un proyecto de la ruta y escribe cómo lo llevarías a Google Colab.",
             "Investiga y anota en comentarios qué es PyTorch y para qué se usa.",

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo N - IA moderna aplicada (lecciones 55-58):
+Modulo N - IA moderna aplicada (lecciones 56-59):
 aprendizaje por refuerzo, NLP clasico, recomendadores y
 metaheuristicas para ML + IA responsable.
 
@@ -13,9 +13,9 @@ CHAPTERS_N = [
 
     # ============================================================ CAP 55
     {
-        "num": 55,
+        "num": 56,
         "slug": "aprendizaje-refuerzo",
-        "code": "leccion_55",
+        "code": "leccion_56",
         "title": "Aprendizaje por refuerzo básico (Q-learning)",
         "subtitle": "Un agente que aprende a decidir probando y recibiendo recompensas",
         "apunte": "Módulo N · Lección 1 - Aprendizaje por refuerzo",
@@ -106,9 +106,9 @@ ajustando una política.</p>
 
     # ============================================================ CAP 56
     {
-        "num": 56,
+        "num": 57,
         "slug": "nlp-clasico",
-        "code": "leccion_56",
+        "code": "leccion_57",
         "title": "NLP clásico: convertir texto en números",
         "subtitle": "Bolsa de palabras, TF-IDF y clasificación de texto con scikit-learn",
         "apunte": "Módulo N · Lección 2 - NLP clásico",
@@ -197,9 +197,9 @@ responsable de la próxima lección.</p>
 
     # ============================================================ CAP 57
     {
-        "num": 57,
+        "num": 58,
         "slug": "sistemas-recomendacion",
-        "code": "leccion_57",
+        "code": "leccion_58",
         "title": "Sistemas de recomendación",
         "subtitle": "Filtrado colaborativo: recomendar según usuarios o ítems parecidos",
         "apunte": "Módulo N · Lección 3 - Recomendadores",
@@ -289,9 +289,9 @@ agarrarse.</p>
 
     # ============================================================ CAP 58
     {
-        "num": 58,
+        "num": 59,
         "slug": "metaheuristicas-ml-etica",
-        "code": "leccion_58",
+        "code": "leccion_59",
         "title": "Metaheurísticas para ML e IA responsable",
         "subtitle": "Optimizar hiperparámetros y mirar los modelos con ojo crítico",
         "apunte": "Módulo N · Lección 4 - Hiperparámetros y ética",

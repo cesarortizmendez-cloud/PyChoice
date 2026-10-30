@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo D: Manipulacion de datos (Lecciones 13 a 17).
+PyChoice - Modulo D: Manipulacion de datos (Lecciones 14 a 18).
 Formato capitulo. Teoria extendida + 8 conceptos + ejemplos ejecutables +
 ejercicios. En cada consola: np, pd, plt y los datos de ejemplo `notas`
 (lista) y `datos` (DataFrame: mes, region, ventas, unidades).
@@ -10,12 +10,12 @@ CHAPTERS_D = [
 
     # ============================================================ CAP 13
     {
-        "num": 13,
+        "num": 14,
         "slug": "numpy",
-        "code": "leccion_13",
+        "code": "leccion_14",
         "title": "NumPy a fondo",
         "subtitle": "Arrays, operaciones vectorizadas y cálculo numérico rápido",
-        "apunte": "Lección 13 - NumPy",
+        "apunte": "Lección 14 - NumPy",
         "concepts": [
             ("array (ndarray)", "La estructura central de NumPy: una rejilla de valores <b>del mismo tipo</b>, mucho más rápida que una lista para cálculos."),
             ("dtype", "El tipo de dato del array (int64, float64…). Todos los elementos comparten el mismo tipo."),
@@ -108,12 +108,12 @@ NumPy.</p>
 
     # ============================================================ CAP 14
     {
-        "num": 14,
+        "num": 15,
         "slug": "seleccion-pandas",
-        "code": "leccion_14",
+        "code": "leccion_15",
         "title": "Selección en pandas: loc e iloc",
         "subtitle": "Elegir filas y columnas con precisión, por etiqueta o por posición",
-        "apunte": "Lección 14 - Selección avanzada",
+        "apunte": "Lección 15 - Selección avanzada",
         "concepts": [
             ("Índice (index)", "La etiqueta de cada fila. Por defecto es 0, 1, 2…, pero puede ser un texto o una fecha."),
             (".loc", "Selección por <b>etiqueta</b>: <code>df.loc[fila, columna]</code>. Incluye ambos extremos en los rangos."),
@@ -206,12 +206,12 @@ selección.</p>
 
     # ============================================================ CAP 15
     {
-        "num": 15,
+        "num": 16,
         "slug": "limpieza",
-        "code": "leccion_15",
+        "code": "leccion_16",
         "title": "Limpieza de datos",
         "subtitle": "Faltantes, duplicados, tipos y texto: preparar datos reales",
-        "apunte": "Lección 15 - Limpieza de datos",
+        "apunte": "Lección 16 - Limpieza de datos",
         "concepts": [
             ("Valor faltante (NaN)", "Una celda vacía. pandas la representa como <code>NaN</code> (Not a Number)."),
             ("isna() / notna()", "Detectan faltantes: devuelven True/False por celda. <code>df.isna().sum()</code> cuenta por columna."),
@@ -305,12 +305,12 @@ limpieza no es un paso menor: es <b>parte esencial</b> del análisis.</p>
 
     # ============================================================ CAP 16
     {
-        "num": 16,
+        "num": 17,
         "slug": "combinar-reformar",
-        "code": "leccion_16",
+        "code": "leccion_17",
         "title": "Combinar y reformar tablas",
         "subtitle": "Unir fuentes, agrupar y reorganizar con concat, merge y pivot",
-        "apunte": "Lección 16 - Combinar y reformar",
+        "apunte": "Lección 17 - Combinar y reformar",
         "concepts": [
             ("concat()", "Apila tablas: una sobre otra (más filas) o lado a lado (más columnas)."),
             ("merge()", "Une dos tablas por una <b>columna en común</b> (clave). Es el JOIN de las bases de datos / el BUSCARV de Excel."),
@@ -404,12 +404,12 @@ exactamente el resumen que necesitas.</p>
 
     # ============================================================ CAP 17
     {
-        "num": 17,
+        "num": 18,
         "slug": "fechas",
-        "code": "leccion_17",
+        "code": "leccion_18",
         "title": "Fechas y series de tiempo",
         "subtitle": "Trabajar con fechas: componentes, rangos y agrupación por período",
-        "apunte": "Lección 17 - Fechas y tiempo",
+        "apunte": "Lección 18 - Fechas y tiempo",
         "concepts": [
             ("datetime", "El tipo de dato para fechas y horas. pandas lo maneja de forma nativa."),
             ("pd.to_datetime()", "Convierte texto (o números) a fechas reales para poder operar con ellas."),

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo K - Optimizacion y metaheuristicas I: busqueda local (lecciones 42-45).
+Modulo K - Optimizacion y metaheuristicas I: busqueda local (lecciones 43-46).
 
 Todo corre en el navegador. scipy y matplotlib se autocargan al usarse.
 Generadores del motor: mochila(), ciudades(), distancias().
@@ -12,9 +12,9 @@ CHAPTERS_K = [
 
     # ============================================================ CAP 42
     {
-        "num": 42,
+        "num": 43,
         "slug": "optimizacion-scipy",
-        "code": "leccion_42",
+        "code": "leccion_43",
         "title": "Optimización con SciPy",
         "subtitle": "Minimizar funciones, mínimos locales vs. globales y funciones de prueba",
         "apunte": "Módulo K · Lección 1 - Optimización con SciPy",
@@ -110,9 +110,9 @@ como <b>Rastrigin</b> (un valle central rodeado de muchísimos mínimos locales)
 
     # ============================================================ CAP 43
     {
-        "num": 43,
+        "num": 44,
         "slug": "hill-climbing",
-        "code": "leccion_43",
+        "code": "leccion_44",
         "title": "Hill climbing (ascenso de colina)",
         "subtitle": "Búsqueda local: moverse a un vecino mejor hasta quedar atascado",
         "apunte": "Módulo K · Lección 2 - Hill climbing",
@@ -149,7 +149,7 @@ sorprendentemente efectivo.</p>
 
 <p><b>Determinista salvo por el inicio.</b> Con el mismo punto de partida y el mismo vecindario, el
 hill climbing hace siempre lo mismo. Por eso fijamos la <b>semilla</b>: para que el experimento sea
-reproducible y comparable, como vimos en la lección 41.</p>
+reproducible y comparable, como vimos en la lección 42.</p>
 
 <p><b>Por qué importa.</b> Casi todas las metaheurísticas de este módulo y del siguiente son, en el
 fondo, <b>hill climbing mejorado</b>: el recocido simulado le agrega la capacidad de aceptar peores
@@ -200,9 +200,9 @@ hace fácil lo que viene.</p>
 
     # ============================================================ CAP 44
     {
-        "num": 44,
+        "num": 45,
         "slug": "recocido-simulado",
-        "code": "leccion_44",
+        "code": "leccion_45",
         "title": "Recocido simulado (Simulated Annealing)",
         "subtitle": "Aceptar peores soluciones para escapar de los óptimos locales",
         "apunte": "Módulo K · Lección 3 - Recocido simulado",
@@ -245,7 +245,7 @@ final, con T casi cero, el recocido se comporta como hill climbing y pule la sol
 rutas muy buenas sin revisar ni una fracción de las posibles.</p>
 
 <p><b>Reproducibilidad y comparación.</b> Como usa azar, fijamos la semilla y comparamos con la misma
-disciplina de la lección 41: misma cantidad de iteraciones, curva de convergencia y varias semillas.
+disciplina de la lección 42: misma cantidad de iteraciones, curva de convergencia y varias semillas.
 Verás que el recocido supera claramente al hill climbing en funciones con trampas.</p>
 """,
         "examples": [
@@ -292,9 +292,9 @@ Verás que el recocido supera claramente al hill climbing en funciones con tramp
 
     # ============================================================ CAP 45
     {
-        "num": 45,
+        "num": 46,
         "slug": "busqueda-tabu",
-        "code": "leccion_45",
+        "code": "leccion_46",
         "title": "Búsqueda tabú (Tabu Search)",
         "subtitle": "Usar memoria para no repetir movimientos y escapar de los ciclos",
         "apunte": "Módulo K · Lección 4 - Búsqueda tabú",

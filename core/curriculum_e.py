@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo E: Analisis exploratorio de datos (Lecciones 18 a 20).
+PyChoice - Modulo E: Analisis exploratorio de datos (Lecciones 19 a 21).
 Formato capitulo. En cada consola: np, pd, plt y los datos de ejemplo
 `notas` (lista) y `datos` (DataFrame: mes, region, ventas, unidades).
 """
@@ -9,12 +9,12 @@ CHAPTERS_E = [
 
     # ============================================================ CAP 18
     {
-        "num": 18,
+        "num": 19,
         "slug": "eda",
-        "code": "leccion_18",
+        "code": "leccion_19",
         "title": "Análisis exploratorio: preguntar a los datos",
         "subtitle": "Mirar, resumir y detectar problemas antes de concluir",
-        "apunte": "Lección 18 - EDA",
+        "apunte": "Lección 19 - EDA",
         "concepts": [
             ("EDA", "Análisis Exploratorio de Datos: la fase de <b>entender</b> los datos antes de modelar o concluir."),
             ("Primer vistazo", "<code>head()</code>, <code>tail()</code> y <code>sample()</code> muestran filas para hacerse una idea."),
@@ -107,12 +107,12 @@ vocabulario de esa conversación.</p>
 
     # ============================================================ CAP 19
     {
-        "num": 19,
+        "num": 20,
         "slug": "estadistica-descriptiva",
-        "code": "leccion_19",
+        "code": "leccion_20",
         "title": "Estadística descriptiva aplicada",
         "subtitle": "Centro, dispersión, cuartiles y detección de atípicos",
-        "apunte": "Lección 19 - Estadística descriptiva",
+        "apunte": "Lección 20 - Estadística descriptiva",
         "concepts": [
             ("Media / mediana / moda", "Tres medidas de centro: promedio, valor central y valor más frecuente."),
             ("Rango", "Diferencia entre el máximo y el mínimo. La medida de dispersión más simple."),
@@ -202,12 +202,12 @@ distribución suele decir más que una tabla de medidas.</p>
 
     # ============================================================ CAP 20
     {
-        "num": 20,
+        "num": 21,
         "slug": "correlacion",
-        "code": "leccion_20",
+        "code": "leccion_21",
         "title": "Correlación y relaciones",
         "subtitle": "¿Cómo se relacionan dos variables? Correlación, dispersión y cruces",
-        "apunte": "Lección 20 - Correlación y relaciones",
+        "apunte": "Lección 21 - Correlación y relaciones",
         "concepts": [
             ("Correlación", "Mide si dos variables numéricas se mueven juntas. Va de −1 a +1."),
             ("Coef. de Pearson", "El más común: +1 relación positiva perfecta, −1 negativa perfecta, 0 sin relación lineal."),

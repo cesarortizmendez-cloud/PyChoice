@@ -11,6 +11,7 @@ Indice central del curriculo de PyChoice.
 import re as _re
 from .curriculum_a import CHAPTERS_A
 from .curriculum_b import CHAPTERS_B
+from .curriculum_input import CHAPTERS_INPUT
 from .curriculum_c import CHAPTERS_C
 from .curriculum_d import CHAPTERS_D
 from .curriculum_e import CHAPTERS_E
@@ -27,7 +28,7 @@ from .curriculum_o import CHAPTERS_O
 from .curriculum_p import CHAPTERS_P
 from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
-CHAPTERS = (CHAPTERS_A + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
+CHAPTERS = (CHAPTERS_A + CHAPTERS_INPUT + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
             + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
             + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L + CHAPTERS_M + CHAPTERS_N
             + CHAPTERS_O + CHAPTERS_P)
@@ -56,30 +57,30 @@ def nav_list():
 # ====================================================================
 MODULES = [
     {"code": "A", "title": "Fundamentos de Python", "status": "listo",
-     "desc": "Instalar Python, sintaxis básica, variables, tipos, librerías y condicionales.",
-     "lessons": [1, 2, 3, 4]},
+     "desc": "Instalar Python, sintaxis básica, variables, tipos, librerías, condicionales y entrada de datos con input().",
+     "lessons": [1, 2, 3, 4, 5]},
     {"code": "B", "title": "Datos y control", "status": "listo",
      "desc": "Cargar Excel, bucles for/while y tu primera estadística con pandas.",
-     "lessons": [5, 6, 7, 8]},
+     "lessons": [6, 7, 8, 9]},
     {"code": "C", "title": "Python intermedio", "status": "listo",
      "desc": "Estructuras de datos, funciones, comprensiones, errores y archivos.",
-     "lessons": [9, 10, 11, 12]},
+     "lessons": [10, 11, 12, 13]},
     {"code": "D", "title": "Manipulación de datos", "status": "listo",
      "desc": "NumPy a fondo y pandas avanzado: selección, limpieza, combinar y reformar tablas.",
-     "lessons": [13, 14, 15, 16, 17]},
+     "lessons": [14, 15, 16, 17, 18]},
     {"code": "E", "title": "Análisis exploratorio (EDA)", "status": "listo",
      "desc": "Hacer preguntas a los datos: estadística aplicada, atípicos y relaciones.",
-     "lessons": [18, 19, 20]},
+     "lessons": [19, 20, 21]},
     {"code": "F", "title": "Visualización de datos", "status": "listo",
      "desc": "Comunicar con gráficos: matplotlib a fondo, seaborn y storytelling.",
-     "lessons": [21, 22, 23]},
+     "lessons": [22, 23, 24]},
     {"code": "G", "title": "Estadística y probabilidad", "status": "listo",
      "desc": "El sustento para afirmar cosas con datos: probabilidad, distribuciones e inferencia.",
-     "lessons": [24, 25, 26]},
+     "lessons": [25, 26, 27]},
     {"code": "H", "title": "Machine Learning (nivel pro)", "status": "listo",
      "desc": "Flujo completo con scikit-learn: preparación, regresión, clasificación, "
              "evaluación, ensembles, validación cruzada, no supervisado y proyecto end-to-end.",
-     "lessons": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36]},
+     "lessons": [28, 29, 30, 31, 32, 33, 34, 35, 36, 37]},
     {"code": "I", "title": "Proyecto y cierre", "status": "proximamente",
      "desc": "Integrar todo en un proyecto de ciencia de datos y comunicar resultados.",
      "planned": ["Proyecto integrador de data science", "Comunicar resultados y siguientes pasos"]},
@@ -95,22 +96,22 @@ MODULES = [
 MODULES_IA = [
     {"code": "J", "title": "Fundamentos de IA y pensamiento algorítmico", "status": "listo",
      "desc": "El panorama de la IA con Python, problemas de búsqueda y optimización, y cómo evaluar algoritmos.",
-     "lessons": [39, 40, 41]},
+     "lessons": [40, 41, 42]},
     {"code": "K", "title": "Metaheurísticas I: búsqueda local", "status": "listo",
      "desc": "Optimizar con SciPy y buscar soluciones con hill climbing, recocido simulado y búsqueda tabú.",
-     "lessons": [42, 43, 44, 45]},
+     "lessons": [43, 44, 45, 46]},
     {"code": "L", "title": "Metaheurísticas bioinspiradas", "status": "listo",
      "desc": "Algoritmos poblacionales: genéticos, enjambre de partículas (PSO) y colonia de hormigas (ACO).",
-     "lessons": [46, 47, 48, 49]},
+     "lessons": [47, 48, 49, 50]},
     {"code": "M", "title": "Redes neuronales desde la base", "status": "listo",
      "desc": "Del perceptrón al backpropagation con numpy, y redes con scikit-learn (MLP).",
-     "lessons": [50, 51, 52, 53, 54]},
+     "lessons": [51, 52, 53, 54, 55]},
     {"code": "N", "title": "IA moderna aplicada", "status": "listo",
      "desc": "Aprendizaje por refuerzo, NLP clásico, recomendadores y metaheurísticas para ML + IA responsable.",
-     "lessons": [55, 56, 57, 58]},
+     "lessons": [56, 57, 58, 59]},
     {"code": "O", "title": "Proyecto de Ingeniería de IA", "status": "listo",
      "desc": "Integrar todo en un proyecto de IA de punta a punta y planificar los siguientes pasos.",
-     "lessons": [59, 60]},
+     "lessons": [60, 61]},
 ]
 
 
@@ -124,7 +125,7 @@ MODULES_IA = [
 MODULES_IO = [
     {"code": "P", "title": "Fundamentos de modelamiento y programación lineal", "status": "listo",
      "desc": "Modelar un problema, resolver LP con HiGHS, el método simplex paso a paso y el análisis de sensibilidad.",
-     "lessons": [61, 62, 63, 64]},
+     "lessons": [62, 63, 64, 65]},
     {"code": "Q", "title": "Programación entera y modelos de redes", "status": "proximamente",
      "desc": "MILP con scipy, transporte, asignación (húngaro) y redes: ruta más corta, flujo máximo, árbol mínimo.",
      "planned": ["Programación entera y binaria (MILP)", "Problema de transporte",

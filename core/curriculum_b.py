@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Lecciones 5 a 8 (formato capitulo, estilo EstadisticaR).
+PyChoice - Lecciones 6 a 9 (formato capitulo, estilo EstadisticaR).
 Teoria extendida (software educativo) + conceptos clave enriquecidos.
 Cada consola trae np, pd, plt y los datos de ejemplo `notas` (lista) y
 `datos` (DataFrame: mes, region, ventas, unidades).
@@ -10,12 +10,12 @@ CHAPTERS_B = [
 
     # ============================================================ CAP 05
     {
-        "num": 5,
+        "num": 6,
         "slug": "cargar-excel",
-        "code": "leccion_05",
+        "code": "leccion_06",
         "title": "Cargar Excel y trabajar con sus columnas",
         "subtitle": "Leer una planilla como DataFrame y usar sus columnas como variables",
-        "apunte": "Lección 5 - Datos desde Excel",
+        "apunte": "Lección 6 - Datos desde Excel",
         "concepts": [
             ("pd.read_excel()", "Lee un archivo <code>.xlsx</code> y lo convierte en DataFrame. Necesita la librería <code>openpyxl</code>. Con <code>sheet_name=</code> eliges la hoja."),
             ("pd.read_csv()", "Lee un archivo <code>.csv</code> (texto separado por comas). Muy usado por ser universal y liviano."),
@@ -117,12 +117,12 @@ irás conociendo.</p>
 
     # ============================================================ CAP 06
     {
-        "num": 6,
+        "num": 7,
         "slug": "bucles",
-        "code": "leccion_06",
+        "code": "leccion_07",
         "title": "Funciones FOR y WHILE",
         "subtitle": "Repetir tareas: recorrer datos y acumular resultados",
-        "apunte": "Lección 6 - Bucles",
+        "apunte": "Lección 7 - Bucles",
         "concepts": [
             ("Bucle", "Estructura que repite un bloque de código muchas veces sin reescribirlo."),
             ("for", "Repite un bloque <b>para cada</b> elemento de una secuencia (lista, rango, columna, texto)."),
@@ -191,6 +191,16 @@ entender la lógica; pero, cuando exista la versión de columna, esa suele ser l
                 "code": 'saldo = 1000\nmeses = 0\nwhile saldo > 0:\n    saldo = saldo - 300\n    meses = meses + 1\nprint("meses hasta agotar:", meses)',
             },
             {
+                "title": "while + input(): leer hasta una señal",
+                "explain": "Un bucle interactivo: pedimos números con <code>input()</code> y los sumamos hasta que el usuario escribe «fin». Al ejecutar aparece un cuadro para escribir.",
+                "code": 'total = 0\nwhile True:\n    dato = input("Número (escribe fin para terminar): ")\n    if dato == "fin":\n        break\n    total += float(dato)\nprint("Suma total:", total)',
+            },
+            {
+                "title": "for + input(): pedir N datos",
+                "explain": "Cuando sabes cuántos valores pedirás, combinas <code>range()</code> con <code>input()</code> para leerlos uno a uno y, por ejemplo, promediarlos.",
+                "code": 'n = int(input("¿Cuántas notas vas a ingresar? "))\nsuma = 0\nfor i in range(n):\n    suma += float(input(f"Nota {i + 1}: "))\nprint("Promedio:", round(suma / n, 2))',
+            },
+            {
                 "title": "for + if: contar condicional",
                 "explain": "Recorremos y contamos solo lo que cumple la condición.",
                 "code": 'aprobadas = 0\nfor n in notas:\n    if n >= 5:\n        aprobadas += 1\nprint("notas >= 5:", aprobadas)',
@@ -212,17 +222,18 @@ entender la lógica; pero, cuando exista la versión de columna, esa suele ser l
             "Con <code>for + if</code>, suma solo los valores impares de <code>[3, 8, 5, 2, 9, 4]</code>.",
             "Con un <code>while</code>, encuentra el primer número natural cuyo cuadrado supere 100.",
             "Recorre <code>datos['ventas']</code> y encuentra (con un bucle) el valor máximo sin usar <code>max()</code>.",
+            "Con un <code>while</code> e <code>input()</code>, pide números hasta que se escriba «fin» y muestra cuántos ingresaste y su promedio.",
         ],
     },
 
     # ============================================================ CAP 07
     {
-        "num": 7,
+        "num": 8,
         "slug": "pandas-estadistica-1",
-        "code": "leccion_07",
+        "code": "leccion_08",
         "title": "Estadística con Pandas I",
         "subtitle": "Resumir datos: medidas, conteos y agrupaciones",
-        "apunte": "Lección 7 - Estadística descriptiva con Pandas",
+        "apunte": "Lección 8 - Estadística descriptiva con Pandas",
         "concepts": [
             ("Estadística descriptiva", "Resume un conjunto de datos en pocos números y gráficos, para entenderlo sin mirar fila por fila."),
             ("Media / mediana", "La <b>media</b> es el promedio; la <b>mediana</b> es el valor central. La mediana resiste mejor los valores extremos (atípicos)."),
@@ -319,12 +330,12 @@ promedios. Detectarlos y tratarlos es parte de la limpieza de datos.</p>
 
     # ============================================================ CAP 08
     {
-        "num": 8,
+        "num": 9,
         "slug": "pandas-estadistica-2",
-        "code": "leccion_08",
+        "code": "leccion_09",
         "title": "Estadística con Pandas II (con IF, FOR y WHILE)",
         "subtitle": "Combinar pandas con condiciones y bucles para analizar y decidir",
-        "apunte": "Lección 8 - Pandas aplicado",
+        "apunte": "Lección 9 - Pandas aplicado",
         "concepts": [
             ("Filtro booleano", "Seleccionar filas con una condición: <code>datos[datos['ventas'] &gt; 100]</code>. Es la forma <i>vectorizada</i> de filtrar."),
             ("Columna derivada", "Crear una columna nueva a partir de otras: <code>datos['total'] = datos['ventas'] * precio</code>."),

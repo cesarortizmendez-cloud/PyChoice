@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo G: Estadistica y probabilidad (Lecciones 24 a 26).
+PyChoice - Modulo G: Estadistica y probabilidad (Lecciones 25 a 27).
 Formato capitulo. En cada consola: np, pd, plt y los datos de ejemplo
 `notas` (lista) y `datos` (DataFrame). scipy se carga bajo demanda al
 importarlo (loadPackagesFromImports en pyengine.js).
@@ -10,12 +10,12 @@ CHAPTERS_G = [
 
     # ============================================================ CAP 24
     {
-        "num": 24,
+        "num": 25,
         "slug": "probabilidad",
-        "code": "leccion_24",
+        "code": "leccion_25",
         "title": "Probabilidad básica",
         "subtitle": "Medir la incertidumbre y simularla con Python",
-        "apunte": "Lección 24 - Probabilidad",
+        "apunte": "Lección 25 - Probabilidad",
         "concepts": [
             ("Probabilidad", "Una medida entre 0 y 1 de qué tan posible es un evento. 0 = imposible, 1 = seguro."),
             ("Espacio muestral", "Todos los resultados posibles de un experimento (para un dado: 1,2,3,4,5,6)."),
@@ -105,12 +105,12 @@ resuelve problemas de probabilidad que serían difíciles con fórmulas. En esta
 
     # ============================================================ CAP 25
     {
-        "num": 25,
+        "num": 26,
         "slug": "distribuciones",
-        "code": "leccion_25",
+        "code": "leccion_26",
         "title": "Distribuciones de probabilidad",
         "subtitle": "Normal, binomial, uniforme y Poisson: modelar el azar",
-        "apunte": "Lección 25 - Distribuciones",
+        "apunte": "Lección 26 - Distribuciones",
         "concepts": [
             ("Variable aleatoria", "Una cantidad cuyo valor depende del azar (el resultado de un dado, una altura)."),
             ("Distribución", "Describe qué valores toma una variable aleatoria y con qué probabilidad."),
@@ -204,12 +204,12 @@ probabilidad completo.</p>
 
     # ============================================================ CAP 26
     {
-        "num": 26,
+        "num": 27,
         "slug": "inferencia",
-        "code": "leccion_26",
+        "code": "leccion_27",
         "title": "Inferencia: intervalos y pruebas de hipótesis",
         "subtitle": "De la muestra a la población: estimar y decidir con evidencia",
-        "apunte": "Lección 26 - Inferencia estadística",
+        "apunte": "Lección 27 - Inferencia estadística",
         "concepts": [
             ("Población vs muestra", "La <b>población</b> es todo; la <b>muestra</b> es la parte que observamos y con la que estimamos."),
             ("Estimación", "Usar la muestra para aproximar un parámetro de la población (por ejemplo, su media)."),

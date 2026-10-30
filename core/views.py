@@ -177,7 +177,7 @@ def manifest(request):
 def service_worker(request):
     """Service worker en la raiz del sitio para habilitar instalacion PWA."""
     content = r'''
-const CACHE_NAME = 'pychoice-pwa-v2';
+const CACHE_NAME = 'pychoice-pwa-v3';
 const CDN_CACHE = 'pychoice-cdn-v1';   // Pyodide, wheels y SheetJS (URLs versionadas)
 const CDN_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com'];
 const APP_SHELL = [
@@ -197,7 +197,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => Promise.all(APP_SHELL.map((url) => {
-        return fetch(url).then((response) => {
+        return fetch(url, { cache: 'reload' }).then((response) => {
           if (response.ok) return cache.put(url, response);
           return null;
         }).catch(() => null);

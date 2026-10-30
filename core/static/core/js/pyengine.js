@@ -208,18 +208,34 @@ import js as _js
 def _input(prompt=""):
     msg = "" if prompt is None else str(prompt)
     if msg:
-        sys.stdout.write(msg)
+        try:
+            sys.stdout.write(msg)
+        except Exception:
+            pass
+    val = None
+    # prompt() del navegador es sincrono: devuelve el texto o None (cancelar), nunca bloquea.
     try:
-        val = _js.window.prompt(msg if msg else "Entrada:")
+        val = _js.prompt(msg)
     except Exception:
-        val = None
+        try:
+            val = _js.window.prompt(msg)
+        except Exception:
+            val = None
     if val is None:
         val = ""
     val = str(val)
-    sys.stdout.write(val + "\n")
+    try:
+        sys.stdout.write(val + "\n")
+    except Exception:
+        pass
     return val
 
 NS["input"] = _input
+try:
+    import builtins as _bi
+    _bi.input = _input          # red de seguridad: ningun input() queda en el builtin que se cuelga
+except Exception:
+    pass
 
 def _seed():
     NS["notas"] = [4.2, 5.8, 6.1, 3.9, 5.0, 6.7, 4.5, 5.3]

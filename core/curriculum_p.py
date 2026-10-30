@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de Investigacion de Operaciones".
-Modulo P - Fundamentos de modelamiento y programacion lineal (lecciones 61-64).
+Modulo P - Fundamentos de modelamiento y programacion lineal (lecciones 62-65).
 
 Nivel pro, con modelamiento industrial. Todo corre en el navegador:
 LP con HiGHS via scipy.optimize.linprog; simplex didactico en numpy.
@@ -11,9 +11,9 @@ CHAPTERS_P = [
 
     # ============================================================ CAP 61
     {
-        "num": 61,
+        "num": 62,
         "slug": "io-del-enunciado-al-modelo",
-        "code": "leccion_61",
+        "code": "leccion_62",
         "title": "Investigación de operaciones: del enunciado al modelo",
         "subtitle": "Traducir un problema industrial a variables, objetivo y restricciones",
         "apunte": "Módulo P · Lección 1 - Del enunciado al modelo",
@@ -60,8 +60,8 @@ paralelas; empujarla en la dirección de mejora la detiene en un <b>vértice</b>
 variables el polígono es un poliedro, pero la idea no cambia.</p>
 
 <p><b>De la geometría al cálculo.</b> Revisar vértices a mano solo sirve con dos o tres variables; un
-problema industrial real tiene cientos. Por eso existen algoritmos como el <b>simplex</b> (lección 63) y
-solvers como <b>HiGHS</b> (lección 62), que encuentran el vértice óptimo con eficiencia. En esta lección
+problema industrial real tiene cientos. Por eso existen algoritmos como el <b>simplex</b> (lección 64) y
+solvers como <b>HiGHS</b> (lección 63), que encuentran el vértice óptimo con eficiencia. En esta lección
 modelamos y entendemos la geometría; en las siguientes, resolvemos a escala.</p>
 """,
         "examples": [
@@ -108,9 +108,9 @@ modelamos y entendemos la geometría; en las siguientes, resolvemos a escala.</p
 
     # ============================================================ CAP 62
     {
-        "num": 62,
+        "num": 63,
         "slug": "programacion-lineal-highs",
-        "code": "leccion_62",
+        "code": "leccion_63",
         "title": "Programación lineal con Python (HiGHS)",
         "subtitle": "Resolver modelos industriales reales con scipy.optimize.linprog",
         "apunte": "Módulo P · Lección 2 - LP con HiGHS",
@@ -158,7 +158,7 @@ enorme parte de los problemas reales.</p>
         "examples": [
             {
                 "title": "Mezcla de producción (maximizar margen)",
-                "explain": "El problema de la planta de la lección 61, ahora resuelto con HiGHS. Maximizar = minimizar −margen.",
+                "explain": "El problema de la planta de la lección 62, ahora resuelto con HiGHS. Maximizar = minimizar −margen.",
                 "code": 'import numpy as np\nfrom scipy.optimize import linprog\nmargen = [40, 30]\nA_ub = [[1, 2], [3, 1]]        # mezclado, secado\nb_ub = [40, 60]\n\nres = linprog(c=[-m for m in margen], A_ub=A_ub, b_ub=b_ub,\n              bounds=[(0, None), (0, None)])\nprint("estado:", res.status, "(0 = optimo)")\nprint("produccion optima:", np.round(res.x, 2), "toneladas")\nprint("margen maximo:", round(-res.fun, 2))',
             },
             {
@@ -184,7 +184,7 @@ enorme parte de los problemas reales.</p>
         ],
         "dataset": "modelos en el código",
         "exercises": [
-            "Resuelve con linprog el problema de sillas y mesas de la lección 61.",
+            "Resuelve con linprog el problema de sillas y mesas de la lección 62.",
             "Interpreta <code>res.x</code> y <code>res.fun</code> en términos del negocio.",
             "Mezcla de alimento: agrega un tercer insumo (afrecho) y vuelve a optimizar.",
             "Agrega al modelo multi-producto un mínimo de contrato (al menos 10 del producto 1).",
@@ -199,9 +199,9 @@ enorme parte de los problemas reales.</p>
 
     # ============================================================ CAP 63
     {
-        "num": 63,
+        "num": 64,
         "slug": "metodo-simplex",
-        "code": "leccion_63",
+        "code": "leccion_64",
         "title": "El método simplex paso a paso",
         "subtitle": "Qué hace el solver por dentro: forma estándar, tablas y pivoteo",
         "apunte": "Módulo P · Lección 3 - Método simplex",
@@ -281,7 +281,7 @@ solver profesional.</p>
             "Haz una iteración de pivoteo a mano sobre esa tabla.",
             "Usa <code>simplex_max</code> para resolver el problema de sillas y mesas.",
             "Compara tu resultado con linprog: ¿coinciden?",
-            "Resuelve con el simplex el problema de producción de la lección 61.",
+            "Resuelve con el simplex el problema de producción de la lección 62.",
             "Muestra las holguras finales e indica qué recursos quedan al límite.",
             "Cuenta cuántas iteraciones hace el simplex (agrega un contador).",
             "Prueba el simplex con un tercer producto (3 variables).",
@@ -292,9 +292,9 @@ solver profesional.</p>
 
     # ============================================================ CAP 64
     {
-        "num": 64,
+        "num": 65,
         "slug": "sensibilidad-dualidad",
-        "code": "leccion_64",
+        "code": "leccion_65",
         "title": "Análisis de sensibilidad y dualidad",
         "subtitle": "Qué vale cada recurso y cómo decidir dónde invertir",
         "apunte": "Módulo P · Lección 4 - Sensibilidad y dualidad",

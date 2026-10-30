@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo M - Redes neuronales desde la base (lecciones 50-54).
+Modulo M - Redes neuronales desde la base (lecciones 51-55).
 
 De la neurona al backpropagation con numpy, y redes con scikit-learn (MLP).
 Todo corre en el navegador (numpy; sklearn se autocarga al usarse).
@@ -12,9 +12,9 @@ CHAPTERS_M = [
 
     # ============================================================ CAP 50
     {
-        "num": 50,
+        "num": 51,
         "slug": "neurona-perceptron",
-        "code": "leccion_50",
+        "code": "leccion_51",
         "title": "La neurona y el perceptrón",
         "subtitle": "La unidad básica de una red: suma ponderada, sesgo y activación",
         "apunte": "Módulo M · Lección 1 - La neurona y el perceptrón",
@@ -56,7 +56,7 @@ encuentra. Pero hay problemas que <b>ninguna recta</b> separa: el caso famoso es
 limitación, descubierta en 1969, casi mata el campo… hasta que llegaron las <b>capas ocultas</b>
 (próxima lección), que la superan.</p>
 
-<p><b>Por qué construirla a mano.</b> En la lección 53 usaremos redes de scikit-learn con una línea de
+<p><b>Por qué construirla a mano.</b> En la lección 54 usaremos redes de scikit-learn con una línea de
 código. Pero programar la neurona con numpy —la suma ponderada, el escalón, la regla de aprendizaje—
 es lo que hace que una red <b>deje de ser magia</b>. Todo lo demás son muchas de estas unidades
 conectadas.</p>
@@ -110,9 +110,9 @@ conectadas.</p>
 
     # ============================================================ CAP 51
     {
-        "num": 51,
+        "num": 52,
         "slug": "mlp-forward",
-        "code": "leccion_51",
+        "code": "leccion_52",
         "title": "Perceptrón multicapa y forward pass",
         "subtitle": "Capas ocultas, funciones de activación y el pase hacia adelante",
         "apunte": "Módulo M · Lección 2 - MLP y forward pass",
@@ -201,9 +201,9 @@ pesos sola con backpropagation.</p>
 
     # ============================================================ CAP 52
     {
-        "num": 52,
+        "num": 53,
         "slug": "backpropagation",
-        "code": "leccion_52",
+        "code": "leccion_53",
         "title": "Backpropagation y descenso de gradiente",
         "subtitle": "Cómo aprende una red: pérdida, gradientes y entrenamiento desde cero",
         "apunte": "Módulo M · Lección 3 - Backpropagation",
@@ -296,9 +296,9 @@ Ver bajar la pérdida y aparecer la solución es ver, en pequeño, cómo aprende
 
     # ============================================================ CAP 53
     {
-        "num": 53,
+        "num": 54,
         "slug": "redes-sklearn",
-        "code": "leccion_53",
+        "code": "leccion_54",
         "title": "Redes neuronales con scikit-learn",
         "subtitle": "MLPClassifier y MLPRegressor en datos reales: escalado y regularización",
         "apunte": "Módulo M · Lección 4 - Redes con scikit-learn",
@@ -391,9 +391,9 @@ siempre gana, y eso también es una lección importante.</p>
 
     # ============================================================ CAP 54
     {
-        "num": 54,
+        "num": 55,
         "slug": "deep-learning-panorama",
-        "code": "leccion_54",
+        "code": "leccion_55",
         "title": "Buenas prácticas y panorama del deep learning",
         "subtitle": "Sobreajuste, regularización y hacia dónde sigue el aprendizaje profundo",
         "apunte": "Módulo M · Lección 5 - Buenas prácticas y panorama",

@@ -93,7 +93,7 @@ REFERENCE = [
         ("sum()", "Suma de una secuencia", "sum([1, 2, 3])"),
      ]},
 
-    {"id": "listas", "titulo": "Listas", "ref": "Modulo C · Leccion 9",
+    {"id": "listas", "titulo": "Listas", "ref": "Modulo C · Leccion 10",
      "nota": "Coleccion ordenada y mutable: la estructura mas usada.",
      "filas": [
         ("[]", "Crea una lista", "xs = [4, 8, 15, 16]"),
@@ -107,7 +107,7 @@ REFERENCE = [
         ("len()", "Cantidad de elementos", "len(xs)"),
      ]},
 
-    {"id": "dicts", "titulo": "Diccionarios, tuplas y conjuntos", "ref": "Modulo C · Leccion 9",
+    {"id": "dicts", "titulo": "Diccionarios, tuplas y conjuntos", "ref": "Modulo C · Leccion 10",
      "nota": "Otras estructuras clave para organizar informacion.",
      "filas": [
         ("{clave: valor}", "Crea un diccionario", 'd = {"a": 1, "b": 2}'),
@@ -119,7 +119,7 @@ REFERENCE = [
         ("union / intersection", "Operaciones de conjuntos", "a | b, a & b"),
      ]},
 
-    {"id": "control", "titulo": "Control de flujo", "ref": "Modulo A-B · Lecciones 4, 6",
+    {"id": "control", "titulo": "Control de flujo", "ref": "Modulo A-B · Lecciones 4, 7",
      "nota": "Decidir con condiciones y repetir con bucles.",
      "filas": [
         ("if / elif / else", "Decisiones", 'if x > 0: print("pos")'),
@@ -131,7 +131,7 @@ REFERENCE = [
         ("zip()", "Recorre dos listas a la vez", "for a, b in zip(xs, ys): ..."),
      ]},
 
-    {"id": "funciones", "titulo": "Funciones", "ref": "Modulo C · Leccion 10",
+    {"id": "funciones", "titulo": "Funciones", "ref": "Modulo C · Leccion 11",
      "nota": "Empaquetar codigo reutilizable.",
      "filas": [
         ("def", "Define una funcion", "def doble(n): return n * 2"),
@@ -143,7 +143,7 @@ REFERENCE = [
         ("docstring", "Documenta la funcion", 'def f(): "Explica que hace"'),
      ]},
 
-    {"id": "comprensiones", "titulo": "Comprensiones", "ref": "Modulo C · Leccion 11",
+    {"id": "comprensiones", "titulo": "Comprensiones", "ref": "Modulo C · Leccion 12",
      "nota": "Construir colecciones en una linea, de forma clara.",
      "filas": [
         ("lista", "Comprension de lista", "[n * 2 for n in xs]"),
@@ -153,7 +153,7 @@ REFERENCE = [
         ("anidada", "Doble bucle", "[i * j for i in a for j in b]"),
      ]},
 
-    {"id": "errores", "titulo": "Errores y archivos", "ref": "Modulo C · Leccion 12",
+    {"id": "errores", "titulo": "Errores y archivos", "ref": "Modulo C · Leccion 13",
      "nota": "Manejar fallos sin que el programa se detenga y leer/escribir archivos.",
      "filas": [
         ("try / except", "Captura errores", "try: ... except ZeroDivisionError: ..."),
@@ -166,7 +166,7 @@ REFERENCE = [
      ]},
 
     # ------------------------------------------------------------------
-    {"id": "numpy", "titulo": "NumPy (calculo numerico)", "ref": "Modulo D · Leccion 13",
+    {"id": "numpy", "titulo": "NumPy (calculo numerico)", "ref": "Modulo D · Leccion 14",
      "nota": "Arrays y operaciones vectorizadas: rapido y sin bucles.",
      "filas": [
         ("np.array()", "Crea un array", "np.array([1, 2, 3])"),
@@ -180,7 +180,7 @@ REFERENCE = [
         ("np.random", "Numeros aleatorios", "np.random.default_rng(7).normal(0, 1, 100)"),
      ]},
 
-    {"id": "pandas-base", "titulo": "pandas · crear, leer y mirar", "ref": "Modulo B-D · Lecciones 5, 7",
+    {"id": "pandas-base", "titulo": "pandas · crear, leer y mirar", "ref": "Modulo B-D · Lecciones 6, 8",
      "nota": "La tabla (DataFrame) es el objeto central del analisis de datos.",
      "filas": [
         ("pd.DataFrame()", "Crea una tabla", 'pd.DataFrame({"a": [1, 2]})'),
@@ -193,7 +193,7 @@ REFERENCE = [
         (".to_csv() .to_excel()", "Exporta la tabla", 'df.to_excel("out.xlsx")'),
      ]},
 
-    {"id": "pandas-sel", "titulo": "pandas · seleccionar y filtrar", "ref": "Modulo D · Leccion 14",
+    {"id": "pandas-sel", "titulo": "pandas · seleccionar y filtrar", "ref": "Modulo D · Leccion 15",
      "nota": "Elegir filas y columnas con precision.",
      "filas": [
         ('df["col"]', "Una columna (Series)", 'df["edad"]'),
@@ -206,7 +206,7 @@ REFERENCE = [
         ("& | ~", "Combina condiciones", 'df[(df["a"] > 1) & (df["b"] < 9)]'),
      ]},
 
-    {"id": "pandas-limpieza", "titulo": "pandas · limpieza", "ref": "Modulo D · Leccion 15",
+    {"id": "pandas-limpieza", "titulo": "pandas · limpieza", "ref": "Modulo D · Leccion 16",
      "nota": "Preparar datos reales: nulos, duplicados, tipos y texto.",
      "filas": [
         (".isna() .sum()", "Cuenta valores faltantes", "df.isna().sum()"),
@@ -219,7 +219,7 @@ REFERENCE = [
         (".str.lower()", "Metodos de texto en columnas", 'df["c"].str.strip()'),
      ]},
 
-    {"id": "pandas-transf", "titulo": "pandas · transformar y ordenar", "ref": "Modulo D · Lecciones 15-16",
+    {"id": "pandas-transf", "titulo": "pandas · transformar y ordenar", "ref": "Modulo D · Lecciones 16-17",
      "nota": "Crear columnas, aplicar funciones y ordenar.",
      "filas": [
         ("df[\"nueva\"] = ...", "Crea/actualiza columna", 'df["total"] = df["a"] + df["b"]'),
@@ -231,7 +231,7 @@ REFERENCE = [
         (".rank()", "Rangos", 'df["p"].rank()'),
      ]},
 
-    {"id": "pandas-group", "titulo": "pandas · agrupar y combinar", "ref": "Modulo B-D · Lecciones 7, 16",
+    {"id": "pandas-group", "titulo": "pandas · agrupar y combinar", "ref": "Modulo B-D · Lecciones 8, 17",
      "nota": "Resumir por grupos y unir tablas.",
      "filas": [
         (".groupby()", "Agrupa y resume", 'df.groupby("region")["ventas"].mean()'),
@@ -243,7 +243,7 @@ REFERENCE = [
         (".melt() / .pivot()", "Reforma ancho <-> largo", 'df.melt(id_vars="mes")'),
      ]},
 
-    {"id": "pandas-fechas", "titulo": "pandas · fechas y series de tiempo", "ref": "Modulo D · Leccion 17",
+    {"id": "pandas-fechas", "titulo": "pandas · fechas y series de tiempo", "ref": "Modulo D · Leccion 18",
      "nota": "Trabajar con fechas y datos temporales.",
      "filas": [
         ("pd.to_datetime()", "Convierte a fecha", 'pd.to_datetime(df["fecha"])'),
@@ -256,7 +256,7 @@ REFERENCE = [
      ]},
 
     # ------------------------------------------------------------------
-    {"id": "estadistica", "titulo": "Estadistica descriptiva", "ref": "Modulo E · Lecciones 18-20",
+    {"id": "estadistica", "titulo": "Estadistica descriptiva", "ref": "Modulo E · Lecciones 19-21",
      "nota": "Centro, dispersion, posicion y relaciones.",
      "filas": [
         (".mean() .median()", "Promedio y mediana", 'df["x"].mean()'),
@@ -270,7 +270,7 @@ REFERENCE = [
         (".describe()", "Resumen completo", "df.describe()"),
      ]},
 
-    {"id": "matplotlib", "titulo": "Visualizacion · Matplotlib", "ref": "Modulo F · Leccion 21",
+    {"id": "matplotlib", "titulo": "Visualizacion · Matplotlib", "ref": "Modulo F · Leccion 22",
      "nota": "Graficos base. Recuerda terminar con plt.show().",
      "filas": [
         ("plt.plot()", "Linea", "plt.plot(x, y)"),
@@ -284,7 +284,7 @@ REFERENCE = [
         ("plt.show()", "Renderiza el grafico", "plt.show()"),
      ]},
 
-    {"id": "seaborn", "titulo": "Visualizacion · Seaborn", "ref": "Modulo F · Leccion 22",
+    {"id": "seaborn", "titulo": "Visualizacion · Seaborn", "ref": "Modulo F · Leccion 23",
      "nota": "Graficos estadisticos directos desde el DataFrame (import seaborn as sns).",
      "filas": [
         ("sns.scatterplot()", "Dispersion con color por grupo", 'sns.scatterplot(data=df, x="a", y="b", hue="g")'),
@@ -295,7 +295,7 @@ REFERENCE = [
         ("sns.heatmap()", "Mapa de calor (correlacion)", "sns.heatmap(df.corr(numeric_only=True))"),
      ]},
 
-    {"id": "probabilidad", "titulo": "Probabilidad y distribuciones", "ref": "Modulo G · Lecciones 24-25",
+    {"id": "probabilidad", "titulo": "Probabilidad y distribuciones", "ref": "Modulo G · Lecciones 25-26",
      "nota": "Modelar y simular la incertidumbre.",
      "filas": [
         ("rng.random()", "Numero aleatorio [0,1)", "rng = np.random.default_rng(); rng.random()"),
@@ -308,7 +308,7 @@ REFERENCE = [
         ("scipy.stats", "Distribuciones teoricas", "from scipy import stats; stats.norm.pdf(x)"),
      ]},
 
-    {"id": "inferencia", "titulo": "Inferencia estadistica (scipy)", "ref": "Modulo G · Leccion 26",
+    {"id": "inferencia", "titulo": "Inferencia estadistica (scipy)", "ref": "Modulo G · Leccion 27",
      "nota": "De la muestra a la poblacion: estimar y contrastar (from scipy import stats).",
      "filas": [
         ("stats.ttest_ind()", "Compara dos medias", "stats.ttest_ind(a, b)"),
@@ -320,7 +320,7 @@ REFERENCE = [
      ]},
 
     # ------------------------------------------------------------------
-    {"id": "ml-flujo", "titulo": "Machine Learning · flujo y preparacion", "ref": "Modulo H · Lecciones 27-28",
+    {"id": "ml-flujo", "titulo": "Machine Learning · flujo y preparacion", "ref": "Modulo H · Lecciones 28-29",
      "nota": "El patron de scikit-learn: separar, escalar, entrenar, predecir (from sklearn...).",
      "filas": [
         ("X, y", "Predictoras y objetivo", 'X = df[cols]; y = df["target"]'),
@@ -332,7 +332,7 @@ REFERENCE = [
         ("Pipeline()", "Encadena pasos", "Pipeline([(\"sc\", StandardScaler()), (\"m\", modelo)])"),
      ]},
 
-    {"id": "ml-regresion", "titulo": "Machine Learning · regresion", "ref": "Modulo H · Lecciones 29-30",
+    {"id": "ml-regresion", "titulo": "Machine Learning · regresion", "ref": "Modulo H · Lecciones 30-31",
      "nota": "Predecir numeros continuos y evaluarlos.",
      "filas": [
         ("LinearRegression()", "Regresion lineal", "m = LinearRegression().fit(X, y)"),
@@ -344,7 +344,7 @@ REFERENCE = [
         ("residuos", "Real menos predicho", "y_te - pred"),
      ]},
 
-    {"id": "ml-clasificacion", "titulo": "Machine Learning · clasificacion", "ref": "Modulo H · Lecciones 31-33",
+    {"id": "ml-clasificacion", "titulo": "Machine Learning · clasificacion", "ref": "Modulo H · Lecciones 32-34",
      "nota": "Predecir categorias y medir su calidad.",
      "filas": [
         ("LogisticRegression()", "Regresion logistica", "LogisticRegression().fit(X, y)"),
@@ -359,7 +359,7 @@ REFERENCE = [
         (".feature_importances_", "Importancia de variables", "modelo.feature_importances_"),
      ]},
 
-    {"id": "ml-avanzado", "titulo": "Machine Learning · validacion y no supervisado", "ref": "Modulo H · Lecciones 34-36",
+    {"id": "ml-avanzado", "titulo": "Machine Learning · validacion y no supervisado", "ref": "Modulo H · Lecciones 35-37",
      "nota": "Generalizar bien, y descubrir estructura sin etiquetas.",
      "filas": [
         ("cross_val_score()", "Validacion cruzada", "cross_val_score(m, X, y, cv=5)"),

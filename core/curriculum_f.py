@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo F: Visualizacion de datos (Lecciones 21 a 23).
+PyChoice - Modulo F: Visualizacion de datos (Lecciones 22 a 24).
 Formato capitulo. En cada consola: np, pd, plt y los datos de ejemplo
 `notas` (lista) y `datos` (DataFrame: mes, region, ventas, unidades).
 Seaborn se carga bajo demanda al importarlo (loadPackagesFromImports).
@@ -10,12 +10,12 @@ CHAPTERS_F = [
 
     # ============================================================ CAP 21
     {
-        "num": 21,
+        "num": 22,
         "slug": "matplotlib",
-        "code": "leccion_21",
+        "code": "leccion_22",
         "title": "Matplotlib a fondo",
         "subtitle": "Líneas, barras, histogramas y dispersión, con títulos y estilo",
-        "apunte": "Lección 21 - Matplotlib",
+        "apunte": "Lección 22 - Matplotlib",
         "concepts": [
             ("Figura y ejes", "La <b>figura</b> es el lienzo; los <b>ejes</b> (axes) son el área donde se dibuja."),
             ("plt.plot()", "Gráfico de <b>líneas</b>: ideal para mostrar evolución en el tiempo."),
@@ -106,12 +106,12 @@ gráficos complejos.</p>
 
     # ============================================================ CAP 22
     {
-        "num": 22,
+        "num": 23,
         "slug": "seaborn",
-        "code": "leccion_22",
+        "code": "leccion_23",
         "title": "Seaborn: gráficos estadísticos",
         "subtitle": "Visualización estadística de alto nivel, directa desde el DataFrame",
-        "apunte": "Lección 22 - Seaborn",
+        "apunte": "Lección 23 - Seaborn",
         "concepts": [
             ("Seaborn (sns)", "Librería de visualización construida sobre matplotlib, especializada en gráficos estadísticos."),
             ("Trabaja con DataFrames", "Le pasas el DataFrame y los nombres de columnas: <code>data=df, x=\"...\", y=\"...\"</code>."),
@@ -201,12 +201,12 @@ tuyo. Verás lo poco que cuesta obtener un gráfico presentable.</p>
 
     # ============================================================ CAP 23
     {
-        "num": 23,
+        "num": 24,
         "slug": "storytelling",
-        "code": "leccion_23",
+        "code": "leccion_24",
         "title": "Storytelling con datos",
         "subtitle": "Comunicar un mensaje claro, honesto y memorable con tus gráficos",
-        "apunte": "Lección 23 - Storytelling con datos",
+        "apunte": "Lección 24 - Storytelling con datos",
         "concepts": [
             ("Mensaje primero", "Antes de graficar, define qué idea quieres que el lector recuerde."),
             ("Gráfico correcto", "El tipo de gráfico debe servir al mensaje, no al revés."),

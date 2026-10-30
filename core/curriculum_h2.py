@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo H (parte 2): Machine Learning (Lecciones 32 a 36).
+PyChoice - Modulo H (parte 2): Machine Learning (Lecciones 33 a 37).
 Nivel profesional. scikit-learn se carga bajo demanda al importarlo.
 """
 
@@ -8,12 +8,12 @@ CHAPTERS_H2 = [
 
     # ============================================================ CAP 32
     {
-        "num": 32,
+        "num": 33,
         "slug": "evaluar-clasificacion",
-        "code": "leccion_32",
+        "code": "leccion_33",
         "title": "Evaluar una clasificación",
         "subtitle": "Más allá de la precisión: matriz de confusión, precision, recall, F1 y AUC",
-        "apunte": "Lección 32 - Métricas de clasificación",
+        "apunte": "Lección 33 - Métricas de clasificación",
         "concepts": [
             ("Accuracy", "Proporción de aciertos. Útil, pero engañosa con clases desbalanceadas."),
             ("Matriz de confusión", "Tabla de aciertos y errores por clase (verdaderos/falsos positivos y negativos)."),
@@ -92,12 +92,12 @@ modelo que parece bueno y uno que <b>es</b> bueno.</p>
 
     # ============================================================ CAP 33
     {
-        "num": 33,
+        "num": 34,
         "slug": "ensembles",
-        "code": "leccion_33",
+        "code": "leccion_34",
         "title": "Árboles y ensembles: Random Forest",
         "subtitle": "De un árbol a un bosque: modelos potentes e importancia de variables",
-        "apunte": "Lección 33 - Ensembles",
+        "apunte": "Lección 34 - Ensembles",
         "concepts": [
             ("Árbol de decisión", "Preguntas sí/no encadenadas; interpretable pero tiende a sobreajustar."),
             ("max_depth", "Límite de profundidad del árbol: controla su complejidad."),
@@ -176,12 +176,12 @@ en competencias, y un paso natural cuando domines el Random Forest.</p>
 
     # ============================================================ CAP 34
     {
-        "num": 34,
+        "num": 35,
         "slug": "validacion-cruzada",
-        "code": "leccion_34",
+        "code": "leccion_35",
         "title": "Sobreajuste, validación cruzada y regularización",
         "subtitle": "Que el modelo generalice: medir bien y controlar la complejidad",
-        "apunte": "Lección 34 - Generalización",
+        "apunte": "Lección 35 - Generalización",
         "concepts": [
             ("Sobreajuste (overfitting)", "El modelo memoriza el entrenamiento y falla con datos nuevos (train alto, test bajo)."),
             ("Subajuste (underfitting)", "El modelo es demasiado simple y no capta el patrón (train y test bajos)."),
@@ -262,12 +262,12 @@ validación cruzada, regularización y búsqueda de hiperparámetros es lo que c
 
     # ============================================================ CAP 35
     {
-        "num": 35,
+        "num": 36,
         "slug": "no-supervisado",
-        "code": "leccion_35",
+        "code": "leccion_36",
         "title": "Aprendizaje no supervisado: clustering y PCA",
         "subtitle": "Descubrir grupos y reducir dimensiones sin etiquetas",
-        "apunte": "Lección 35 - No supervisado",
+        "apunte": "Lección 36 - No supervisado",
         "concepts": [
             ("No supervisado", "Aprender sin etiquetas: se busca estructura oculta en los datos."),
             ("Clustering", "Agrupar observaciones parecidas en grupos (clusters)."),
@@ -347,12 +347,12 @@ esencial de un científico de datos.</p>
 
     # ============================================================ CAP 36
     {
-        "num": 36,
+        "num": 37,
         "slug": "proyecto-ml",
-        "code": "leccion_36",
+        "code": "leccion_37",
         "title": "Proyecto de ML de punta a punta",
         "subtitle": "Del problema al modelo: el flujo completo integrado",
-        "apunte": "Lección 36 - Proyecto de ML",
+        "apunte": "Lección 37 - Proyecto de ML",
         "concepts": [
             ("Flujo de ML", "Cargar → preparar → dividir → entrenar → evaluar → interpretar → usar."),
             ("Pipeline", "Encadena preparación y modelo en un solo objeto reproducible."),

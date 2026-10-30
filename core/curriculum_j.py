@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 PyChoice - Ruta "Ingeniero de IA con Python".
-Modulo J - Fundamentos de IA y pensamiento algoritmico (lecciones 39-41).
+Modulo J - Fundamentos de IA y pensamiento algoritmico (lecciones 40-42).
 
 Todo el codigo corre en el navegador (numpy, matplotlib bajo demanda).
 Se usan los generadores de problemas del motor: mochila(), ciudades(), distancias().
@@ -11,9 +11,9 @@ CHAPTERS_J = [
 
     # ============================================================ CAP 39
     {
-        "num": 39,
+        "num": 40,
         "slug": "ia-panorama",
-        "code": "leccion_39",
+        "code": "leccion_40",
         "title": "Panorama de la IA con Python",
         "subtitle": "Qué es la inteligencia artificial y cómo se programa desde su base",
         "apunte": "Módulo J · Lección 1 - Panorama de la IA",
@@ -121,9 +121,9 @@ mejor. Empecemos con esa forma de pensar.</p>
 
     # ============================================================ CAP 40
     {
-        "num": 40,
+        "num": 41,
         "slug": "ia-busqueda-optimizacion",
-        "code": "leccion_40",
+        "code": "leccion_41",
         "title": "Problemas de búsqueda y optimización",
         "subtitle": "Cómo modelar un problema: solución, objetivo, restricciones y vecindario",
         "apunte": "Módulo J · Lección 2 - Búsqueda y optimización",
@@ -221,9 +221,9 @@ todas las metaheurísticas que veremos. Definir bien el vecindario es definir c�
 
     # ============================================================ CAP 41
     {
-        "num": 41,
+        "num": 42,
         "slug": "ia-azar-evaluacion",
-        "code": "leccion_41",
+        "code": "leccion_42",
         "title": "Azar reproducible y evaluación de algoritmos",
         "subtitle": "Semillas, búsqueda aleatoria, curvas de convergencia y comparación justa",
         "apunte": "Módulo J · Lección 3 - Azar y evaluación",

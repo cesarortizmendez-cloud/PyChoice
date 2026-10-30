@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo C: Python intermedio (Lecciones 9 a 12).
+PyChoice - Modulo C: Python intermedio (Lecciones 10 a 13).
 Formato capitulo (estilo EstadisticaR). Teoria extendida + 8 conceptos +
 ejemplos ejecutables + ejercicios. En cada consola: np, pd, plt y los datos
 de ejemplo `notas` (lista) y `datos` (DataFrame).
@@ -10,12 +10,12 @@ CHAPTERS_C = [
 
     # ============================================================ CAP 09
     {
-        "num": 9,
+        "num": 10,
         "slug": "estructuras",
-        "code": "leccion_09",
+        "code": "leccion_10",
         "title": "Estructuras de datos",
         "subtitle": "Listas, tuplas, diccionarios y conjuntos: organizar la información",
-        "apunte": "Lección 9 - Estructuras de datos",
+        "apunte": "Lección 10 - Estructuras de datos",
         "concepts": [
             ("Lista <code>[ ]</code>", "Colección <b>ordenada y mutable</b>: puedes agregar, quitar y cambiar elementos. La estructura más versátil."),
             ("Tupla <code>( )</code>", "Colección <b>ordenada e inmutable</b>: no cambia una vez creada. Ideal para datos fijos (una coordenada, una fila)."),
@@ -110,12 +110,12 @@ estas cuatro estructuras es el puente entre "programar" y "analizar datos".</p>
 
     # ============================================================ CAP 10
     {
-        "num": 10,
+        "num": 11,
         "slug": "funciones",
-        "code": "leccion_10",
+        "code": "leccion_11",
         "title": "Funciones",
         "subtitle": "Empaquetar código reutilizable con def, parámetros y return",
-        "apunte": "Lección 10 - Funciones",
+        "apunte": "Lección 11 - Funciones",
         "concepts": [
             ("Función", "Un bloque de código con nombre que realiza una tarea y se puede reutilizar cuantas veces quieras."),
             ("def", "Palabra clave para definir una función: <code>def nombre(parametros):</code>."),
@@ -212,12 +212,12 @@ mantenible.</p>
 
     # ============================================================ CAP 11
     {
-        "num": 11,
+        "num": 12,
         "slug": "comprensiones",
-        "code": "leccion_11",
+        "code": "leccion_12",
         "title": "Comprensiones de listas y diccionarios",
         "subtitle": "Construir colecciones en una línea, de forma clara y potente",
-        "apunte": "Lección 11 - Comprensiones",
+        "apunte": "Lección 12 - Comprensiones",
         "concepts": [
             ("Comprensión de lista", "Construye una lista en una línea: <code>[expr for x in iterable]</code>."),
             ("Expresión", "Lo que se calcula para cada elemento (la parte izquierda de la comprensión)."),
@@ -309,12 +309,12 @@ una columna a la vez, la misma idea que una comprensión pero aún más eficient
 
     # ============================================================ CAP 12
     {
-        "num": 12,
+        "num": 13,
         "slug": "errores-archivos",
-        "code": "leccion_12",
+        "code": "leccion_13",
         "title": "Errores y archivos",
         "subtitle": "Manejar errores con try/except y leer/escribir archivos",
-        "apunte": "Lección 12 - Errores y archivos",
+        "apunte": "Lección 13 - Errores y archivos",
         "concepts": [
             ("Excepción", "Un error que ocurre durante la ejecución y detiene el programa si no se maneja."),
             ("Traceback", "El mensaje de error: indica el tipo, la descripción y la línea donde ocurrió. Se lee de abajo hacia arriba."),
@@ -374,6 +374,11 @@ cabeza con datos incompletos.</p>
                 "code": 'def dividir(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return "no se puede dividir por cero"\n\nprint(dividir(10, 2))\nprint(dividir(10, 0))',
             },
             {
+                "title": "Validar lo que escribe el usuario (input + try/except)",
+                "explain": "El caso más común en la práctica: <code>int(input())</code> falla si la persona no escribe un número. Con <code>try/except</code> lo manejamos sin que el programa se caiga.",
+                "code": 'try:\n    edad = int(input("Escribe tu edad: "))\n    print("El año que viene tendrás", edad + 1)\nexcept ValueError:\n    print("Eso no es un número entero válido.")',
+            },
+            {
                 "title": "else y finally",
                 "explain": "<code>else</code> corre si no hubo error; <code>finally</code> corre siempre.",
                 "code": 'try:\n    valor = int("42")\nexcept ValueError:\n    print("error")\nelse:\n    print("todo bien, valor =", valor)\nfinally:\n    print("proceso terminado")',
@@ -405,6 +410,7 @@ cabeza con datos incompletos.</p>
             "Crea un diccionario de un producto y usa <code>.get()</code> para pedir un campo que no existe.",
             "Captura un <code>ValueError</code> al hacer <code>int(input_texto)</code> con un texto no numérico definido por ti.",
             "Escribe una función que reciba una lista y devuelva su promedio, capturando el caso de lista vacía (división por cero).",
+            "Pide un número con <code>input()</code> y conviértelo con <code>int()</code>; con <code>try/except</code> y un <code>while</code>, vuelve a pedirlo hasta que la persona escriba un número válido.",
         ],
     },
 ]

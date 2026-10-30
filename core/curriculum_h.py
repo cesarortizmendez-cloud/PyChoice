@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PyChoice - Modulo H: Machine Learning (Lecciones 27 a 31).
+PyChoice - Modulo H: Machine Learning (Lecciones 28 a 32).
 Nivel profesional. scikit-learn se carga bajo demanda al importarlo.
 Se usan datasets integrados (load_iris, load_diabetes, make_*) para que
 cada ejemplo sea autonomo y reproducible.
@@ -10,12 +10,12 @@ CHAPTERS_H = [
 
     # ============================================================ CAP 27
     {
-        "num": 27,
+        "num": 28,
         "slug": "que-es-ml",
-        "code": "leccion_27",
+        "code": "leccion_28",
         "title": "¿Qué es el Machine Learning?",
         "subtitle": "Aprender de los datos: el flujo de trabajo y la API de scikit-learn",
-        "apunte": "Lección 27 - Introducción al ML",
+        "apunte": "Lección 28 - Introducción al ML",
         "concepts": [
             ("Machine Learning", "Programar computadores para que <b>aprendan patrones de los datos</b> en vez de seguir reglas escritas a mano."),
             ("Supervisado", "Se aprende de ejemplos <b>etiquetados</b> (X → y): regresión (números) y clasificación (categorías)."),
@@ -96,12 +96,12 @@ darás tu primer modelo funcionando; en las siguientes, aprenderás a hacerlo bi
 
     # ============================================================ CAP 28
     {
-        "num": 28,
+        "num": 29,
         "slug": "preparar-datos-ml",
-        "code": "leccion_28",
+        "code": "leccion_29",
         "title": "Preparar los datos para el modelo",
         "subtitle": "Train/test split, escalado, variables categóricas y pipelines",
-        "apunte": "Lección 28 - Preparación de datos",
+        "apunte": "Lección 29 - Preparación de datos",
         "concepts": [
             ("Train / test split", "Separar los datos en <b>entrenamiento</b> (aprender) y <b>prueba</b> (evaluar con datos no vistos)."),
             ("X_train / X_test", "Las particiones de entrada; <code>y_train</code>/<code>y_test</code>, las de salida."),
@@ -182,12 +182,12 @@ lección lo usarás para construir tu primer flujo bien hecho.</p>
 
     # ============================================================ CAP 29
     {
-        "num": 29,
+        "num": 30,
         "slug": "regresion",
-        "code": "leccion_29",
+        "code": "leccion_30",
         "title": "Regresión: predecir números",
         "subtitle": "Regresión lineal, coeficientes y predicción de valores continuos",
-        "apunte": "Lección 29 - Regresión",
+        "apunte": "Lección 30 - Regresión",
         "concepts": [
             ("Regresión", "Predecir un valor <b>numérico continuo</b> (un precio, una temperatura, una demanda)."),
             ("LinearRegression", "El modelo base: ajusta una recta (o plano) que mejor sigue los datos."),
@@ -265,12 +265,12 @@ con rigor.</p>
 
     # ============================================================ CAP 30
     {
-        "num": 30,
+        "num": 31,
         "slug": "evaluar-regresion",
-        "code": "leccion_30",
+        "code": "leccion_31",
         "title": "Evaluar una regresión",
         "subtitle": "MAE, MSE, RMSE, R² y análisis de residuos",
-        "apunte": "Lección 30 - Métricas de regresión",
+        "apunte": "Lección 31 - Métricas de regresión",
         "concepts": [
             ("MAE", "Error absoluto medio: el promedio de las diferencias (en valor absoluto). Fácil de interpretar."),
             ("MSE", "Error cuadrático medio: penaliza más los errores grandes al elevarlos al cuadrado."),
@@ -350,12 +350,12 @@ análisis riguroso. En la lección de validación cruzada profundizaremos en est
 
     # ============================================================ CAP 31
     {
-        "num": 31,
+        "num": 32,
         "slug": "clasificacion",
-        "code": "leccion_31",
+        "code": "leccion_32",
         "title": "Clasificación: predecir categorías",
         "subtitle": "Regresión logística, KNN y árboles para asignar clases",
-        "apunte": "Lección 31 - Clasificación",
+        "apunte": "Lección 32 - Clasificación",
         "concepts": [
             ("Clasificación", "Predecir una <b>categoría</b> (spam/no spam, aprueba/reprueba, especie de flor)."),
             ("Regresión logística", "Pese a su nombre, es un modelo de <b>clasificación</b>: estima la probabilidad de cada clase."),
