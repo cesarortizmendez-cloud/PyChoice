@@ -154,7 +154,7 @@ h1.page .hl{ color:var(--phosphor); }
 .editor .hl{ position:absolute; inset:0; z-index:0; margin:0; border:0; overflow:hidden;
   pointer-events:none; background:#070d15; color:#d7e6d8;
   font-family:var(--mono); font-size:13.5px; line-height:1.55; tab-size:2;
-  padding:14px; white-space:pre-wrap; word-break:break-word; }
+  padding:14px; white-space:pre; word-break:normal; }
 .editor .hl code{ font:inherit; white-space:inherit; background:none; padding:0; }
 .editor .hl .hc{ color:#5f7389; font-style:italic; }     /* comentario */
 .editor .hl .hs{ color:#f3c47a; }                         /* texto (string) */
@@ -163,6 +163,14 @@ h1.page .hl{ color:var(--phosphor); }
 .editor .hl .hb{ color:var(--cyan); }                     /* función / dato */
 .editor .hl .hd{ color:var(--phosphor); }                 /* decorador */
 .editor .hl .ho{ color:#9db2c6; }                         /* operador */
+/* ---- Números de línea (gutter) + editor expandible ---- */
+.editor.has-ln textarea, .editor.has-ln .hl{ padding-left:50px; }
+.editor .ln-gutter{ position:absolute; left:0; top:0; bottom:0; width:40px; z-index:2;
+  margin:0; padding:14px 6px 14px 0; overflow:hidden; pointer-events:none; user-select:none;
+  background:#0a1017; border-right:1px solid #16202e; color:#3b4b5e; text-align:right;
+  font-family:var(--mono); font-size:13.5px; line-height:1.55; white-space:pre; }
+.rconsole.expanded .editor textarea{ min-height:62vh; }
+.rconsole.expanded .output{ max-height:62vh; }
 .output-wrap{ border-top:1px solid var(--line); }
 .rgrid.split .output-wrap{ border-top:none; border-left:1px solid var(--line); }
 .out-head{ padding:6px 12px; color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; background:#0a1320; border-bottom:1px solid var(--line); }
@@ -170,10 +178,19 @@ h1.page .hl{ color:var(--phosphor); }
   font-family:var(--mono); font-size:13px; color:#bfe9cf; min-height:60px; max-height:420px; overflow:auto; }
 .output .err{ color:var(--magenta); }
 .output .prompt{ color:var(--phosphor); }
-.plotbox{ padding:12px; text-align:center; background:#fbfdff; border-top:1px solid var(--line); }
-.rgrid.split .plotbox{ border-top:none; border-left:1px solid var(--line); }
-.plotbox canvas{ max-width:100%; height:auto; border-radius:4px; }
-.plotbox .empty{ color:#9fb0bf; font-family:var(--sans); font-size:13px; padding:40px 0; }
+/* ---- Área de gráfico retráctil (se expande sólo cuando se usa) ---- */
+.plotwrap{ border-top:1px solid var(--line); }
+.plot-head{ width:100%; display:flex; align-items:center; gap:8px; padding:7px 12px;
+  background:#0a1320; border:0; cursor:pointer; color:var(--muted);
+  font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+.plot-head:hover{ color:var(--phosphor); }
+.plot-head .plot-ch{ display:inline-block; transition:transform .15s ease; }
+.plotwrap:not(.collapsed) .plot-head{ border-bottom:1px solid var(--line); }
+.plotwrap:not(.collapsed) .plot-head .plot-ch{ transform:rotate(90deg); color:var(--phosphor); }
+.plotbox{ padding:12px; text-align:center; background:#fbfdff; }
+.plotwrap.collapsed .plotbox{ display:none; }
+.plotbox img, .plotbox canvas{ max-width:100%; height:auto; border-radius:4px; }
+.plotbox .empty{ color:#9fb0bf; font-family:var(--sans); font-size:13px; padding:28px 0; }
 
 /* ---------- Hero portada ---------- */
 .hero{ padding:46px 0 30px; border-bottom:1px solid var(--line); margin-bottom:30px; }
@@ -274,7 +291,7 @@ footer.foot .credit a:hover{ color:var(--phosphor); }
   .hero .lead{ font-size:15px; }
   .cards{ grid-template-columns:1fr; }
   .editor textarea{ min-height:120px; font-size:13px; }
-  .editor .hl{ font-size:13px; }
+  .editor .hl, .editor .ln-gutter{ font-size:13px; }
   .rconsole .bar .fname{ width:100%; margin:0 0 4px; }
   .rconsole .bar .actions{ margin-left:0; width:100%; }
   .btn{ padding:7px 9px; }                                       /* objetivos táctiles */

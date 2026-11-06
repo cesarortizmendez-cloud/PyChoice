@@ -369,10 +369,20 @@ function renderOutput(panel, result) {
   }
 }
 
-function renderPlots(box, images) {
+function setPlotCollapsed(wrap, collapsed) {
+  if (!wrap) return;
+  wrap.classList.toggle('collapsed', collapsed);
+  const head = wrap.querySelector('.plot-head');
+  if (head) head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
+function renderPlots(wrap, images) {
+  if (!wrap) return;
+  const box = wrap.querySelector('.plotbox');
   if (!box) return;
   if (!images || !images.length) {
-    box.innerHTML = '<div class="empty">Sin gráfico. Usa matplotlib: plt.plot(), plt.hist()…</div>';
+    box.innerHTML = '';
+    setPlotCollapsed(wrap, true);   // sin gráfico -> se queda colapsado
     return;
   }
   box.innerHTML = '';
@@ -383,6 +393,7 @@ function renderPlots(box, images) {
     img.style.maxWidth = '100%';
     box.appendChild(img);
   }
+  setPlotCollapsed(wrap, false);    // hay gráfico -> se expande solo
 }
 
 /* ============================================================
@@ -430,7 +441,7 @@ function pyHighlight(src) {
 function bindConsole(el) {
   const ta   = el.querySelector('textarea');
   const out  = el.querySelector('.output');
-  const plot = el.querySelector('.plotbox');
+  const plotWrap = el.querySelector('.plotwrap');
   const runBtn   = el.querySelector('[data-act=run]');
   const clearBtn = el.querySelector('[data-act=clear]');
   const resetBtn = el.querySelector('[data-act=reset]');
@@ -443,18 +454,34 @@ function bindConsole(el) {
   const editor = el.querySelector('.editor');
   let syncHL = () => {};
   if (ta && editor && !editor.querySelector('.hl')) {
+    const gutter = document.createElement('div');          // números de línea
+    gutter.className = 'ln-gutter'; gutter.setAttribute('aria-hidden', 'true');
     const pre = document.createElement('pre');
     pre.className = 'hl'; pre.setAttribute('aria-hidden', 'true');
     const codeEl = document.createElement('code');
     pre.appendChild(codeEl);
     editor.insertBefore(pre, ta);
-    editor.classList.add('has-hl');
+    editor.insertBefore(gutter, pre);
+    editor.classList.add('has-hl', 'has-ln');
+    ta.setAttribute('wrap', 'off');                        // sin ajuste -> números alineados
+    let lastN = -1;
     syncHL = () => {
       codeEl.innerHTML = pyHighlight(ta.value) + '\n';
+      const n = ta.value.split('\n').length;
+      if (n !== lastN) {
+        let g = '';
+        for (let i = 1; i <= n; i++) g += i + '\n';
+        gutter.textContent = g;
+        lastN = n;
+      }
       pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
+      gutter.scrollTop = ta.scrollTop;
     };
     ta.addEventListener('input', syncHL);
-    ta.addEventListener('scroll', () => { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; });
+    ta.addEventListener('scroll', () => {
+      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
+      gutter.scrollTop = ta.scrollTop;
+    });
     syncHL();
   }
 
@@ -466,7 +493,7 @@ function bindConsole(el) {
     if (out) out.innerHTML = '<span class="prompt">Corriendo Python…</span>';
     const result = await runPython(ta.value);
     renderOutput(out, result);
-    renderPlots(plot, result.images);
+    renderPlots(plotWrap, result.images);
     runBtn.disabled = false;
     runBtn.textContent = prev;
   }
@@ -474,9 +501,27 @@ function bindConsole(el) {
   if (runBtn) runBtn.addEventListener('click', execute);
   if (clearBtn) clearBtn.addEventListener('click', () => {
     if (out) out.innerHTML = '';
-    if (plot) plot.innerHTML = '<div class="empty">Sin gráfico.</div>';
+    if (plotWrap) { const _b = plotWrap.querySelector('.plotbox'); if (_b) _b.innerHTML = ''; setPlotCollapsed(plotWrap, true); }
   });
   if (resetBtn) resetBtn.addEventListener('click', () => { ta.value = original; syncHL(); });
+
+  const expandBtn = el.querySelector('[data-act=expand]');
+  if (expandBtn) expandBtn.addEventListener('click', () => {
+    const exp = el.classList.toggle('expanded');
+    expandBtn.textContent = exp ? '\u2921' : '\u2922';
+    expandBtn.title = exp ? 'Contraer el editor' : 'Expandir el editor';
+    syncHL();
+  });
+
+  const plotHead = el.querySelector('[data-act=plottoggle]');
+  if (plotHead && plotWrap) plotHead.addEventListener('click', () => {
+    const willCollapse = !plotWrap.classList.contains('collapsed');
+    setPlotCollapsed(plotWrap, willCollapse);
+    if (!willCollapse) {
+      const _b = plotWrap.querySelector('.plotbox');
+      if (_b && !_b.querySelector('img')) _b.innerHTML = '<div class="empty">Aún no hay gráfico. Usa matplotlib (plt.plot, plt.hist, plt.bar) y ejecuta.</div>';
+    }
+  });
 
   // Ctrl/Cmd + Enter para ejecutar; Tab inserta 4 espacios
   if (ta) ta.addEventListener('keydown', (ev) => {

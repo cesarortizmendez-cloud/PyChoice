@@ -14,6 +14,7 @@ Parametros:
     <span class="actions">
       <button class="btn warn" data-act="reset" title="reiniciar">↻</button>
       <button class="btn" data-act="clear">limpiar</button>
+      <button class="btn" data-act="expand" title="Expandir el editor">⤢</button>
       {% if io %}
       <button class="btn" data-act="loadxlsx">cargar excel</button>
       <button class="btn" data-act="savexlsx">exportar excel</button>
@@ -25,12 +26,17 @@ Parametros:
   </div>
   <div class="rgrid {% if split %}split{% endif %}">
     <div class="editor">
-      <textarea spellcheck="false" autocapitalize="off" autocomplete="off">{{ code }}</textarea>
+      <textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off">{{ code }}</textarea>
     </div>
     <div class="output-wrap">
       <div class="out-head">salida // py&gt;</div>
       <pre class="output"></pre>
     </div>
   </div>
-  <div class="plotbox"><div class="empty">Sin gráfico. Usa matplotlib: plt.plot(), plt.hist(), plt.bar()…</div></div>
+  <div class="plotwrap collapsed">
+    <button class="plot-head" type="button" data-act="plottoggle" aria-expanded="false" title="Mostrar/ocultar el gráfico">
+      <span class="plot-ch" aria-hidden="true">▸</span><span>gráfico</span>
+    </button>
+    <div class="plotbox"></div>
+  </div>
 </div>
