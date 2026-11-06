@@ -22,14 +22,15 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="stylesheet" href="{% static 'core/css/app.css' %}?v=251106a">
+  <link rel="stylesheet" href="{% static 'core/css/app.css' %}?v=251106b">
   <!-- SheetJS: lectura/escritura de Excel en el navegador (diferido) -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
+<script>(function(){try{if(localStorage.getItem("pychoice-nav-collapsed")==="1"){document.body.classList.add("nav-collapsed");}}catch(e){}})();</script>
 
 <div class="statusbar">
-  <button class="btn menu-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">☰</button>
+  <button class="btn menu-toggle" id="nav-toggle" onclick="toggleSidebar()" aria-label="Contraer o abrir el menú" title="Contraer el menú">«</button>
   <span class="brand">Py<b>Choice</b></span>
   <span class="sep">·</span>
   <span class="term-label" style="color:var(--muted)">terminal_python</span>
@@ -109,13 +110,33 @@
   </div>
 </footer>
 
-<script type="module" src="{% static 'core/js/pyengine.js' %}?v=251106a"></script>
+<script type="module" src="{% static 'core/js/pyengine.js' %}?v=251106b"></script>
 <script src="{% static 'core/js/pwa-install.js' %}"></script>
 <script>
-  function toggleSidebar(){ document.body.classList.toggle('nav-open'); }
+  var NAV_MQ = window.matchMedia('(max-width:900px)');
+  function navIconUpdate(){
+    var b = document.getElementById('nav-toggle'); if (!b) return;
+    if (NAV_MQ.matches){ b.textContent = '\u2630'; b.title = 'Abrir menú'; }
+    else {
+      var c = document.body.classList.contains('nav-collapsed');
+      b.textContent = c ? '\u2630' : '\u00ab';
+      b.title = c ? 'Mostrar el menú' : 'Contraer el menú';
+    }
+  }
+  function toggleSidebar(){
+    if (NAV_MQ.matches){ document.body.classList.toggle('nav-open'); }
+    else {
+      var c = document.body.classList.toggle('nav-collapsed');
+      try { localStorage.setItem('pychoice-nav-collapsed', c ? '1' : '0'); } catch(e){}
+    }
+    navIconUpdate();
+  }
   document.querySelectorAll('.sidebar .tree a').forEach(function(a){
     a.addEventListener('click', function(){ document.body.classList.remove('nav-open'); });
   });
+  if (NAV_MQ.addEventListener) NAV_MQ.addEventListener('change', navIconUpdate);
+  else if (NAV_MQ.addListener) NAV_MQ.addListener(navIconUpdate);
+  navIconUpdate();
 
   /* ---------- Buscador de temas (barra superior) ---------- */
   (function(){

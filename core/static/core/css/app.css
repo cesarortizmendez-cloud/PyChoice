@@ -88,6 +88,13 @@ a:hover{ color:var(--phosphor); }
 
 .main{ padding:30px 38px 80px; max-width:1180px; }
 .main.wide{ max-width:1320px; }
+/* ---- Menú lateral contraíble (escritorio): más espacio para las consolas ---- */
+@media (min-width:901px){
+  .main{ transition:max-width .18s ease; }
+  body.nav-collapsed .shell{ grid-template-columns:1fr; }
+  body.nav-collapsed .sidebar{ display:none; }
+  body.nav-collapsed .main{ max-width:none; }
+}
 
 /* ---------- Tipografía de contenido ---------- */
 .eyebrow{ color:var(--magenta); font-size:11px; letter-spacing:.22em; text-transform:uppercase; margin-bottom:10px; }
@@ -252,7 +259,8 @@ footer.foot .credit a{ color:var(--cyan); }
 footer.foot .credit a:hover{ color:var(--phosphor); }
 
 /* ---------- responsive ---------- */
-.menu-toggle{ display:none; }
+.menu-toggle{ display:inline-flex; align-items:center; justify-content:center;
+  min-width:30px; font-size:15px; line-height:1; }
 .sidebar-backdrop{ display:none; }
 
 /* La barra de acciones de cada consola siempre puede envolver */
