@@ -33,6 +33,11 @@ escribe <code>catalogo()</code> para ver la lista completa.</p>
     {% if f.key != 'notas' %}
     <div class="ds-load">cargar: <code>{{ f.key }} = cargar("{{ f.key }}")</code></div>
     {% endif %}
+    {% if f.descarga %}
+    <div class="ds-load" style="margin-top:6px">
+      <a href="{{ f.descarga }}" download>⬇ descargar en Excel</a>
+    </div>
+    {% endif %}
   </div>
   {% endfor %}
 </div>

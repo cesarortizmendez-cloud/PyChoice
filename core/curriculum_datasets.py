@@ -99,6 +99,7 @@ DATASETS = {
     },
     "ferreteria": {
         "var": "ferreteria", "titulo": "ferreteria", "filas": "500 filas", "tipo": "DataFrame",
+        "descarga": "/static/core/datasets/ventas_ferreteria.xlsx",
         "desc": "Ventas de articulos de una ferreteria (boletas, productos y montos en $). "
                 "Es el dataset del proyecto integrador: ideal para describir, agrupar y "
                 "calcular con ciclos. Tambien se puede descargar en Excel.",
@@ -106,6 +107,70 @@ DATASETS = {
                  ("n_boleta", "entero", "numero de boleta (correlativo)"),
                  ("sucursal", "texto", "Maipu / Providencia / La Florida"),
                  ("categoria", "texto", "familia del producto (7 categorias)"),
+                 ("producto", "texto", "articulo vendido"),
+                 ("cantidad", "entero", "unidades vendidas (1-8)"),
+                 ("precio_unit", "entero", "precio unitario ($)"),
+                 ("total", "entero", "cantidad x precio_unit ($)"),
+                 ("medio_pago", "texto", "Efectivo / Debito / Credito / Transferencia"),
+                 ("vendedor", "texto", "quien atendio la venta")],
+    },
+    "panaderia": {
+        "var": "panaderia", "titulo": "panaderia", "filas": "500 filas", "tipo": "DataFrame",
+        "descarga": "/static/core/datasets/ventas_panaderia.xlsx",
+        "desc": "Ventas de una panaderia/cafeteria. MISMO esquema que ferreteria: el mismo "
+                "analisis o menu sirve aqui cambiando solo cargar(\"panaderia\").",
+        "cols": [("fecha", "fecha", "dia de la venta (2025)"),
+                 ("n_boleta", "entero", "numero de boleta (correlativo)"),
+                 ("sucursal", "texto", "Nunoa / La Reina / Penalolen"),
+                 ("categoria", "texto", "Panaderia / Pasteleria / Cafeteria / Bebidas / Abarrotes"),
+                 ("producto", "texto", "articulo vendido"),
+                 ("cantidad", "entero", "unidades vendidas (1-8)"),
+                 ("precio_unit", "entero", "precio unitario ($)"),
+                 ("total", "entero", "cantidad x precio_unit ($)"),
+                 ("medio_pago", "texto", "Efectivo / Debito / Credito / Transferencia"),
+                 ("vendedor", "texto", "quien atendio la venta")],
+    },
+    "farmacia": {
+        "var": "farmacia", "titulo": "farmacia", "filas": "500 filas", "tipo": "DataFrame",
+        "descarga": "/static/core/datasets/ventas_farmacia.xlsx",
+        "desc": "Ventas de una farmacia. MISMO esquema que ferreteria: el mismo analisis o "
+                "menu sirve aqui cambiando solo cargar(\"farmacia\").",
+        "cols": [("fecha", "fecha", "dia de la venta (2025)"),
+                 ("n_boleta", "entero", "numero de boleta (correlativo)"),
+                 ("sucursal", "texto", "Santiago / Maipu / Puente Alto"),
+                 ("categoria", "texto", "Medicamentos / Cuidado personal / Vitaminas / Bebe / Primeros auxilios"),
+                 ("producto", "texto", "articulo vendido"),
+                 ("cantidad", "entero", "unidades vendidas (1-8)"),
+                 ("precio_unit", "entero", "precio unitario ($)"),
+                 ("total", "entero", "cantidad x precio_unit ($)"),
+                 ("medio_pago", "texto", "Efectivo / Debito / Credito / Transferencia"),
+                 ("vendedor", "texto", "quien atendio la venta")],
+    },
+    "libreria": {
+        "var": "libreria", "titulo": "libreria", "filas": "500 filas", "tipo": "DataFrame",
+        "descarga": "/static/core/datasets/ventas_libreria.xlsx",
+        "desc": "Ventas de una libreria/papeleria. MISMO esquema que ferreteria: el mismo "
+                "analisis o menu sirve aqui cambiando solo cargar(\"libreria\").",
+        "cols": [("fecha", "fecha", "dia de la venta (2025)"),
+                 ("n_boleta", "entero", "numero de boleta (correlativo)"),
+                 ("sucursal", "texto", "Providencia / Estacion Central / La Florida"),
+                 ("categoria", "texto", "Utiles escolares / Oficina / Escritura / Arte / Cuadernos"),
+                 ("producto", "texto", "articulo vendido"),
+                 ("cantidad", "entero", "unidades vendidas (1-8)"),
+                 ("precio_unit", "entero", "precio unitario ($)"),
+                 ("total", "entero", "cantidad x precio_unit ($)"),
+                 ("medio_pago", "texto", "Efectivo / Debito / Credito / Transferencia"),
+                 ("vendedor", "texto", "quien atendio la venta")],
+    },
+    "minimarket": {
+        "var": "minimarket", "titulo": "minimarket", "filas": "500 filas", "tipo": "DataFrame",
+        "descarga": "/static/core/datasets/ventas_minimarket.xlsx",
+        "desc": "Ventas de un minimarket/almacen. MISMO esquema que ferreteria: el mismo "
+                "analisis o menu sirve aqui cambiando solo cargar(\"minimarket\").",
+        "cols": [("fecha", "fecha", "dia de la venta (2025)"),
+                 ("n_boleta", "entero", "numero de boleta (correlativo)"),
+                 ("sucursal", "texto", "Recoleta / Quinta Normal / San Miguel"),
+                 ("categoria", "texto", "Abarrotes / Bebidas / Lacteos / Limpieza / Snacks"),
                  ("producto", "texto", "articulo vendido"),
                  ("cantidad", "entero", "unidades vendidas (1-8)"),
                  ("precio_unit", "entero", "precio unitario ($)"),
@@ -336,12 +401,12 @@ LESSON_DATASETS = {
         "Compara al menos dos modelos y justifica cual elegirias para produccion.",
         "Repite el flujo con <code>viviendas</code> (regresion) y resume los aprendizajes en 3 frases."]},
 
-    38: {"sets": ["ferreteria"], "retos": [
+    38: {"sets": ["ferreteria", "panaderia", "farmacia", "libreria", "minimarket"], "retos": [
         "Carga el dataset con <code>datos = cargar(\"ferreteria\")</code> y mira <code>datos.head()</code> y <code>datos.shape</code>.",
-        "Describe las columnas numericas con <code>ferreteria[[\"cantidad\",\"precio_unit\",\"total\"]].describe()</code>.",
+        "Describe las columnas numericas con <code>datos[[\"cantidad\",\"precio_unit\",\"total\"]].describe()</code>.",
         "Agrupa por <code>categoria</code> y suma el <code>total</code>: ¿cual deja mas ingreso?",
-        "Con un ciclo <code>for ... in ferreteria.iterrows()</code> y un acumulador, calcula el ingreso total y comprueba que coincide con <code>ferreteria[\"total\"].sum()</code>.",
-        "Usa <code>input()</code> para pedir un monto y cuenta cuantas ventas lo superan."]},
+        "Con un ciclo <code>for ... in datos.iterrows()</code> y un acumulador, calcula el ingreso total y comprueba que coincide con <code>datos[\"total\"].sum()</code>.",
+        "<b>Portabilidad:</b> cambia <code>cargar(\"ferreteria\")</code> por <code>cargar(\"panaderia\")</code>, <code>cargar(\"farmacia\")</code>, <code>cargar(\"libreria\")</code> o <code>cargar(\"minimarket\")</code> y corre el MISMO analisis: todos tienen las mismas columnas."]},
 }
 
 
@@ -358,6 +423,7 @@ def datasets_for(num):
         fichas.append({
             "key": key, "var": d["var"], "titulo": d["titulo"], "filas": d["filas"],
             "tipo": d["tipo"], "desc": d["desc"], "cols": d["cols"],
+            "descarga": d.get("descarga"),
         })
     return {"fichas": fichas, "retos": entry.get("retos", [])}
 
@@ -369,5 +435,6 @@ def dataset_list():
         out.append({
             "key": key, "var": d["var"], "titulo": d["titulo"], "filas": d["filas"],
             "tipo": d["tipo"], "desc": d["desc"], "cols": d["cols"],
+            "descarga": d.get("descarga"),
         })
     return out

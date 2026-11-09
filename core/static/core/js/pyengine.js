@@ -211,6 +211,115 @@ def _ds_ferreteria(n=500):
     df.insert(1, "n_boleta", 100001 + df.index)   # boleta correlativa en el tiempo
     return df
 
+# ------------------------------------------------------------------
+# Mas negocios con el MISMO esquema de columnas que ferreteria, para que
+# un mismo analisis/menu sirva en cualquiera (solo cambia cargar("...")).
+# ------------------------------------------------------------------
+def _ventas(prods, sucursales, suc_p, pagos, pagos_p, vendedores, seed, n=500):
+    "Genera un DataFrame de ventas con el esquema estandar (reproducible)."
+    r = _rng(seed)
+    cat = np.array([p[0] for p in prods])
+    nom = np.array([p[1] for p in prods])
+    pre = np.array([p[2] for p in prods])
+    # sorteos (ORDEN FIJO: define la reproducibilidad, no cambiar)
+    idx = r.integers(0, len(prods), n)
+    cantidad = r.integers(1, 9, n)
+    sucursal = r.choice(sucursales, n, p=suc_p)
+    medio_pago = r.choice(pagos, n, p=pagos_p)
+    vendedor = r.choice(vendedores, n)
+    dias = r.integers(0, 181, n)
+    precio_unit = pre[idx]
+    df = pd.DataFrame({
+        "fecha": pd.Timestamp("2025-01-02") + pd.to_timedelta(dias, unit="D"),
+        "sucursal": sucursal,
+        "categoria": cat[idx],
+        "producto": nom[idx],
+        "cantidad": cantidad,
+        "precio_unit": precio_unit,
+        "total": cantidad * precio_unit,
+        "medio_pago": medio_pago,
+        "vendedor": vendedor,
+    })
+    df = df.sort_values("fecha", kind="mergesort").reset_index(drop=True)
+    df.insert(1, "n_boleta", 100001 + df.index)
+    return df
+
+_PAGOS = ["Efectivo", "Debito", "Credito", "Transferencia"]
+
+def _ds_panaderia(n=500):
+    "Ventas de una panaderia/cafeteria (500 filas)."
+    prods = [
+        ("Panaderia", "Marraqueta (kg)", 1890), ("Panaderia", "Hallulla (kg)", 1790),
+        ("Panaderia", "Pan integral (kg)", 2490), ("Panaderia", "Baguette", 1290),
+        ("Panaderia", "Dobladitas 6u", 1990),
+        ("Pasteleria", "Torta de chocolate (porcion)", 2990), ("Pasteleria", "Kuchen de nuez (porcion)", 2290),
+        ("Pasteleria", "Empanada de pino", 1790), ("Pasteleria", "Berlin", 1190), ("Pasteleria", "Alfajor", 990),
+        ("Cafeteria", "Cafe cortado", 2490), ("Cafeteria", "Capuccino", 2990), ("Cafeteria", "Te", 1490),
+        ("Cafeteria", "Chocolate caliente", 2790), ("Cafeteria", "Sandwich jamon queso", 3490),
+        ("Bebidas", "Jugo natural", 2290), ("Bebidas", "Bebida lata", 1290), ("Bebidas", "Agua mineral", 990),
+        ("Abarrotes", "Mantequilla 250g", 2990), ("Abarrotes", "Mermelada", 2490),
+        ("Abarrotes", "Leche 1L", 1290), ("Abarrotes", "Huevos 6u", 2190),
+    ]
+    return _ventas(prods, ["Nunoa", "La Reina", "Penalolen"], [0.42, 0.33, 0.25],
+                   _PAGOS, [0.50, 0.28, 0.15, 0.07],
+                   ["Rosa", "Jorge", "Marta", "Diego", "Elena"], 3001, n)
+
+def _ds_farmacia(n=500):
+    "Ventas de una farmacia (500 filas)."
+    prods = [
+        ("Medicamentos", "Paracetamol 500mg", 1990), ("Medicamentos", "Ibuprofeno 400mg", 2490),
+        ("Medicamentos", "Antigripal", 3990), ("Medicamentos", "Jarabe para la tos", 4990),
+        ("Medicamentos", "Antiacido", 2990),
+        ("Cuidado personal", "Shampoo", 4490), ("Cuidado personal", "Jabon", 1290),
+        ("Cuidado personal", "Pasta dental", 2790), ("Cuidado personal", "Desodorante", 3490),
+        ("Cuidado personal", "Crema corporal", 5990),
+        ("Vitaminas", "Vitamina C", 5990), ("Vitaminas", "Multivitaminico", 8990),
+        ("Vitaminas", "Omega 3", 9990), ("Vitaminas", "Magnesio", 6490),
+        ("Bebe", "Panales pack", 8990), ("Bebe", "Toallitas humedas", 2990), ("Bebe", "Mamadera", 5490),
+        ("Primeros auxilios", "Alcohol gel", 1990), ("Primeros auxilios", "Vendas", 2490),
+        ("Primeros auxilios", "Parches curita", 1790), ("Primeros auxilios", "Termometro", 6990),
+    ]
+    return _ventas(prods, ["Santiago", "Maipu", "Puente Alto"], [0.40, 0.34, 0.26],
+                   _PAGOS, [0.22, 0.36, 0.34, 0.08],
+                   ["Camila", "Andres", "Paula", "Felipe", "Ivonne"], 3002, n)
+
+def _ds_libreria(n=500):
+    "Ventas de una libreria/papeleria (500 filas)."
+    prods = [
+        ("Utiles escolares", "Mochila", 15990), ("Utiles escolares", "Estuche", 4990),
+        ("Utiles escolares", "Regla 30cm", 990), ("Utiles escolares", "Tijera escolar", 1990),
+        ("Utiles escolares", "Pegamento en barra", 1290),
+        ("Oficina", "Resma papel A4", 4490), ("Oficina", "Carpeta", 1790), ("Oficina", "Corchetera", 3990),
+        ("Oficina", "Perforadora", 4990), ("Oficina", "Archivador", 2990),
+        ("Escritura", "Lapiz grafito", 490), ("Escritura", "Lapiz pasta", 690),
+        ("Escritura", "Destacador", 1290), ("Escritura", "Plumon", 1490), ("Escritura", "Set 12 lapices de color", 3990),
+        ("Arte", "Tempera", 2990), ("Arte", "Block de dibujo", 2490), ("Arte", "Plasticina", 1990),
+        ("Arte", "Pincel", 1290), ("Arte", "Cartulina", 390),
+        ("Cuadernos", "Cuaderno universitario", 2490), ("Cuadernos", "Cuaderno college", 1790),
+        ("Cuadernos", "Agenda", 5990), ("Cuadernos", "Croquera", 3490),
+    ]
+    return _ventas(prods, ["Providencia", "Estacion Central", "La Florida"], [0.38, 0.34, 0.28],
+                   _PAGOS, [0.30, 0.32, 0.30, 0.08],
+                   ["Nicolas", "Javiera", "Tomas", "Fernanda", "Mauricio"], 3003, n)
+
+def _ds_minimarket(n=500):
+    "Ventas de un minimarket/almacen (500 filas)."
+    prods = [
+        ("Abarrotes", "Arroz 1kg", 1490), ("Abarrotes", "Fideos 400g", 990), ("Abarrotes", "Aceite 1L", 2990),
+        ("Abarrotes", "Azucar 1kg", 1290), ("Abarrotes", "Harina 1kg", 1190), ("Abarrotes", "Atun en lata", 1690),
+        ("Bebidas", "Bebida 1.5L", 1890), ("Bebidas", "Agua 1.5L", 990), ("Bebidas", "Jugo en polvo", 490),
+        ("Bebidas", "Cerveza lata", 1290), ("Bebidas", "Vino tinto", 3990),
+        ("Lacteos", "Leche 1L", 1190), ("Lacteos", "Yogurt", 790), ("Lacteos", "Queso 250g", 3490),
+        ("Lacteos", "Mantequilla 250g", 2990), ("Lacteos", "Huevos 12u", 3990),
+        ("Limpieza", "Detergente", 3990), ("Limpieza", "Cloro 1L", 1490), ("Limpieza", "Lavalozas", 1990),
+        ("Limpieza", "Papel higienico 4u", 2990), ("Limpieza", "Toalla de papel", 1790),
+        ("Snacks", "Papas fritas", 1490), ("Snacks", "Galletas", 990), ("Snacks", "Chocolate", 1290),
+        ("Snacks", "Ramitas", 1190),
+    ]
+    return _ventas(prods, ["Recoleta", "Quinta Normal", "San Miguel"], [0.36, 0.34, 0.30],
+                   _PAGOS, [0.42, 0.34, 0.18, 0.06],
+                   ["Claudia", "Rodrigo", "Antonia", "Pablo", "Daniela"], 3004, n)
+
 # nombre -> (funcion, descripcion corta)
 _CATALOGO = {
     "negocio":     (_ds_negocio,    "Ventas por mes y region (tabla base pequena)."),
@@ -221,6 +330,10 @@ _CATALOGO = {
     "empleados":   (_ds_empleados,  "RRHH: departamento, salario, satisfaccion (120)."),
     "clima":       (_ds_clima,      "Serie diaria de temperatura y lluvia (90 dias)."),
     "ferreteria":  (_ds_ferreteria, "Ventas de una ferreteria: boletas, productos y montos (500 filas)."),
+    "panaderia":   (_ds_panaderia,  "Ventas de una panaderia/cafeteria (500 filas, mismo esquema)."),
+    "farmacia":    (_ds_farmacia,   "Ventas de una farmacia (500 filas, mismo esquema)."),
+    "libreria":    (_ds_libreria,   "Ventas de una libreria/papeleria (500 filas, mismo esquema)."),
+    "minimarket":  (_ds_minimarket, "Ventas de un minimarket/almacen (500 filas, mismo esquema)."),
 }
 
 def catalogo():
@@ -479,7 +592,7 @@ const PY_BI = new Set(['print','len','range','int','float','str','bool','list','
   'tuple','sum','min','max','abs','round','sorted','reversed','enumerate','zip','map','filter',
   'type','isinstance','open','input','format','repr','any','all','np','pd','plt','math','sns']);
 const PY_DATA = new Set(['notas','datos','propinas','estudiantes','viviendas','clientes',
-  'empleados','clima','ferreteria','negocio','catalogo','cargar','ciudades','distancias','mochila']);
+  'empleados','clima','ferreteria','panaderia','farmacia','libreria','minimarket','negocio','catalogo','cargar','ciudades','distancias','mochila']);
 const HL_RE = /(#[^\n]*)|([rbfuRBFU]{0,3}(?:"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'))|(\b\d[\d_]*\.?\d*(?:[eE][+-]?\d+)?\b)|(@[A-Za-z_]\w*)|([A-Za-z_]\w*)|([+\-*/%=<>!&|^~]+)/g;
 
 function hlEsc(s) {
