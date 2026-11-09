@@ -645,6 +645,10 @@ function bindConsole(el) {
     editor.classList.add('has-hl', 'has-ln');
     ta.setAttribute('wrap', 'off');                        // sin ajuste -> números alineados
     let lastN = -1;
+    const syncScroll = () => {
+      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
+      gutter.scrollTop = ta.scrollTop;
+    };
     syncHL = () => {
       codeEl.innerHTML = pyHighlight(ta.value) + '\n';
       const n = ta.value.split('\n').length;
@@ -654,14 +658,21 @@ function bindConsole(el) {
         gutter.textContent = g;
         lastN = n;
       }
-      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
-      gutter.scrollTop = ta.scrollTop;
+      syncScroll();
     };
-    ta.addEventListener('input', syncHL);
-    ta.addEventListener('scroll', () => {
-      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
-      gutter.scrollTop = ta.scrollTop;
+    // Al escribir en una linea larga (wrap=off), el cursor auto-desplaza el
+    // textarea; el evento 'scroll' llega un frame tarde y la capa de color
+    // quedaba corrida respecto al cursor. Un bucle rAF mientras el editor
+    // tiene foco mantiene la capa SIEMPRE alineada (sin ese retardo).
+    let rafId = null;
+    const loop = () => { syncScroll(); rafId = requestAnimationFrame(loop); };
+    ta.addEventListener('focus', () => { if (rafId == null) loop(); });
+    ta.addEventListener('blur', () => {
+      if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+      syncScroll();
     });
+    ta.addEventListener('input', syncHL);
+    ta.addEventListener('scroll', syncScroll);
     syncHL();
   }
 
