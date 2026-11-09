@@ -660,17 +660,13 @@ function bindConsole(el) {
       }
       syncScroll();
     };
-    // Al escribir en una linea larga (wrap=off), el cursor auto-desplaza el
-    // textarea; el evento 'scroll' llega un frame tarde y la capa de color
-    // quedaba corrida respecto al cursor. Un bucle rAF mientras el editor
-    // tiene foco mantiene la capa SIEMPRE alineada (sin ese retardo).
-    let rafId = null;
-    const loop = () => { syncScroll(); rafId = requestAnimationFrame(loop); };
-    ta.addEventListener('focus', () => { if (rafId == null) loop(); });
-    ta.addEventListener('blur', () => {
-      if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
-      syncScroll();
-    });
+    // Al EDITAR mostramos solo el textarea (texto visible, UNA sola capa): asi el
+    // cursor y la seleccion quedan siempre perfectos, sin el "fantasma" que
+    // producia la capa de color encima (zoom del navegador, sub-pixel o la GPU al
+    // seleccionar la desalineaban). Al salir del editor se vuelve a mostrar el
+    // codigo con los colores de sintaxis.
+    ta.addEventListener('focus', () => { editor.classList.add('editing'); });
+    ta.addEventListener('blur', () => { editor.classList.remove('editing'); syncHL(); });
     ta.addEventListener('input', syncHL);
     ta.addEventListener('scroll', syncScroll);
     syncHL();
