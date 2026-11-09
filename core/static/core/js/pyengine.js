@@ -145,6 +145,72 @@ def _ds_clima(dias=90):
         "lluvia_mm": lluvia,
     })
 
+def _ds_ferreteria(n=500):
+    "Ventas de una ferreteria (500 filas, reproducible). Dataset del proyecto integrador."
+    r = _rng(2025)
+    # catalogo de productos: (categoria, producto, precio_unit en pesos)
+    prods = [
+        ("Herramientas manuales", "Martillo carpintero", 8990),
+        ("Herramientas manuales", "Destornillador Phillips", 3490),
+        ("Herramientas manuales", "Alicate universal", 6990),
+        ("Herramientas manuales", "Llave ajustable 10in", 9990),
+        ("Herramientas manuales", "Serrucho 20in", 7490),
+        ("Herramientas electricas", "Taladro percutor", 39990),
+        ("Herramientas electricas", "Esmeril angular 4.5in", 29990),
+        ("Herramientas electricas", "Sierra circular", 54990),
+        ("Herramientas electricas", "Lijadora orbital", 34990),
+        ("Pinturas", "Latex blanco 1gl", 24990),
+        ("Pinturas", "Esmalte sintetico 1/4gl", 6990),
+        ("Pinturas", "Brocha 3in", 2990),
+        ("Pinturas", "Rodillo antigota", 4490),
+        ("Pinturas", "Diluyente 1L", 3990),
+        ("Fijaciones", "Caja tornillos 100u", 3490),
+        ("Fijaciones", "Clavos 1kg", 2490),
+        ("Fijaciones", "Bolsa tarugos 50u", 1990),
+        ("Fijaciones", "Pernos hexagonales 10u", 4990),
+        ("Electricidad", "Interruptor simple", 2990),
+        ("Electricidad", "Enchufe doble", 3490),
+        ("Electricidad", "Cable 1.5mm (m)", 590),
+        ("Electricidad", "Ampolleta LED 9W", 2990),
+        ("Electricidad", "Alargador 3m", 5990),
+        ("Plomeria", "Llave de paso 1/2in", 4990),
+        ("Plomeria", "Codo PVC 50mm", 890),
+        ("Plomeria", "Cinta teflon", 790),
+        ("Plomeria", "Sifon lavaplatos", 6490),
+        ("Plomeria", "Tubo PVC 2m", 3990),
+        ("Jardin", "Manguera 15m", 15990),
+        ("Jardin", "Tijera podar", 11990),
+        ("Jardin", "Rastrillo metalico", 8990),
+        ("Jardin", "Pala punta", 12990),
+        ("Jardin", "Guantes de trabajo", 3990),
+    ]
+    cat = np.array([p[0] for p in prods])
+    nom = np.array([p[1] for p in prods])
+    pre = np.array([p[2] for p in prods])
+    # sorteos (ORDEN FIJO: define la reproducibilidad, no cambiar)
+    idx = r.integers(0, len(prods), n)
+    cantidad = r.integers(1, 9, n)
+    sucursal = r.choice(["Maipu", "Providencia", "La Florida"], n, p=[0.40, 0.35, 0.25])
+    medio_pago = r.choice(["Efectivo", "Debito", "Credito", "Transferencia"],
+                          n, p=[0.30, 0.30, 0.28, 0.12])
+    vendedor = r.choice(["Ana", "Luis", "Carla", "Pedro", "Sofia"], n)
+    dias = r.integers(0, 181, n)
+    precio_unit = pre[idx]
+    df = pd.DataFrame({
+        "fecha": pd.Timestamp("2025-01-02") + pd.to_timedelta(dias, unit="D"),
+        "sucursal": sucursal,
+        "categoria": cat[idx],
+        "producto": nom[idx],
+        "cantidad": cantidad,
+        "precio_unit": precio_unit,
+        "total": cantidad * precio_unit,
+        "medio_pago": medio_pago,
+        "vendedor": vendedor,
+    })
+    df = df.sort_values("fecha", kind="mergesort").reset_index(drop=True)
+    df.insert(1, "n_boleta", 100001 + df.index)   # boleta correlativa en el tiempo
+    return df
+
 # nombre -> (funcion, descripcion corta)
 _CATALOGO = {
     "negocio":     (_ds_negocio,    "Ventas por mes y region (tabla base pequena)."),
@@ -154,6 +220,7 @@ _CATALOGO = {
     "clientes":    (_ds_clientes,   "Clientes, gasto y fuga/churn (200 filas)."),
     "empleados":   (_ds_empleados,  "RRHH: departamento, salario, satisfaccion (120)."),
     "clima":       (_ds_clima,      "Serie diaria de temperatura y lluvia (90 dias)."),
+    "ferreteria":  (_ds_ferreteria, "Ventas de una ferreteria: boletas, productos y montos (500 filas)."),
 }
 
 def catalogo():
@@ -412,7 +479,7 @@ const PY_BI = new Set(['print','len','range','int','float','str','bool','list','
   'tuple','sum','min','max','abs','round','sorted','reversed','enumerate','zip','map','filter',
   'type','isinstance','open','input','format','repr','any','all','np','pd','plt','math','sns']);
 const PY_DATA = new Set(['notas','datos','propinas','estudiantes','viviendas','clientes',
-  'empleados','clima','negocio','catalogo','cargar','ciudades','distancias','mochila']);
+  'empleados','clima','ferreteria','negocio','catalogo','cargar','ciudades','distancias','mochila']);
 const HL_RE = /(#[^\n]*)|([rbfuRBFU]{0,3}(?:"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'))|(\b\d[\d_]*\.?\d*(?:[eE][+-]?\d+)?\b)|(@[A-Za-z_]\w*)|([A-Za-z_]\w*)|([+\-*/%=<>!&|^~]+)/g;
 
 function hlEsc(s) {

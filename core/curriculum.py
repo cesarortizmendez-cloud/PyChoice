@@ -19,6 +19,7 @@ from .curriculum_f import CHAPTERS_F
 from .curriculum_g import CHAPTERS_G
 from .curriculum_h import CHAPTERS_H
 from .curriculum_h2 import CHAPTERS_H2
+from .curriculum_i import CHAPTERS_I
 from .curriculum_j import CHAPTERS_J
 from .curriculum_k import CHAPTERS_K
 from .curriculum_l import CHAPTERS_L
@@ -30,6 +31,7 @@ from .curriculum_datasets import datasets_for, dataset_list  # noqa: F401
 
 CHAPTERS = (CHAPTERS_A + CHAPTERS_INPUT + CHAPTERS_B + CHAPTERS_C + CHAPTERS_D
             + CHAPTERS_E + CHAPTERS_F + CHAPTERS_G + CHAPTERS_H + CHAPTERS_H2
+            + CHAPTERS_I
             + CHAPTERS_J + CHAPTERS_K + CHAPTERS_L + CHAPTERS_M + CHAPTERS_N
             + CHAPTERS_O + CHAPTERS_P)
 BY_NUM = {c["num"]: c for c in CHAPTERS}
@@ -81,9 +83,10 @@ MODULES = [
      "desc": "Flujo completo con scikit-learn: preparación, regresión, clasificación, "
              "evaluación, ensembles, validación cruzada, no supervisado y proyecto end-to-end.",
      "lessons": [28, 29, 30, 31, 32, 33, 34, 35, 36, 37]},
-    {"code": "I", "title": "Proyecto y cierre", "status": "proximamente",
+    {"code": "I", "title": "Proyecto y cierre", "status": "listo",
      "desc": "Integrar todo en un proyecto de ciencia de datos y comunicar resultados.",
-     "planned": ["Proyecto integrador de data science", "Comunicar resultados y siguientes pasos"]},
+     "lessons": [38],
+     "planned": ["Comunicar resultados y siguientes pasos"]},
 ]
 
 
@@ -221,15 +224,18 @@ def route_modules(route):
     total = done = 0
     for m in route["modules"]:
         item = dict(m)
-        if m.get("lessons"):
-            item["items"] = [{"num": n, "title": BY_NUM[n]["title"],
-                              "subtitle": BY_NUM[n]["subtitle"]} for n in m["lessons"]]
-            total += len(m["lessons"])
-            done += len(m["lessons"])
-        else:
-            item["items"] = [{"num": None, "title": t, "subtitle": ""}
-                             for t in m.get("planned", [])]
-            total += len(m.get("planned", []))
+        items = []
+        # lecciones ya disponibles (pueden convivir con titulos planificados)
+        for n in m.get("lessons", []):
+            items.append({"num": n, "title": BY_NUM[n]["title"],
+                          "subtitle": BY_NUM[n]["subtitle"]})
+            total += 1
+            done += 1
+        # titulos planificados (sin leccion aun) -> chip "proximamente"
+        for t in m.get("planned", []):
+            items.append({"num": None, "title": t, "subtitle": ""})
+            total += 1
+        item["items"] = items
         out.append(item)
     return out, done, total
 

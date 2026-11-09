@@ -97,6 +97,22 @@ DATASETS = {
                  ("humedad", "decimal", "humedad relativa (%)"),
                  ("lluvia_mm", "decimal", "lluvia caida (mm)")],
     },
+    "ferreteria": {
+        "var": "ferreteria", "titulo": "ferreteria", "filas": "500 filas", "tipo": "DataFrame",
+        "desc": "Ventas de articulos de una ferreteria (boletas, productos y montos en $). "
+                "Es el dataset del proyecto integrador: ideal para describir, agrupar y "
+                "calcular con ciclos. Tambien se puede descargar en Excel.",
+        "cols": [("fecha", "fecha", "dia de la venta (2025)"),
+                 ("n_boleta", "entero", "numero de boleta (correlativo)"),
+                 ("sucursal", "texto", "Maipu / Providencia / La Florida"),
+                 ("categoria", "texto", "familia del producto (7 categorias)"),
+                 ("producto", "texto", "articulo vendido"),
+                 ("cantidad", "entero", "unidades vendidas (1-8)"),
+                 ("precio_unit", "entero", "precio unitario ($)"),
+                 ("total", "entero", "cantidad x precio_unit ($)"),
+                 ("medio_pago", "texto", "Efectivo / Debito / Credito / Transferencia"),
+                 ("vendedor", "texto", "quien atendio la venta")],
+    },
 }
 
 
@@ -319,6 +335,13 @@ LESSON_DATASETS = {
         "Documenta cada decision en comentarios como si fuera un informe reproducible.",
         "Compara al menos dos modelos y justifica cual elegirias para produccion.",
         "Repite el flujo con <code>viviendas</code> (regresion) y resume los aprendizajes en 3 frases."]},
+
+    38: {"sets": ["ferreteria"], "retos": [
+        "Carga el dataset con <code>datos = cargar(\"ferreteria\")</code> y mira <code>datos.head()</code> y <code>datos.shape</code>.",
+        "Describe las columnas numericas con <code>ferreteria[[\"cantidad\",\"precio_unit\",\"total\"]].describe()</code>.",
+        "Agrupa por <code>categoria</code> y suma el <code>total</code>: ¿cual deja mas ingreso?",
+        "Con un ciclo <code>for ... in ferreteria.iterrows()</code> y un acumulador, calcula el ingreso total y comprueba que coincide con <code>ferreteria[\"total\"].sum()</code>.",
+        "Usa <code>input()</code> para pedir un monto y cuenta cuantas ventas lo superan."]},
 }
 
 
