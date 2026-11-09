@@ -150,17 +150,19 @@ h1.page .hl{ color:var(--phosphor); }
 .rgrid.split{ grid-template-columns:1fr 1fr; }
 .editor{ position:relative; }
 .editor textarea{ width:100%; min-height:150px; resize:vertical; border:none; outline:none;
-  background:#070d15; color:#d7e6d8; font-family:var(--mono); font-size:13.5px; line-height:1.55;
+  background:#070d15; color:#d7e6d8; font-family:var(--mono); font-size:13.5px; line-height:21px;
   padding:14px 14px 14px 14px; tab-size:2; }
 .editor textarea::placeholder{ color:var(--dim); }
 
 /* ---- Resaltado de sintaxis (colores) en el editor ---- */
 .editor.has-hl textarea{ background:transparent; color:transparent;
   -webkit-text-fill-color:transparent; caret-color:var(--phosphor); position:relative; z-index:1; }
-.editor.has-hl textarea::selection{ background:rgba(43,217,255,.28); -webkit-text-fill-color:transparent; }
+/* Texto seleccionado OPACO: tapa limpio la capa de color de abajo (sin fantasma). */
+.editor.has-hl textarea::selection{ background:rgba(43,217,255,.32); color:#eef4ff; -webkit-text-fill-color:#eef4ff; }
+.editor.has-hl textarea::-moz-selection{ background:rgba(43,217,255,.32); color:#eef4ff; }
 .editor .hl{ position:absolute; inset:0; z-index:0; margin:0; border:0; overflow:hidden;
   pointer-events:none; background:#070d15; color:#d7e6d8;
-  font-family:var(--mono); font-size:13.5px; line-height:1.55; tab-size:2;
+  font-family:var(--mono); font-size:13.5px; line-height:21px; tab-size:2;
   padding:14px; white-space:pre; word-break:normal; }
 .editor .hl code{ font:inherit; white-space:inherit; background:none; padding:0; }
 .editor .hl .hc{ color:#5f7389; font-style:italic; }     /* comentario */
@@ -175,7 +177,7 @@ h1.page .hl{ color:var(--phosphor); }
 .editor .ln-gutter{ position:absolute; left:0; top:0; bottom:0; width:40px; z-index:2;
   margin:0; padding:14px 6px 14px 0; overflow:hidden; pointer-events:none; user-select:none;
   background:#0a1017; border-right:1px solid #16202e; color:#3b4b5e; text-align:right;
-  font-family:var(--mono); font-size:13.5px; line-height:1.55; white-space:pre; }
+  font-family:var(--mono); font-size:13.5px; line-height:21px; white-space:pre; }
 .rconsole.expanded .editor textarea{ min-height:62vh; }
 .rconsole.expanded .output{ max-height:62vh; }
 .output-wrap{ border-top:1px solid var(--line); }
