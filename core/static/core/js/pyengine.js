@@ -700,12 +700,32 @@ async function exportConsolePdf(code, outEl, fname, metrics) {
   para('Fecha y hora: ' + fecha, 10);
   para('Actividad: ' + actividad + '  (' + fname + ')', 10);
   para('Equipo: ' + eq.br + ' · ' + eq.os, 10);
-  para('Validación de escritura — tiempo de edición: ' + tiempo +
-       '  ·  caracteres tecleados: ' + (metrics.typed || 0) +
-       '  ·  pegados: ' + (metrics.pasteCount || 0) + ' (' + (metrics.pasteChars || 0) + ' caracteres)', 10, 'normal', [120, 60, 60]);
-  para('Código: ' + nlineas + ' líneas', 10);
   line(4);
-  doc.setDrawColor(200); doc.line(M, y, W - M, y); line(16);
+  doc.setDrawColor(210); doc.line(M, y, W - M, y); line(14);
+
+  // --- Validación de escritura (anti copia/pega) ---
+  const finalLen = code.length;
+  const T = metrics.typed || 0, P = metrics.pasteChars || 0, K = metrics.pasteCount || 0, maxP = metrics.maxPaste || 0;
+  const pct = (x) => finalLen ? Math.min(100, Math.round(x / finalLen * 100)) : 0;
+  const typedPct = pct(T), pastedPct = pct(P), maxPpct = pct(maxP);
+  const vel = seg > 0 ? Math.round(T / seg * 10) / 10 : 0;
+  let veredicto, vcolor;
+  if (finalLen < 20) { veredicto = 'Código muy corto para evaluar'; vcolor = [110, 110, 110]; }
+  else if (typedPct >= 70) { veredicto = 'Mayormente ESCRITO por el alumno'; vcolor = [20, 120, 45]; }
+  else if (typedPct >= 30) { veredicto = 'MIXTO — conviene revisar'; vcolor = [175, 110, 10]; }
+  else { veredicto = 'Mayormente PEGADO — posible copia/pega'; vcolor = [185, 30, 30]; }
+
+  para('Validación de escritura', 11, 'bold', [10, 10, 10]); line(2);
+  para('• Tecleado por el alumno: ' + T + ' de ' + finalLen + ' caracteres  (' + typedPct + '% del código)', 10);
+  para('• Pegado: ' + P + ' caracteres en ' + K + ' pegado(s)' +
+       (K ? '  (' + pastedPct + '% del código; mayor pegado en bloque: ' + maxP + ' car. = ' + maxPpct + '%)' : ''), 10);
+  para('• Tiempo de edición activo: ' + tiempo + (vel ? '  ·  ritmo: ' + vel + ' car. tecleados/segundo' : ''), 10);
+  para('• Código: ' + nlineas + ' líneas', 10);
+  line(2);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(vcolor[0], vcolor[1], vcolor[2]);
+  doc.splitTextToSize('Veredicto automático:  ' + veredicto, W - 2 * M).forEach((t) => { doc.text(t, M, y); line(15); });
+  line(4);
+  doc.setDrawColor(210); doc.line(M, y, W - M, y); line(16);
 
   para('Código', 12, 'bold', [10, 10, 10]); line(2);
   mono(code); line(10);
@@ -732,7 +752,7 @@ function bindConsole(el) {
   const editor = el.querySelector('.editor');
   let cm = null;
   // metricas anti-copia: tiempo de edicion (con foco), caracteres tecleados y pegados
-  const metrics = { typed: 0, pasteCount: 0, pasteChars: 0, editMs: 0, firstTs: 0, _focusTs: 0 };
+  const metrics = { typed: 0, pasteCount: 0, pasteChars: 0, maxPaste: 0, editMs: 0, firstTs: 0, _focusTs: 0 };
   el.__metrics = metrics;
   if (ta && editor && window.CodeMirror && !editor.querySelector('.CodeMirror')) {
     cm = CodeMirror.fromTextArea(ta, {
@@ -750,7 +770,7 @@ function bindConsole(el) {
       c.save();                                    // mantiene el textarea sincronizado
       if (!metrics.firstTs) metrics.firstTs = Date.now();
       const n = (ch.text || []).join('\n').length;
-      if (ch.origin === 'paste') { metrics.pasteCount++; metrics.pasteChars += n; }
+      if (ch.origin === 'paste') { metrics.pasteCount++; metrics.pasteChars += n; if (n > metrics.maxPaste) metrics.maxPaste = n; }
       else if (ch.origin === '+input') { metrics.typed += n; }
     });
     cm.on('focus', () => { metrics._focusTs = Date.now(); });
