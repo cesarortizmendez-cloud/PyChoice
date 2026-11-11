@@ -183,6 +183,32 @@ h1.page .hl{ color:var(--phosphor); }
   font-family:var(--mono); font-size:13.5px; line-height:21px; white-space:pre; }
 .rconsole.expanded .editor textarea{ min-height:62vh; }
 .rconsole.expanded .output{ max-height:62vh; }
+
+/* ================= Editor CodeMirror (tema "pychoice") ================= */
+.editor .CodeMirror{ height:auto; background:#070d15; color:#d7e6d8;
+  font-family:var(--mono); font-size:13.5px; line-height:1.55; }
+.editor .CodeMirror-scroll{ min-height:150px; }
+.rconsole.expanded .editor .CodeMirror-scroll{ min-height:62vh; }
+.cm-s-pychoice.CodeMirror{ background:#070d15; color:#d7e6d8; }
+.cm-s-pychoice .CodeMirror-gutters{ background:#0a1017; border-right:1px solid #16202e; }
+.cm-s-pychoice .CodeMirror-linenumber{ color:#3b4b5e; }
+.cm-s-pychoice .CodeMirror-cursor{ border-left:2px solid var(--phosphor); }
+.cm-s-pychoice div.CodeMirror-selected{ background:rgba(43,217,255,.26); }
+.cm-s-pychoice .CodeMirror-focused div.CodeMirror-selected{ background:rgba(43,217,255,.30); }
+.cm-s-pychoice .CodeMirror-line::selection, .cm-s-pychoice .CodeMirror-line span::selection{ background:rgba(43,217,255,.30); }
+.cm-s-pychoice .CodeMirror-activeline-background{ background:rgba(255,255,255,.015); }
+.cm-s-pychoice .cm-comment{ color:#5f7389; font-style:italic; }
+.cm-s-pychoice .cm-string, .cm-s-pychoice .cm-string-2{ color:#f3c47a; }
+.cm-s-pychoice .cm-number{ color:#ff9d6b; }
+.cm-s-pychoice .cm-keyword{ color:var(--magenta); font-weight:600; }
+.cm-s-pychoice .cm-builtin{ color:var(--cyan); }
+.cm-s-pychoice .cm-def{ color:var(--phosphor); }
+.cm-s-pychoice .cm-operator{ color:#9db2c6; }
+.cm-s-pychoice .cm-variable, .cm-s-pychoice .cm-variable-2, .cm-s-pychoice .cm-property{ color:#d7e6d8; }
+.cm-s-pychoice .cm-atom{ color:var(--violet); }
+.cm-s-pychoice .cm-meta{ color:#9db2c6; }
+.cm-s-pychoice .CodeMirror-matchingbracket{ color:var(--phosphor) !important; font-weight:700; }
+
 .output-wrap{ border-top:1px solid var(--line); }
 .rgrid.split .output-wrap{ border-top:none; border-left:1px solid var(--line); }
 .out-head{ padding:6px 12px; color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; background:#0a1320; border-bottom:1px solid var(--line); }

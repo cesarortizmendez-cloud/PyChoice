@@ -15,10 +15,14 @@ Parametros:
       <button class="btn warn" data-act="reset" title="reiniciar">↻</button>
       <button class="btn" data-act="clear">limpiar</button>
       <button class="btn" data-act="expand" title="Expandir el editor">⤢</button>
+      <button class="btn" data-act="savepy" title="Descargar el código como archivo .py">⬇ .py</button>
+      <button class="btn" data-act="loadpy" title="Abrir y cargar un archivo .py">⬆ .py</button>
+      <input type="file" class="pyfile" accept=".py,text/x-python" hidden>
+      <button class="btn" data-act="pdf" title="Imprimir el código y la salida a PDF (con validación de escritura)">PDF</button>
       {% if io %}
       <button class="btn" data-act="loadxlsx">cargar excel</button>
       <button class="btn" data-act="savexlsx">exportar excel</button>
-      <input type="file" accept=".xlsx,.xls,.csv">
+      <input type="file" class="xlsxfile" accept=".xlsx,.xls,.csv">
       <span class="filechip"></span>
       {% endif %}
       <button class="btn run" data-act="run">▶ ejecutar</button>

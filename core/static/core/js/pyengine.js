@@ -618,6 +618,104 @@ function pyHighlight(src) {
   return out;
 }
 
+/* Carga diferida de jsPDF (solo al primer "imprimir PDF"). */
+let _jspdfPromise = null;
+function ensureJsPDF() {
+  if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+  if (!_jspdfPromise) {
+    _jspdfPromise = new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.onload = () => res(window.jspdf.jsPDF);
+      s.onerror = () => rej(new Error('jspdf'));
+      document.head.appendChild(s);
+    });
+  }
+  return _jspdfPromise;
+}
+
+function _equipoInfo() {
+  const ua = navigator.userAgent || '';
+  let os = 'desconocido';
+  if (/Windows NT 10/.test(ua)) os = 'Windows 10/11';
+  else if (/Windows/.test(ua)) os = 'Windows';
+  else if (/Mac OS X/.test(ua)) os = 'macOS';
+  else if (/Android/.test(ua)) os = 'Android';
+  else if (/iPhone|iPad|iPod/.test(ua)) os = 'iOS';
+  else if (/Linux/.test(ua)) os = 'Linux';
+  let br = 'navegador';
+  if (/Edg\//.test(ua)) br = 'Edge';
+  else if (/OPR\//.test(ua)) br = 'Opera';
+  else if (/Chrome\//.test(ua)) br = 'Chrome';
+  else if (/Firefox\//.test(ua)) br = 'Firefox';
+  else if (/Safari\//.test(ua)) br = 'Safari';
+  return { os, br };
+}
+
+/* Genera un PDF con el codigo y la salida, con cabecera de validacion:
+   nombre (pedido al alumno), fecha/hora, equipo y metricas de escritura. */
+async function exportConsolePdf(code, outEl, fname, metrics) {
+  const nombre = (prompt('Escribe tu NOMBRE COMPLETO (aparecerá en el documento):', '') || '').trim();
+  if (!nombre) return;
+  let JsPDF;
+  try { JsPDF = await ensureJsPDF(); }
+  catch (e) { alert('No se pudo cargar el generador de PDF. Revisa tu conexión e inténtalo de nuevo.'); return; }
+
+  const salida = (outEl ? outEl.textContent : '') || '(sin salida: ejecuta el código antes de imprimir)';
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-CL') + ' ' + now.toLocaleTimeString('es-CL');
+  const eq = _equipoInfo();
+  const seg = Math.round((metrics.editMs || 0) / 1000);
+  const tiempo = seg < 60 ? (seg + ' s') : (Math.floor(seg / 60) + ' min ' + (seg % 60) + ' s');
+  const actividad = ((document.querySelector('h1.page') && document.querySelector('h1.page').textContent) || document.title || '').trim().replace(/\s+/g, ' ').slice(0, 90);
+  const nlineas = code.split('\n').length;
+
+  const doc = new JsPDF({ unit: 'pt', format: 'letter' });
+  const M = 48, W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight();
+  let y = M;
+  const line = (h) => { y += h; if (y > H - M) { doc.addPage(); y = M; } };
+  const para = (txt, size, font, color) => {
+    doc.setFont('helvetica', font || 'normal'); doc.setFontSize(size);
+    doc.setTextColor(color ? color[0] : 40, color ? color[1] : 40, color ? color[2] : 40);
+    doc.splitTextToSize(txt, W - 2 * M).forEach((t) => { doc.text(t, M, y); line(size + 4); });
+  };
+  const mono = (txt) => {
+    doc.setFont('courier', 'normal'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+    (txt.split('\n')).forEach((ln, i) => {
+      const num = String(i + 1).padStart(3, ' ');
+      doc.splitTextToSize(num + '  ' + ln.replace(/\t/g, '    '), W - 2 * M).forEach((t) => { doc.text(t, M, y); line(12); });
+    });
+  };
+  const monoOut = (txt) => {
+    doc.setFont('courier', 'normal'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+    (txt.split('\n')).forEach((ln) => {
+      doc.splitTextToSize(ln.replace(/\t/g, '    ') || ' ', W - 2 * M).forEach((t) => { doc.text(t, M, y); line(12); });
+    });
+  };
+
+  // Cabecera
+  para('PyChoice · Evidencia de código', 15, 'bold', [10, 10, 10]);
+  line(2);
+  para('Alumno: ' + nombre, 10, 'bold', [20, 20, 20]);
+  para('Fecha y hora: ' + fecha, 10);
+  para('Actividad: ' + actividad + '  (' + fname + ')', 10);
+  para('Equipo: ' + eq.br + ' · ' + eq.os, 10);
+  para('Validación de escritura — tiempo de edición: ' + tiempo +
+       '  ·  caracteres tecleados: ' + (metrics.typed || 0) +
+       '  ·  pegados: ' + (metrics.pasteCount || 0) + ' (' + (metrics.pasteChars || 0) + ' caracteres)', 10, 'normal', [120, 60, 60]);
+  para('Código: ' + nlineas + ' líneas', 10);
+  line(4);
+  doc.setDrawColor(200); doc.line(M, y, W - M, y); line(16);
+
+  para('Código', 12, 'bold', [10, 10, 10]); line(2);
+  mono(code); line(10);
+  para('Salida', 12, 'bold', [10, 10, 10]); line(2);
+  monoOut(salida);
+
+  const safe = (nombre.replace(/[^\w\s\-]+/g, '').replace(/\s+/g, '_').slice(0, 40)) || 'alumno';
+  doc.save('PyChoice_' + fname.replace(/\.py$/i, '') + '_' + safe + '.pdf');
+}
+
 function bindConsole(el) {
   const ta   = el.querySelector('textarea');
   const out  = el.querySelector('.output');
@@ -630,47 +728,36 @@ function bindConsole(el) {
   const chip     = el.querySelector('.filechip');
   const original = ta ? ta.value : '';
 
-  /* --- Capa de resaltado de sintaxis (colores) --- */
+  /* --- Editor: CodeMirror (colores + números de línea + cursor/selección exactos) --- */
   const editor = el.querySelector('.editor');
-  let syncHL = () => {};
-  if (ta && editor && !editor.querySelector('.hl')) {
-    const gutter = document.createElement('div');          // números de línea
-    gutter.className = 'ln-gutter'; gutter.setAttribute('aria-hidden', 'true');
-    const pre = document.createElement('pre');
-    pre.className = 'hl'; pre.setAttribute('aria-hidden', 'true');
-    const codeEl = document.createElement('code');
-    pre.appendChild(codeEl);
-    editor.insertBefore(pre, ta);
-    editor.insertBefore(gutter, pre);
-    editor.classList.add('has-hl', 'has-ln');
-    ta.setAttribute('wrap', 'off');                        // sin ajuste -> números alineados
-    let lastN = -1;
-    const syncScroll = () => {
-      pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft;
-      gutter.scrollTop = ta.scrollTop;
-    };
-    syncHL = () => {
-      codeEl.innerHTML = pyHighlight(ta.value) + '\n';
-      const n = ta.value.split('\n').length;
-      if (n !== lastN) {
-        let g = '';
-        for (let i = 1; i <= n; i++) g += i + '\n';
-        gutter.textContent = g;
-        lastN = n;
-      }
-      syncScroll();
-    };
-    // Al EDITAR mostramos solo el textarea (texto visible, UNA sola capa): asi el
-    // cursor y la seleccion quedan siempre perfectos, sin el "fantasma" que
-    // producia la capa de color encima (zoom del navegador, sub-pixel o la GPU al
-    // seleccionar la desalineaban). Al salir del editor se vuelve a mostrar el
-    // codigo con los colores de sintaxis.
-    ta.addEventListener('focus', () => { editor.classList.add('editing'); });
-    ta.addEventListener('blur', () => { editor.classList.remove('editing'); syncHL(); });
-    ta.addEventListener('input', syncHL);
-    ta.addEventListener('scroll', syncScroll);
-    syncHL();
+  let cm = null;
+  // metricas anti-copia: tiempo de edicion (con foco), caracteres tecleados y pegados
+  const metrics = { typed: 0, pasteCount: 0, pasteChars: 0, editMs: 0, firstTs: 0, _focusTs: 0 };
+  el.__metrics = metrics;
+  if (ta && editor && window.CodeMirror && !editor.querySelector('.CodeMirror')) {
+    cm = CodeMirror.fromTextArea(ta, {
+      mode: 'python', theme: 'pychoice', lineNumbers: true,
+      indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: false,
+      viewportMargin: Infinity, smartIndent: true,
+      extraKeys: {
+        'Ctrl-Enter': () => execute(),
+        'Cmd-Enter': () => execute(),
+        'Tab': (c) => c.replaceSelection('    ', 'end'),
+      },
+    });
+    el.__cm = cm;
+    cm.on('change', (c, ch) => {
+      c.save();                                    // mantiene el textarea sincronizado
+      if (!metrics.firstTs) metrics.firstTs = Date.now();
+      const n = (ch.text || []).join('\n').length;
+      if (ch.origin === 'paste') { metrics.pasteCount++; metrics.pasteChars += n; }
+      else if (ch.origin === '+input') { metrics.typed += n; }
+    });
+    cm.on('focus', () => { metrics._focusTs = Date.now(); });
+    cm.on('blur', () => { if (metrics._focusTs) { metrics.editMs += Date.now() - metrics._focusTs; metrics._focusTs = 0; } });
   }
+  const getCode = () => cm ? cm.getValue() : (ta ? ta.value : '');
+  const setCode = (v) => { if (cm) cm.setValue(v); else if (ta) ta.value = v; };
 
   async function execute() {
     if (!ta) return;
@@ -678,7 +765,7 @@ function bindConsole(el) {
     const prev = runBtn.textContent;
     runBtn.textContent = '⟳ ejecutando…';
     if (out) out.innerHTML = '<span class="prompt">Corriendo Python…</span>';
-    const result = await runPython(ta.value);
+    const result = await runPython(getCode());
     renderOutput(out, result);
     renderPlots(plotWrap, result.images);
     runBtn.disabled = false;
@@ -690,14 +777,14 @@ function bindConsole(el) {
     if (out) out.innerHTML = '';
     if (plotWrap) { const _b = plotWrap.querySelector('.plotbox'); if (_b) _b.innerHTML = ''; setPlotCollapsed(plotWrap, true); }
   });
-  if (resetBtn) resetBtn.addEventListener('click', () => { ta.value = original; syncHL(); });
+  if (resetBtn) resetBtn.addEventListener('click', () => { setCode(original); });
 
   const expandBtn = el.querySelector('[data-act=expand]');
   if (expandBtn) expandBtn.addEventListener('click', () => {
     const exp = el.classList.toggle('expanded');
     expandBtn.textContent = exp ? '\u2921' : '\u2922';
     expandBtn.title = exp ? 'Contraer el editor' : 'Expandir el editor';
-    syncHL();
+    if (cm) cm.refresh();
   });
 
   const plotHead = el.querySelector('[data-act=plottoggle]');
@@ -710,21 +797,39 @@ function bindConsole(el) {
     }
   });
 
-  // Ctrl/Cmd + Enter para ejecutar; Tab inserta 4 espacios
-  if (ta) ta.addEventListener('keydown', (ev) => {
-    if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') { ev.preventDefault(); execute(); }
-    if (ev.key === 'Tab') {
-      ev.preventDefault();
-      const s = ta.selectionStart, e = ta.selectionEnd;
-      ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(e);
-      ta.selectionStart = ta.selectionEnd = s + 4;
-      syncHL();
-    }
+  /* --- Descargar / cargar archivo .py --- */
+  const fnameTxt = ((el.querySelector('.fname') && el.querySelector('.fname').textContent) || 'script.py').trim();
+  const savePyBtn = el.querySelector('[data-act=savepy]');
+  const loadPyBtn = el.querySelector('[data-act=loadpy]');
+  const pyFile    = el.querySelector('input.pyfile');
+  if (savePyBtn) savePyBtn.addEventListener('click', () => {
+    const blob = new Blob([getCode()], { type: 'text/x-python;charset=utf-8' });
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = u; a.download = fnameTxt.replace(/\.py$/i, '') + '.py';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 1000);
+  });
+  if (loadPyBtn && pyFile) {
+    loadPyBtn.addEventListener('click', () => pyFile.click());
+    pyFile.addEventListener('change', (ev) => {
+      const f = ev.target.files[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = () => { setCode(String(r.result || '')); };
+      r.readAsText(f); pyFile.value = '';
+    });
+  }
+
+  /* --- Imprimir código + salida a PDF (con validación de escritura) --- */
+  const pdfBtn = el.querySelector('[data-act=pdf]');
+  if (pdfBtn) pdfBtn.addEventListener('click', () => {
+    if (metrics._focusTs) { metrics.editMs += Date.now() - metrics._focusTs; metrics._focusTs = Date.now(); }
+    exportConsolePdf(getCode(), out, fnameTxt, metrics);
   });
 
   /* --- Cargar Excel/CSV -> DataFrame `datos` --- */
   if (xlsxIn) {
-    const fileEl = el.querySelector('input[type=file]');
+    const fileEl = el.querySelector('input.xlsxfile') || el.querySelector('input[type=file]:not(.pyfile)');
     xlsxIn.addEventListener('click', () => fileEl && fileEl.click());
     if (fileEl) fileEl.addEventListener('change', async (ev) => {
       const file = ev.target.files[0];
