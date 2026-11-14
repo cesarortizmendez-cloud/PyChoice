@@ -882,17 +882,38 @@ function bindConsole(el) {
   const loadPyBtn = el.querySelector('[data-act=loadpy]');
   const pyFile    = el.querySelector('input.pyfile');
   if (saveBtn) saveBtn.addEventListener('click', () => { saveState(); showSaved('✓ guardado en este navegador'); });
-  if (saveAsBtn) saveAsBtn.addEventListener('click', () => {
-    let name = prompt('Guardar como (nombre del archivo .py):', fnameTxt.replace(/\.py$/i, ''));
+  if (saveAsBtn) saveAsBtn.addEventListener('click', async () => {
+    const code = getCode();
+    const suggested = fnameTxt.replace(/\.py$/i, '') + '.py';
+    saveState();                                  // también deja una copia en el navegador
+    // Diálogo nativo "Guardar como": el alumno ELIGE la carpeta y el nombre.
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: suggested,
+          types: [{ description: 'Archivo Python', accept: { 'text/x-python': ['.py'] } }],
+        });
+        const w = await handle.createWritable();
+        await w.write(code);
+        await w.close();
+        showSaved('✓ guardado en tu carpeta');
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;   // el usuario canceló el diálogo
+        /* si falla por otra razón, usamos la descarga clásica abajo */
+      }
+    }
+    // Fallback (Firefox/Safari o si falla el diálogo): descarga a la carpeta de Descargas.
+    let name = prompt('Tu navegador no permite elegir carpeta. Nombre del archivo .py:', fnameTxt.replace(/\.py$/i, ''));
     if (name == null) return;
     name = (name.trim() || fnameTxt.replace(/\.py$/i, '')).replace(/[^\w\-. ]+/g, '').replace(/\s+/g, '_');
-    saveState();                                  // también deja una copia en el navegador
-    const blob = new Blob([getCode()], { type: 'text/x-python;charset=utf-8' });
+    const blob = new Blob([code], { type: 'text/x-python;charset=utf-8' });
     const u = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = u; a.download = name.replace(/\.py$/i, '') + '.py';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(u), 1000);
+    showSaved('✓ descargado');
   });
   if (loadPyBtn && pyFile) {
     loadPyBtn.addEventListener('click', () => pyFile.click());

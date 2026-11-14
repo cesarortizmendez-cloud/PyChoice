@@ -86,6 +86,20 @@ escribir el valor, igual que en una consola.</p>
   if (window.__projCopyBound) return;
   window.__projCopyBound = true;
   document.addEventListener('click', function(ev){
+    // Descargar el código de la tarjeta como archivo .py
+    var d = ev.target.closest('[data-act=download]');
+    if (d) {
+      var dcard = d.closest('.codecard'); if (!dcard) return;
+      var dcode = dcard.querySelector('code'); if (!dcode) return;
+      var fn = ((dcard.querySelector('.fname') && dcard.querySelector('.fname').textContent) || 'codigo.py').trim();
+      var blob = new Blob([dcode.innerText], { type: 'text/x-python;charset=utf-8' });
+      var u = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = u; a.download = fn.replace(/\.py$/i, '') + '.py';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(u); }, 1000);
+      var dt = d.textContent; d.textContent = '✓ descargado'; setTimeout(function(){ d.textContent = dt; }, 1400);
+      return;
+    }
     var b = ev.target.closest('[data-act=copy]');
     if (!b) return;
     var card = b.closest('.codecard');

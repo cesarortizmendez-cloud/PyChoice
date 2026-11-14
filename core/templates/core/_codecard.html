@@ -8,7 +8,10 @@ Parámetros: code -> código; fname -> nombre del archivo mostrado en la barra.
   <div class="bar">
     <span class="lamps"><i></i><i></i><i></i></span>
     <span class="fname">{{ fname|default:'app.py' }}</span>
-    <span class="actions"><button class="btn" type="button" data-act="copy">copiar</button></span>
+    <span class="actions">
+      <button class="btn" type="button" data-act="copy">copiar</button>
+      <button class="btn" type="button" data-act="download" title="Descargar este código como archivo .py">⬇ .py</button>
+    </span>
   </div>
   <pre class="codeview"><code>{{ code }}</code></pre>
 </div>
