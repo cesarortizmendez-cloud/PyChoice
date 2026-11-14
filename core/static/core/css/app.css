@@ -209,6 +209,13 @@ h1.page .hl{ color:var(--phosphor); }
 .cm-s-pychoice .cm-meta{ color:#9db2c6; }
 .cm-s-pychoice .CodeMirror-matchingbracket{ color:var(--phosphor) !important; font-weight:700; }
 
+/* Botón guardar + aviso "guardado" */
+.rconsole .bar .btn.save{ border-color:#1d5e45; color:var(--phosphor); }
+.rconsole .bar .btn.save:hover{ background:#0d2018; }
+.rconsole .bar .savechip{ align-self:center; font-family:var(--mono); font-size:11px;
+  color:var(--phosphor); opacity:0; transition:opacity .2s ease; white-space:nowrap; }
+.rconsole .bar .savechip.on{ opacity:1; }
+
 .output-wrap{ border-top:1px solid var(--line); }
 .rgrid.split .output-wrap{ border-top:none; border-left:1px solid var(--line); }
 .out-head{ padding:6px 12px; color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; background:#0a1320; border-bottom:1px solid var(--line); }

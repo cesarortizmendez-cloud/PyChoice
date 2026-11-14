@@ -12,13 +12,15 @@ Parametros:
     <span class="lamps"><i></i><i></i><i></i></span>
     <span class="fname">{{ fname|default:'script.py' }}</span>
     <span class="actions">
-      <button class="btn warn" data-act="reset" title="reiniciar">↻</button>
+      <button class="btn warn" data-act="reset" title="Volver al código original (borra lo que guardaste aquí)">↻</button>
       <button class="btn" data-act="clear">limpiar</button>
       <button class="btn" data-act="expand" title="Expandir el editor">⤢</button>
-      <button class="btn" data-act="savepy" title="Descargar el código como archivo .py">⬇ .py</button>
-      <button class="btn" data-act="loadpy" title="Abrir y cargar un archivo .py">⬆ .py</button>
+      <button class="btn save" data-act="save" title="Guardar tu código en este navegador (no se pierde al cambiar de lección)">💾 guardar</button>
+      <button class="btn" data-act="saveas" title="Guardar como… descarga tu código en un archivo .py">guardar como…</button>
+      <button class="btn" data-act="loadpy" title="Abrir un archivo .py en la consola">abrir .py</button>
       <input type="file" class="pyfile" accept=".py,text/x-python" hidden>
       <button class="btn" data-act="pdf" title="Imprimir el código y la salida a PDF (con validación de escritura)">PDF</button>
+      <span class="savechip" aria-live="polite"></span>
       {% if io %}
       <button class="btn" data-act="loadxlsx">cargar excel</button>
       <button class="btn" data-act="savexlsx">exportar excel</button>

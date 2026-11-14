@@ -736,6 +736,16 @@ async function exportConsolePdf(code, outEl, fname, metrics) {
   doc.save('PyChoice_' + fname.replace(/\.py$/i, '') + '_' + safe + '.pdf');
 }
 
+/* Clave estable por consola para guardar/restaurar en localStorage:
+   ruta de la lección + posición de la consola en la página. */
+function _consoleKey(el) {
+  try {
+    const all = Array.from(document.querySelectorAll('.rconsole'));
+    const i = all.indexOf(el);
+    return 'pych:code:' + location.pathname + '#' + (i < 0 ? 0 : i);
+  } catch (e) { return null; }
+}
+
 function bindConsole(el) {
   const ta   = el.querySelector('textarea');
   const out  = el.querySelector('.output');
@@ -754,6 +764,45 @@ function bindConsole(el) {
   // metricas anti-copia: tiempo de edicion (con foco), caracteres tecleados y pegados
   const metrics = { typed: 0, pasteCount: 0, pasteChars: 0, maxPaste: 0, editMs: 0, firstTs: 0, _focusTs: 0 };
   el.__metrics = metrics;
+
+  // --- Guardado automático en el navegador (no se pierde al cambiar de lección) ---
+  const stKey = _consoleKey(el);
+  const saveChip = el.querySelector('.savechip');
+  let _chipT = null;
+  function showSaved(txt) {
+    if (!saveChip) return;
+    saveChip.textContent = txt || '✓ guardado';
+    saveChip.classList.add('on');
+    if (_chipT) clearTimeout(_chipT);
+    _chipT = setTimeout(() => { saveChip.classList.remove('on'); }, 2200);
+  }
+  function saveState() {
+    if (!stKey) return;
+    try {
+      localStorage.setItem(stKey, JSON.stringify({
+        code: getCode(),
+        m: { typed: metrics.typed, pasteCount: metrics.pasteCount, pasteChars: metrics.pasteChars, maxPaste: metrics.maxPaste, editMs: metrics.editMs },
+        t: Date.now(),
+      }));
+    } catch (e) { /* modo privado / sin espacio: se ignora */ }
+  }
+  function loadState() {
+    if (!stKey) return;
+    try {
+      const raw = localStorage.getItem(stKey);
+      if (!raw) return;
+      const o = JSON.parse(raw);
+      if (!o) return;
+      if (o.m) {
+        metrics.typed = o.m.typed || 0; metrics.pasteCount = o.m.pasteCount || 0;
+        metrics.pasteChars = o.m.pasteChars || 0; metrics.maxPaste = o.m.maxPaste || 0;
+        metrics.editMs = o.m.editMs || 0;
+      }
+      if (typeof o.code === 'string') setCode(o.code);   // restaura el código escrito
+      showSaved('✓ tu código guardado');
+    } catch (e) { /* ignora JSON inválido */ }
+  }
+
   if (ta && editor && window.CodeMirror && !editor.querySelector('.CodeMirror')) {
     cm = CodeMirror.fromTextArea(ta, {
       mode: 'python', theme: 'pychoice', lineNumbers: true,
@@ -772,12 +821,15 @@ function bindConsole(el) {
       const n = (ch.text || []).join('\n').length;
       if (ch.origin === 'paste') { metrics.pasteCount++; metrics.pasteChars += n; if (n > metrics.maxPaste) metrics.maxPaste = n; }
       else if (ch.origin === '+input') { metrics.typed += n; }
+      saveState();                                 // autoguardado en cada cambio
+      if (ch.origin && ch.origin !== 'setValue') showSaved('✓ guardado');
     });
     cm.on('focus', () => { metrics._focusTs = Date.now(); });
-    cm.on('blur', () => { if (metrics._focusTs) { metrics.editMs += Date.now() - metrics._focusTs; metrics._focusTs = 0; } });
+    cm.on('blur', () => { if (metrics._focusTs) { metrics.editMs += Date.now() - metrics._focusTs; metrics._focusTs = 0; } saveState(); });
   }
   const getCode = () => cm ? cm.getValue() : (ta ? ta.value : '');
   const setCode = (v) => { if (cm) cm.setValue(v); else if (ta) ta.value = v; };
+  loadState();   // al cargar/navegar, restaura lo que el alumno había escrito aquí
 
   async function execute() {
     if (!ta) return;
@@ -797,7 +849,13 @@ function bindConsole(el) {
     if (out) out.innerHTML = '';
     if (plotWrap) { const _b = plotWrap.querySelector('.plotbox'); if (_b) _b.innerHTML = ''; setPlotCollapsed(plotWrap, true); }
   });
-  if (resetBtn) resetBtn.addEventListener('click', () => { setCode(original); });
+  if (resetBtn) resetBtn.addEventListener('click', () => {
+    if (!confirm('¿Volver al código original? Se borrará lo que escribiste y guardaste en esta consola.')) return;
+    metrics.typed = 0; metrics.pasteCount = 0; metrics.pasteChars = 0; metrics.maxPaste = 0; metrics.editMs = 0;
+    setCode(original);
+    if (stKey) { try { localStorage.removeItem(stKey); } catch (e) {} }
+    if (saveChip) { saveChip.textContent = ''; saveChip.classList.remove('on'); }
+  });
 
   const expandBtn = el.querySelector('[data-act=expand]');
   if (expandBtn) expandBtn.addEventListener('click', () => {
@@ -817,16 +875,22 @@ function bindConsole(el) {
     }
   });
 
-  /* --- Descargar / cargar archivo .py --- */
+  /* --- Guardar (navegador) · Guardar como (archivo .py) · Abrir .py --- */
   const fnameTxt = ((el.querySelector('.fname') && el.querySelector('.fname').textContent) || 'script.py').trim();
-  const savePyBtn = el.querySelector('[data-act=savepy]');
+  const saveBtn   = el.querySelector('[data-act=save]');
+  const saveAsBtn = el.querySelector('[data-act=saveas]');
   const loadPyBtn = el.querySelector('[data-act=loadpy]');
   const pyFile    = el.querySelector('input.pyfile');
-  if (savePyBtn) savePyBtn.addEventListener('click', () => {
+  if (saveBtn) saveBtn.addEventListener('click', () => { saveState(); showSaved('✓ guardado en este navegador'); });
+  if (saveAsBtn) saveAsBtn.addEventListener('click', () => {
+    let name = prompt('Guardar como (nombre del archivo .py):', fnameTxt.replace(/\.py$/i, ''));
+    if (name == null) return;
+    name = (name.trim() || fnameTxt.replace(/\.py$/i, '')).replace(/[^\w\-. ]+/g, '').replace(/\s+/g, '_');
+    saveState();                                  // también deja una copia en el navegador
     const blob = new Blob([getCode()], { type: 'text/x-python;charset=utf-8' });
     const u = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = u; a.download = fnameTxt.replace(/\.py$/i, '') + '.py';
+    a.href = u; a.download = name.replace(/\.py$/i, '') + '.py';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(u), 1000);
   });
@@ -835,7 +899,7 @@ function bindConsole(el) {
     pyFile.addEventListener('change', (ev) => {
       const f = ev.target.files[0]; if (!f) return;
       const r = new FileReader();
-      r.onload = () => { setCode(String(r.result || '')); };
+      r.onload = () => { setCode(String(r.result || '')); showSaved('✓ archivo cargado'); };
       r.readAsText(f); pyFile.value = '';
     });
   }
@@ -951,10 +1015,10 @@ async function navigateTo(url, push) {
     curMain.innerHTML = newMain.innerHTML;
     document.title = doc.title || document.title;
     updateSidebarActive(target.pathname);
+    if (push) history.pushState({ spa: true }, '', target.href);  // URL nueva ANTES de enlazar (clave de guardado por lección)
     bindConsolesIn(curMain);
     runScriptsIn(curMain);
     window.scrollTo(0, 0);
-    if (push) history.pushState({ spa: true }, '', target.href);
 
     // El motor casi siempre ya esta listo (arranco una sola vez). Reinicia los
     // datos de ejemplo para que cada leccion empiece limpia y reproducible.
