@@ -881,7 +881,32 @@ function bindConsole(el) {
   const saveAsBtn = el.querySelector('[data-act=saveas]');
   const loadPyBtn = el.querySelector('[data-act=loadpy]');
   const pyFile    = el.querySelector('input.pyfile');
-  if (saveBtn) saveBtn.addEventListener('click', () => { saveState(); showSaved('✓ guardado en este navegador'); });
+  // Recuerda el archivo elegido en "Guardar como" para que "Guardar" reescriba ahí.
+  let fileHandle = null;
+  async function writeToFileHandle() {
+    if (!fileHandle) return false;
+    try {
+      if (fileHandle.queryPermission) {
+        let p = await fileHandle.queryPermission({ mode: 'readwrite' });
+        if (p !== 'granted' && fileHandle.requestPermission) p = await fileHandle.requestPermission({ mode: 'readwrite' });
+        if (p !== 'granted') return false;
+      }
+      const w = await fileHandle.createWritable();
+      await w.write(getCode());
+      await w.close();
+      return true;
+    } catch (e) { return false; }
+  }
+  if (saveBtn) saveBtn.addEventListener('click', async () => {
+    saveState();                                  // siempre: copia en el navegador
+    if (fileHandle) {
+      const ok = await writeToFileHandle();
+      showSaved(ok ? ('✓ guardado (navegador + ' + (fileHandle.name || 'archivo') + ')')
+                   : '✓ guardado en el navegador (no se pudo escribir el archivo)');
+    } else {
+      showSaved('✓ guardado en el navegador');
+    }
+  });
   if (saveAsBtn) saveAsBtn.addEventListener('click', async () => {
     const code = getCode();
     const suggested = fnameTxt.replace(/\.py$/i, '') + '.py';
@@ -896,6 +921,7 @@ function bindConsole(el) {
         const w = await handle.createWritable();
         await w.write(code);
         await w.close();
+        fileHandle = handle;                      // "Guardar" reescribirá en este mismo archivo
         showSaved('✓ guardado en tu carpeta');
         return;
       } catch (e) {
